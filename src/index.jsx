@@ -8,7 +8,6 @@ import "./index.scss";
 const MyFlixApplication = () => {
     return (
         <div className="my-flix">
-            {/* Use the MainView component here */}
             <MainView />
         </div>
     );
