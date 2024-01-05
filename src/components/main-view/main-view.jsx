@@ -1,39 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     const [selectedMovie, setSelectedMovie] = useState(null);
 
     useEffect(() => {
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies")
             .then((response) => response.json())
             .then((data) => {
-                const moviesFromApi = data.docs.map((doc) => {
-                    return {
-                        genre: {
-                            genreName: doc.genre.genreName,
-                            description: doc.genre.description,
-                        },
-                        director: {
-                            name: doc.director.name,
-                            birth: doc.director.birth,
-                            death: doc.director.death,
-                            bio: doc.director.bio,
-                        },
-                        _id: doc._id,
-                        title: doc.title,
-                        year: doc.year,
-                        description: doc.description,
-                        MovieId: doc.MovieId,
-                    };
-                });
+                console.log("API Response:", data);
 
-                setMovies(moviesFromApi);
+                if (data.docs && Array.isArray(data.docs)) {
+                    const moviesFromApi = data.docs.map((doc) => {
+                        return {
+                            genre: {
+                                genreName: doc.genre.genreName,
+                                description: doc.genre.description,
+                            },
+                            director: {
+                                name: doc.director.name,
+                                birth: doc.director.birth,
+                                death: doc.director.death,
+                                bio: doc.director.bio,
+                            },
+                            _id: doc._id,
+                            title: doc.title,
+                            year: doc.year,
+                            description: doc.description,
+                            MovieId: doc.MovieId,
+                        };
+                    });
+
+                    setMovies(moviesFromApi);
+                } else {
+                    console.error("API response is missing 'docs' property or it's not an array.");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching movies:", error);
             });
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
 
     if (selectedMovie) {
         return (
