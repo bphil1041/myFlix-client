@@ -35,8 +35,6 @@ export const MainView = () => {
                     });
 
                     setMovies(moviesFromApi);
-                } else {
-                    console.error("API response is missing 'docs' property or it's not an array.");
                 }
             })
             .catch((error) => {
