@@ -13,30 +13,30 @@ export const MainView = () => {
             .then((data) => {
                 console.log("API Response:", data);
 
-                if (data.docs && Array.isArray(data.docs)) {
-                    const moviesFromApi = data.map((movie) => {
-                        return {
-                            genre: {
-                                genreName: movie.genre.genreName,
-                                description: movie.genre.description,
-                            },
-                            director: {
-                                name: movie.director.name,
-                                birth: movie.director.birth,
-                                death: movie.director.death,
-                                bio: movie.director.bio,
-                            },
-                            _id: movie._id,
-                            title: movie.title,
-                            year: movie.year,
-                            description: movie.description,
-                            MovieId: movie.MovieId,
-                        };
-                    });
 
-                    setMovies(moviesFromApi);
-                    setLoading(false);
-                }
+                const moviesFromApi = data.map((movie) => {
+                    return {
+                        genre: {
+                            genreName: movie.genre.genreName,
+                            description: movie.genre.description,
+                        },
+                        director: {
+                            name: movie.director.name,
+                            birth: movie.director.birth,
+                            death: movie.director.death,
+                            bio: movie.director.bio,
+                        },
+                        _id: movie._id,
+                        title: movie.title,
+                        year: movie.year,
+                        description: movie.description,
+                        MovieId: movie.MovieId,
+                    };
+                });
+
+                setMovies(moviesFromApi);
+                setLoading(false);
+
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
