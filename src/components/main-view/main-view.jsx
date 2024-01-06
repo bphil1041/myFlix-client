@@ -14,7 +14,7 @@ export const MainView = () => {
                 console.log("API Response:", data);
 
                 if (data.docs && Array.isArray(data.docs)) {
-                    const moviesFromApi = data.docs.map((movie) => {
+                    const moviesFromApi = data.map((movie) => {
                         return {
                             genre: {
                                 genreName: movie.genre.genreName,
@@ -35,13 +35,16 @@ export const MainView = () => {
                     });
 
                     setMovies(moviesFromApi);
+                    setLoading(false);
                 }
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
+                setLoading(false);
             });
     }, []);
 
+    console.log("Movies:", movies);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -60,9 +63,9 @@ export const MainView = () => {
 
     return (
         <div>
-            {movies.map((movie) => (
+            {movies.map(({ _id, ...movie }) => (
                 <MovieCard
-                    key={movie._id}
+                    key={_id}
                     movie={movie}
                     onMovieClick={(newSelectedMovie) => {
                         setSelectedMovie(newSelectedMovie);
@@ -71,4 +74,5 @@ export const MainView = () => {
             ))}
         </div>
     );
+
 }
