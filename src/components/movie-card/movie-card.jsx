@@ -26,7 +26,7 @@ MovieCard.propTypes = {
         }),
         _id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        year: PropTypes.string,
+        year: PropTypes.number,
         description: PropTypes.string,
         MovieId: PropTypes.string,
     }).isRequired,
