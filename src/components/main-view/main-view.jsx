@@ -7,7 +7,6 @@ export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedMovie, setSelectedMovie] = useState(null);
-
     useEffect(() => {
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies")
             .then((response) => response.json())
@@ -15,23 +14,23 @@ export const MainView = () => {
                 console.log("API Response:", data);
 
                 if (data.docs && Array.isArray(data.docs)) {
-                    const moviesFromApi = data.docs.map((doc) => {
+                    const moviesFromApi = data.docs.map((movie) => {
                         return {
                             genre: {
-                                genreName: doc.genre.genreName,
-                                description: doc.genre.description,
+                                genreName: movie.genre.genreName,
+                                description: movie.genre.description,
                             },
                             director: {
-                                name: doc.director.name,
-                                birth: doc.director.birth,
-                                death: doc.director.death,
-                                bio: doc.director.bio,
+                                name: movie.director.name,
+                                birth: movie.director.birth,
+                                death: movie.director.death,
+                                bio: movie.director.bio,
                             },
-                            _id: doc._id,
-                            title: doc.title,
-                            year: doc.year,
-                            description: doc.description,
-                            MovieId: doc.MovieId,
+                            _id: movie._id,
+                            title: movie.title,
+                            year: movie.year,
+                            description: movie.description,
+                            MovieId: movie.MovieId,
                         };
                     });
 
@@ -42,6 +41,7 @@ export const MainView = () => {
                 console.error("Error fetching movies:", error);
             });
     }, []);
+
 
     if (loading) {
         return <div>Loading...</div>;
