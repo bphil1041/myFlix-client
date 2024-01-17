@@ -55,7 +55,6 @@ export const MainView = () => {
                                     <LoginView
                                         onLoggedIn={(user, token) => {
                                             setUser(user);
-                                            // setToken(token); // Assuming setToken is defined somewhere
                                         }}
                                     />
                                     or
