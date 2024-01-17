@@ -43,7 +43,9 @@ export const MainView = () => {
 
     return (
         <BrowserRouter>
+            <NavigationBar user={user} />
             <Routes>
+                {/* Routes for unauthenticated users */}
                 <Route
                     path="/"
                     element={
@@ -77,29 +79,64 @@ export const MainView = () => {
                         </Row>
                     }
                 />
+                {/* Route for authenticated users */}
                 <Route
-                    path="/movies/:movieId"
-                    element={<MovieDetailView movies={movies} />}
+                    path="/profile"
+                    element={<ProfileView />}
                 />
             </Routes>
         </BrowserRouter>
     );
 };
 
-const MovieDetailView = ({ movies }) => {
-    // Extract movieId from the URL
-    const { movieId } = useParams();
+const ProfileView = () => {
+    return <div>Your Profile View</div>;
+};
 
-    // Find the selected movie
-    const selectedMovie = movies.find((movie) => movie._id === movieId);
-
-    if (!selectedMovie) {
-        return <div>Movie not found</div>;
-    }
-
+const NavigationBar = ({ user }) => {
     return (
-        <Col md={8} style={{ border: "1px solid black" }}>
-            <MovieView movie={selectedMovie} />
-        </Col>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container">
+                <Link className="navbar-brand" to="/">
+                    myFlix
+                </Link>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav ml-auto">
+                        {!user ? (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/login">
+                                        Login
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/signup">
+                                        Signup
+                                    </Link>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/">
+                                        Home
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile">
+                                        Profile
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/logout">
+                                        Logout
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </nav>
     );
 };
