@@ -3,13 +3,12 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
-import { NavigationBar } from "../navigation-bar/navigation-bar.jsx";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
+    const [selectedMovie, setSelectedMovie] = useState(null);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -42,100 +41,43 @@ export const MainView = () => {
     }, []);
 
     return (
-        <BrowserRouter>
-            <NavigationBar user={user} />
-            <Routes>
-                {/* Routes for unauthenticated users */}
-                <Route
-                    path="/"
-                    element={
-                        <Row className="justify-content-md-center">
-                            {!user ? (
-                                <Col md={5}>
-                                    <LoginView
-                                        onLoggedIn={(user, token) => {
-                                            setUser(user);
-                                        }}
-                                    />
-                                    or
-                                    <SignupView />
-                                </Col>
-                            ) : movies.length === 0 ? (
-                                <Col md={5}>
-                                    <div>The list is empty!</div>
-                                </Col>
-                            ) : (
-                                <>
-                                    {movies.map(({ _id, ...movie }) => (
-                                        <Col className="mb-5" key={_id} md={3}>
-                                            <Link to={`/movies/${_id}`}>
-                                                <MovieCard movie={movie} />
-                                            </Link>
-                                        </Col>
-                                    ))}
-                                </>
-                            )}
-                        </Row>
-                    }
-                />
-                {/* Route for authenticated users */}
-                <Route
-                    path="/profile"
-                    element={<ProfileView />}
-                />
-            </Routes>
-        </BrowserRouter>
-    );
-};
-
-const ProfileView = () => {
-    return <div>Your Profile View</div>;
-};
-
-const NavigationBar = ({ user }) => {
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <div className="container">
-                <Link className="navbar-brand" to="/">
-                    myFlix
-                </Link>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ml-auto">
-                        {!user ? (
-                            <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/login">
-                                        Login
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/signup">
-                                        Signup
-                                    </Link>
-                                </li>
-                            </>
-                        ) : (
-                            <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/">
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/profile">
-                                        Profile
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/logout">
-                                        Logout
-                                    </Link>
-                                </li>
-                            </>
-                        )}
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <Row className="justify-content-md-center">
+            {!user ? (
+                <Col md={5}>
+                    <LoginView
+                        onLoggedIn={(user, token) => {
+                            setUser(user);
+                            setToken(token);
+                        }}
+                    />
+                    or
+                    <SignupView />
+                </Col>
+            ) : selectedMovie ? (
+                <Col md={8} style={{ border: "1px solid black" }}>
+                    <MovieView
+                        movie={selectedMovie}
+                        onBackClick={() => setSelectedMovie(null)}
+                    />
+                </Col>
+            ) : movies.length === 0 ? (
+                <Col md={5}>
+                    <div>The list is empty!</div>
+                </Col>
+            ) : (
+                <>
+                    {movies.map(({ _id, ...movie }) => (
+                        <Col className="mb-5" key={_id} md={3}>
+                            <MovieCard
+                                movie={movie}
+                                onMovieClick={(newSelectedMovie) => {
+                                    setSelectedMovie(newSelectedMovie);
+                                }}
+                            />
+                        </Col>
+                    ))}
+                </>
+            )}
+        </Row>
     );
 };
