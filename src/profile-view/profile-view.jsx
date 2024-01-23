@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Col, Row, Container, Button, Card, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
+import { useNavigate } from "react-router-dom";
 
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
@@ -10,6 +11,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
     const [password, setPassword] = useState(user.password);
     const [email, setEmail] = useState(user.email);
     const [birthday, setBirthday] = useState(user.birthday);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Navigation
     const navigate = useNavigate();
@@ -18,46 +20,52 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
     const favoriteMovies = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
 
     // Update user information
-    const handleUpdate = (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
+        setIsLoading(true);
 
-        // Gather updated user data
-        const data = {
-            username: username,
-            password: password,
-            email: email,
-            birthday: birthday,
-        }
-
-        // Fetch request to update user data
-        fetch(`https://movie-api-da5i.onrender.com/users/${user.name}`, {
-            method: "PUT",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+        try {
+            // Gather updated user data
+            const data = {
+                username: username,
+                password: password,
+                email: email,
+                birthday: birthday,
             }
-        }).then(async (response) => {
-            console.log(response)
+
+            // Fetch request to update user data
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+                method: "PUT",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
             if (response.ok) {
-                response.json();
-                alert('updated!')
+                const updatedUserData = await response.json();
+                localStorage.setItem('user', JSON.stringify(updatedUserData));
+                setUser(updatedUserData);
+                alert('Updated!');
             } else {
-                const e = await response.text()
-                console.log(e)
-                alert("Update failed.")
+                const error = await response.text();
+                console.error('Update failed:', error);
+                alert('Update failed. Please try again.');
             }
-        }).then((updatedUser) => {
-            if (updatedUser) {
-                localStorage.setItem('user', JSON.stringify(updatedUser))
-                setUser(updatedUser)
-            }
-        })
+        } catch (error) {
+            console.error('Update failed:', error);
+            alert('Update failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     // Delete user account
     const handleDelete = () => {
-        fetch(`https://movie-api-da5i.onrender.com/users/${user.name}`, {
+        setIsLoading(true);
+
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -69,7 +77,9 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
             } else {
                 alert("Something went wrong.")
             }
-        })
+        }).finally(() => {
+            setIsLoading(false);
+        });
     }
 
     // JSX rendering of the component
@@ -86,8 +96,6 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                         >
                             <MovieCard
                                 movie={movie}
-                                token={token}
-                                setUser={setUser}
                                 user={user}
                             />
                         </Col>
@@ -105,8 +113,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </Form.Group >
@@ -139,8 +147,12 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                         </Form.Group>
 
                         {/* Update and delete buttons */}
-                        <Button className="update" type="submit" onClick={handleUpdate}>Update</Button>
-                        <Button className="delete" onClick={handleDelete}>Delete Account</Button>
+                        <Button className="btn btn-primary update" type="submit" onClick={handleUpdate} disabled={isLoading}>
+                            {isLoading ? 'Updating...' : 'Update'}
+                        </Button>
+                        <Button className="btn btn-danger delete" onClick={handleDelete} disabled={isLoading}>
+                            {isLoading ? 'Deleting...' : 'Delete Account'}
+                        </Button>
                     </Form>
                 </Col>
             </Row>
