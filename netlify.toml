@@ -1,8 +1,3 @@
-[build]
-  command = "parcel build src/index.html --public-url / --no-cache"
-  publish = "dist"
-  environment = { NODE_VERSION = "20" }  
-
 [[redirects]]
   from = "/*"
   to = "/"
