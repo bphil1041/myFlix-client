@@ -3,5 +3,8 @@
   to = "/"
   status = 200
 
-  [build]
-ignore = [".gitignore-netlify"]
+[build]
+  command = "parcel build src/index.html --public-url /"
+  publish = "/opt/build/repo/dist"
+  publishOrigin = "ui"
+  ignore = ".gitignore-netlify"
