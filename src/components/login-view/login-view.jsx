@@ -13,7 +13,7 @@ export const LoginView = ({ onLoggedIn }) => {
             secret: password,
         };
 
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com", {
             method: "POST",
             body: JSON.stringify(data),
         }).then((response) => {
