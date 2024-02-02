@@ -23,7 +23,6 @@ export const LoginView = ({ onLoggedIn }) => {
                 return response.text();
             }
         }).then((data) => {
-            // Handle data accordingly
         }).catch((error) => {
             console.error("Error:", error);
         });
