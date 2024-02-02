@@ -18,18 +18,21 @@ export const LoginView = ({ onLoggedIn }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         })
-            .then((response) => {
-                if (response.ok) {
-                    onLoggedIn(username);
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Login Response:", data)
+                if (data.user) {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    localStorage.setItem("token", data.token);
+                    onLoggedIn(data.user, data.token);
                 } else {
-                    alert("Login failed");
+                    alert("No Such User");
                 }
             })
-            .catch((error) => {
-                console.error("Error during login:", error);
-                alert("An error occurred during login");
+            .catch((e) => {
+                alert("Something went wrong");
             });
-    };
+    }
 
     return (
         <Form onSubmit={handleSubmit} className="login-form" style={{ marginTop: "80px" }}>
