@@ -18,12 +18,11 @@ export const LoginView = ({ onLoggedIn }) => {
             body: JSON.stringify(data),
         }).then((response) => {
             if (response.ok) {
-                return response.json(); // Only try to parse JSON for successful responses
+                return response.json();
             } else {
-                return response.text(); // Get the plain text for error responses
+                return response.text();
             }
         }).then((data) => {
-            // Handle data accordingly
         }).catch((error) => {
             console.error("Error:", error);
         });
