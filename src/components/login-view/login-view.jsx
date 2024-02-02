@@ -17,12 +17,15 @@ export const LoginView = ({ onLoggedIn }) => {
             method: "POST",
             body: JSON.stringify(data),
         }).then((response) => {
+            console.log(response); // Add this line to log the response details
+
             if (response.ok) {
                 onLoggedIn(username);
             } else {
                 alert("Login failed");
             }
         });
+
     };
 
     return (
