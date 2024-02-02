@@ -18,16 +18,11 @@ export const LoginView = ({ onLoggedIn }) => {
             body: JSON.stringify(data),
         }).then((response) => {
             if (response.ok) {
-                return response.json();
+                onLoggedIn(username);
             } else {
-                return response.text();
+                alert("Login failed");
             }
-        }).then((data) => {
-            // Handle data accordingly
-        }).catch((error) => {
-            console.error("Error:", error);
         });
-
     };
 
     return (
