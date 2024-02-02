@@ -15,24 +15,20 @@ export const LoginView = ({ onLoggedIn }) => {
 
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Login Response:", data)
-                if (data.user) {
-                    localStorage.setItem("user", JSON.stringify(data.user));
-                    localStorage.setItem("token", data.token);
-                    onLoggedIn(data.user, data.token);
+            .then((response) => {
+                if (response.ok) {
+                    onLoggedIn(username);
                 } else {
-                    alert("No Such User");
+                    alert("Login failed");
                 }
             })
-            .catch((e) => {
-                alert("Something went wrong");
+            .catch((error) => {
+                console.error("Error during login:", error);
+                alert("An error occurred during login");
             });
-    }
+    };
 
     return (
         <Form onSubmit={handleSubmit} className="login-form" style={{ marginTop: "80px" }}>
