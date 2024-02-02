@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
 export const LoginView = ({ onLoggedIn }) => {
@@ -16,13 +16,18 @@ export const LoginView = ({ onLoggedIn }) => {
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
             body: JSON.stringify(data),
-        }).then((response) => {
-            if (response.ok) {
-                onLoggedIn(username);
-            } else {
-                alert("Login failed");
-            }
-        });
+        })
+            .then((response) => {
+                if (response.ok) {
+                    onLoggedIn(username);
+                } else {
+                    alert("Login failed");
+                }
+            })
+            .catch((error) => {
+                console.error("Error during login:", error);
+                alert("An error occurred during login");
+            });
     };
 
     return (
@@ -48,7 +53,9 @@ export const LoginView = ({ onLoggedIn }) => {
                 />
             </Form.Group>
 
-            <Button variant="primary" type="submit">Submit</Button>
-        </Form >
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
+        </Form>
     );
 };
