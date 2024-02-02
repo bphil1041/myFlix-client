@@ -12,7 +12,6 @@ export const LoginView = ({ onLoggedIn }) => {
             access: username,
             secret: password,
         };
-
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
             body: JSON.stringify(data),
@@ -26,6 +25,8 @@ export const LoginView = ({ onLoggedIn }) => {
         }).catch((error) => {
             console.error("Error:", error);
         });
+
+
 
 
     };
