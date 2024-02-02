@@ -17,14 +17,17 @@ export const LoginView = ({ onLoggedIn }) => {
             method: "POST",
             body: JSON.stringify(data),
         }).then((response) => {
-            console.log(response); // Add this line to log the response details
-
             if (response.ok) {
-                onLoggedIn(username);
+                return response.json(); // Only try to parse JSON for successful responses
             } else {
-                alert("Login failed");
+                return response.text(); // Get the plain text for error responses
             }
+        }).then((data) => {
+            // Handle data accordingly
+        }).catch((error) => {
+            console.error("Error:", error);
         });
+
 
     };
 
