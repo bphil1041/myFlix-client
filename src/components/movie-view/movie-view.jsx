@@ -19,39 +19,39 @@ export const MovieView = ({ movies }) => {
                 <img src={selectedMovie.image} alt={selectedMovie.title} />
             </div>
             <div>
-                <span>Title: </span>
+                <span className="bold">Title: </span>
                 <span>{selectedMovie.title}</span>
             </div>
             <div>
-                <span>Description: </span>
+                <span className="bold">Description: </span>
                 <span>{selectedMovie.description}</span>
             </div>
             <div>
-                <span>Release Year: </span>
+                <span className="bold">Release Year: </span>
                 <span>{selectedMovie.year}</span>
             </div>
             <div>
-                <span>Genre: </span>
+                <span className="bold">Genre: </span>
                 <span>{selectedMovie.genre.genreName}</span>
             </div>
             <div>
-                <span>Genre Description: </span>
+                <span className="bold">Genre Description: </span>
                 <span>{selectedMovie.genre.description}</span>
             </div>
             <div>
-                <span>Director: </span>
+                <span className="bold">Director: </span>
                 <span>{selectedMovie.director.name}</span>
             </div>
             <div>
-                <span>Born: </span>
+                <span className="bold">Born: </span>
                 <span>{selectedMovie.director.birth}</span>
             </div>
             <div>
-                <span>Died: </span>
+                <span className="bold">Died: </span>
                 <span>{selectedMovie.director.death}</span>
             </div>
             <div>
-                <span>Bio: </span>
+                <span className="bold">Bio: </span>
                 <span>{selectedMovie.director.bio}</span>
             </div>
             <button className="button" onClick={() => navigate("/")}>Back</button>
