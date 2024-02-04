@@ -13,10 +13,9 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState(null);
-    const token = localStorage.getItem("token");
-
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
 
         if (!token) {
             console.log("No token found. Redirect to login or handle accordingly");
