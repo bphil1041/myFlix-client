@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import "./movie-view.scss";
 
 export const MovieView = ({ movies }) => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const MovieView = ({ movies }) => {
     }
 
     return (
-        <div>
+        <div className="movie-info">
             <div>
                 <img src={selectedMovie.image} alt={selectedMovie.title} />
             </div>
