@@ -15,48 +15,50 @@ export const MainView = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        console.log("Before fetch");
 
-        if (token) {
-            fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies")
+            .then((response) => {
+                console.log("API Response Status:", response.status);
+
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+
+                return response.json();
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Unauthorized");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log("Movies data from API:", data);
-                    const moviesFromApi = data.map((movie) => ({
-                        genre: {
-                            genreName: movie.genre.genreName,
-                            description: movie.genre.description,
-                        },
-                        director: {
-                            name: movie.director.name,
-                            birth: movie.director.birth,
-                            death: movie.director.death,
-                            bio: movie.director.bio,
-                        },
-                        _id: movie._id,
-                        title: movie.title,
-                        year: movie.year,
-                        description: movie.description,
-                        MovieId: movie.MovieId,
-                    }));
+            .then((data) => {
+                console.log("Movies data from API:", data);
 
-                    setMovies(moviesFromApi);
-                })
-                .catch((error) => {
-                    console.error("Error fetching movies:", error);
-                });
-        }
+                const moviesFromApi = data.map((movie) => ({
+                    genre: {
+                        genreName: movie.genre.genreName,
+                        description: movie.genre.description,
+                    },
+                    director: {
+                        name: movie.director.name,
+                        birth: movie.director.birth,
+                        death: movie.director.death,
+                        bio: movie.director.bio,
+                    },
+                    _id: movie._id,
+                    title: movie.title,
+                    year: movie.year,
+                    description: movie.description,
+                    MovieId: movie.MovieId,
+                }));
+
+                console.log("Movies after mapping:", moviesFromApi);
+
+                setMovies(moviesFromApi);
+            })
+            .catch((error) => {
+                console.error("Error fetching movies:", error);
+            });
+
+        console.log("After fetch");
     }, []);
+
 
 
     return (
