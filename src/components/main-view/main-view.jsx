@@ -140,7 +140,7 @@ export const MainView = () => {
                                         {movies.map((movie) => (
                                             <Col className="mb-5" key={movie._id} md={3}>
                                                 <Link to={`/movies/${movie._id}`}>
-                                                    <MovieCard className="font" movie={movie} />
+                                                    <MovieCard movie={movie} />
                                                 </Link>
                                             </Col>
                                         ))}
