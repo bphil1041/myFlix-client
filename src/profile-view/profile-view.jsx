@@ -65,6 +65,28 @@ export const ProfileView = ({ user, movies, setUser, token }) => {
         }
     }
 
+    // Delete user account
+    const handleDelete = () => {
+        setIsLoading(true);
+
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((response) => {
+            if (response.ok) {
+                setUser(null);
+                alert("Your account has been deleted");
+                navigate("/login"); // Redirect to login page after account deletion
+            } else {
+                alert("Something went wrong.")
+            }
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    }
+
     // JSX rendering of the component
     return (
         <Container>
@@ -128,7 +150,7 @@ export const ProfileView = ({ user, movies, setUser, token }) => {
                             />
                         </Form.Group>
 
-                        {/* Update and cancel buttons */}
+                        {/* Update, delete, and cancel buttons */}
                         {isEditing ? (
                             <>
                                 <Button
@@ -137,6 +159,14 @@ export const ProfileView = ({ user, movies, setUser, token }) => {
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Updating...' : 'Update'}
+                                </Button>
+                                <Button
+                                    className="btn btn-danger delete"
+                                    type="button"
+                                    onClick={handleDelete}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? 'Deleting...' : 'Delete Account'}
                                 </Button>
                                 <Button
                                     className="btn btn-secondary cancel"
@@ -161,6 +191,3 @@ export const ProfileView = ({ user, movies, setUser, token }) => {
         </Container>
     )
 }
-
-
-
