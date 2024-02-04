@@ -31,6 +31,7 @@ export const MainView = () => {
                     return response.json();
                 })
                 .then((data) => {
+                    console.log("Movies data from API:", data);
                     const moviesFromApi = data.map((movie) => ({
                         genre: {
                             genreName: movie.genre.genreName,
