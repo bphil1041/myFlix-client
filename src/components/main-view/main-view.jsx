@@ -17,6 +17,8 @@ export const MainView = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
+        console.log("Token from localStorage in MainView:", token);
+
         if (!token) {
             console.log("No token found. Redirect to login or handle accordingly");
             return;
