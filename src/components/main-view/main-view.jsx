@@ -15,14 +15,27 @@ export const MainView = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            console.log("No token found. Redirect to login or handle accordingly");
+            return;
+        }
+
         console.log("Before fetch");
 
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies")
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
             .then((response) => {
                 console.log("API Response Status:", response.status);
 
                 if (!response.ok) {
-                    throw new Error("Request failed");
+                    // If the response is not ok, throw an error to be caught in the catch block
+                    throw new Error("Unauthorized");
                 }
 
                 return response.json();
@@ -54,10 +67,16 @@ export const MainView = () => {
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
+
+                // Handle unauthorized access
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized access. Redirect to login or handle accordingly");
+                }
             });
 
         console.log("After fetch");
     }, []);
+
 
 
 
