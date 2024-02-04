@@ -1,23 +1,26 @@
 // Import statements
 import { useState } from "react";
-import { Col, Row, Container, Button, Card, Form } from "react-bootstrap";
+import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
 // ProfileView component
-export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
+export const ProfileView = ({ user, movies, setUser, token }) => {
     // State variables
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState(user.password);
     const [email, setEmail] = useState(user.email);
     const [birthday, setBirthday] = useState(user.birthday);
+    const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     // Navigation
     const navigate = useNavigate();
 
     // Return movies present in the user's favorite movies array
-    const favoriteMovies = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
+    const favoriteMovies = user.favoriteMovies
+        ? movies.filter((movie) => user.favoriteMovies.includes(movie._id))
+        : [];
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -34,7 +37,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
             }
 
             // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
@@ -48,6 +51,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 localStorage.setItem('user', JSON.stringify(updatedUserData));
                 setUser(updatedUserData);
                 alert('Updated!');
+                setIsEditing(false); // Disable editing mode after successful update
             } else {
                 const error = await response.text();
                 console.error('Update failed:', error);
@@ -61,46 +65,17 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         }
     }
 
-    // Delete user account
-    const handleDelete = () => {
-        setIsLoading(true);
-
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then((response) => {
-            if (response.ok) {
-                setUser(null);
-                alert("Your account has been deleted");
-            } else {
-                alert("Something went wrong.")
-            }
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    }
-
     // JSX rendering of the component
     return (
         <Container>
             <Row className="justify-content-md-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
-                {favoriteMovies.map((movie) => {
-                    return (
-                        <Col
-                            key={movie._id}
-                            className="m-3"
-                        >
-                            <MovieCard
-                                movie={movie}
-                                user={user}
-                            />
-                        </Col>
-                    );
-                })}
+                {favoriteMovies.map((movie) => (
+                    <Col key={movie._id} className="m-3">
+                        <MovieCard movie={movie} user={user} />
+                    </Col>
+                ))}
             </Row>
 
             <Row className="justify-content-center">
@@ -116,8 +91,10 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
+                                disabled={!isEditing}
                             />
                         </Form.Group >
+
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
@@ -125,8 +102,10 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                disabled={!isEditing}
                             />
                         </Form.Group>
+
                         <Form.Group className="mb-2" controlId="formEmail">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
@@ -134,8 +113,10 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                disabled={!isEditing}
                             />
                         </Form.Group>
+
                         <Form.Group controlId="formBirthday">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
@@ -143,25 +124,43 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                                 value={birthday}
                                 onChange={(e) => setBirthday(e.target.value)}
                                 required
+                                disabled={!isEditing}
                             />
                         </Form.Group>
 
-                        {/* Update and delete buttons */}
-                        <Button className="btn btn-primary update" type="submit" onClick={handleUpdate} disabled={isLoading}>
-                            {isLoading ? 'Updating...' : 'Update'}
-                        </Button>
-                        <Button className="btn btn-danger delete" onClick={handleDelete} disabled={isLoading}>
-                            {isLoading ? 'Deleting...' : 'Delete Account'}
-                        </Button>
+                        {/* Update and cancel buttons */}
+                        {isEditing ? (
+                            <>
+                                <Button
+                                    className="btn btn-primary update"
+                                    type="submit"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? 'Updating...' : 'Update'}
+                                </Button>
+                                <Button
+                                    className="btn btn-secondary cancel"
+                                    type="button"
+                                    onClick={() => setIsEditing(false)}
+                                >
+                                    Cancel
+                                </Button>
+                            </>
+                        ) : (
+                            <Button
+                                className="btn btn-primary edit"
+                                type="button"
+                                onClick={() => setIsEditing(true)}
+                            >
+                                Edit
+                            </Button>
+                        )}
                     </Form>
                 </Col>
             </Row>
         </Container>
     )
 }
-
-
-
 
 
 
