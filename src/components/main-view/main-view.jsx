@@ -15,33 +15,48 @@ export const MainView = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies")
-            .then((response) => response.json())
-            .then((data) => {
-                const moviesFromApi = data.map((movie) => ({
-                    genre: {
-                        genreName: movie.genre.genreName,
-                        description: movie.genre.description,
-                    },
-                    director: {
-                        name: movie.director.name,
-                        birth: movie.director.birth,
-                        death: movie.director.death,
-                        bio: movie.director.bio,
-                    },
-                    _id: movie._id,
-                    title: movie.title,
-                    year: movie.year,
-                    description: movie.description,
-                    MovieId: movie.MovieId,
-                }));
+        const token = localStorage.getItem("token");
 
-                setMovies(moviesFromApi);
+        if (token) {
+            fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
             })
-            .catch((error) => {
-                console.error("Error fetching movies:", error);
-            });
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Unauthorized");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    const moviesFromApi = data.map((movie) => ({
+                        genre: {
+                            genreName: movie.genre.genreName,
+                            description: movie.genre.description,
+                        },
+                        director: {
+                            name: movie.director.name,
+                            birth: movie.director.birth,
+                            death: movie.director.death,
+                            bio: movie.director.bio,
+                        },
+                        _id: movie._id,
+                        title: movie.title,
+                        year: movie.year,
+                        description: movie.description,
+                        MovieId: movie.MovieId,
+                    }));
+
+                    setMovies(moviesFromApi);
+                })
+                .catch((error) => {
+                    console.error("Error fetching movies:", error);
+                });
+        }
     }, []);
+
 
     return (
         <BrowserRouter>
