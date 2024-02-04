@@ -27,10 +27,14 @@ export const LoginView = ({ onLoggedIn }) => {
                 console.log("Login response: ", data);
                 if (data.user && data.token) {
                     onLoggedIn(data.user, data.token);
+                    // Store the token in localStorage
+                    localStorage.setItem("token", data.token);
+                    console.log("Token stored in localStorage:", data.token);
                 } else {
                     alert("Invalid credentials");
                 }
             })
+
             .catch((e) => {
                 alert("Something went wrong");
             });
