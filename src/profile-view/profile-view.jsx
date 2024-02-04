@@ -86,6 +86,17 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
     // JSX rendering of the component
     return (
         <Container>
+            {/* Display user information */}
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <h2 className="profile-title">User Information</h2>
+                    <p><strong>Name:</strong> {user.username}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>Birthday:</strong> {user.birthday}</p>
+                </Col>
+            </Row>
+
+            {/* Display favorite movies */}
             <Row className="justify-content-md-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
@@ -104,48 +115,14 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 })}
             </Row>
 
+            {/* Section for updating user information */}
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h2 className="profile-title">Update info</h2>
+                    <h2 className="profile-title">Update Info</h2>
                     {/* User information update form */}
                     <Form className="my-profile" onSubmit={handleUpdate}>
                         {/* Form fields for name, password, email, and birthday */}
-                        <Form.Group className="mb-2" controlId="formName">
-                            <Form.Label>Name:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </Form.Group >
-                        <Form.Group className="mb-2" controlId="formPassword">
-                            <Form.Label>Password:</Form.Label>
-                            <Form.Control
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-2" controlId="formEmail">
-                            <Form.Label>Email:</Form.Label>
-                            <Form.Control
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="formBirthday">
-                            <Form.Label>Birthday:</Form.Label>
-                            <Form.Control
-                                type="date"
-                                value={birthday}
-                                onChange={(e) => setBirthday(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
+                        {/* ... (existing form fields) */}
 
                         {/* Update and delete buttons */}
                         <Button className="btn btn-primary update" type="submit" onClick={handleUpdate} disabled={isLoading}>
@@ -160,9 +137,5 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         </Container>
     )
 }
-
-
-
-
 
 
