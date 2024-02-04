@@ -13,6 +13,9 @@ export const LoginView = ({ onLoggedIn }) => {
             secret: password,
         };
 
+        console.log("Login data sent to server: ", data);
+
+
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
             headers: {
