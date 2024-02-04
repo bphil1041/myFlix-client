@@ -37,9 +37,9 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
+            },
         }).then(async (response) => {
             console.log(response)
             if (response.ok) {
@@ -61,8 +61,9 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
         }).then((response) => {
             if (response.ok) {
                 setUser(null);
