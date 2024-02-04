@@ -1,71 +1,64 @@
-// Import statements
 import { useState } from "react";
-import { Col, Row, Container, Button, Card, Form } from "react-bootstrap";
-import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
+import { Col, Row, Container } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
+import { MovieCard } from "../movie-card/movie-card";
+import { PersonSquare } from "react-bootstrap-icons";
+import moment from 'moment';
 
-// ProfileView component
 export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
-    // State variables
-    const [username, setUsername] = useState(user.username);
-    const [password, setPassword] = useState(user.password);
-    const [email, setEmail] = useState(user.email);
-    const [birthday, setBirthday] = useState(user.birthday);
-    const [isLoading, setIsLoading] = useState(false);
+    const [username, setUsername] = useState(user.Username);
+    const [email, setEmail] = useState(user.Email);
+    const [birthday, setBirthday] = useState(user.Birthday);
 
-    // Navigation
+    // Navigate
     const navigate = useNavigate();
 
-    // Return movies present in the user's favorite movies array
-    const favoriteMovies = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
+    // Return list of favorite Movies
+    const favoriteMovieList = movies.filter(m => user.FavoriteMovies.includes(m._id));
 
-    // Update user information
-    const handleUpdate = async (event) => {
+    // Token
+    const token = localStorage.getItem('token');
+
+    // Update user info
+    const handleUpdate = (event) => {
+        // this prevents the default behavior of the form which is to reload the entire page
         event.preventDefault();
-        setIsLoading(true);
 
-        try {
-            // Gather updated user data
-            const data = {
-                username: username,
-                password: password,
-                email: email,
-                birthday: birthday,
-            }
+        const user = JSON.parse(localStorage.getItem('user'));
 
-            // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
-                method: "PUT",
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                const updatedUserData = await response.json();
-                localStorage.setItem('user', JSON.stringify(updatedUserData));
-                setUser(updatedUserData);
-                alert('Updated!');
-            } else {
-                const error = await response.text();
-                console.error('Update failed:', error);
-                alert('Update failed. Please try again.');
-            }
-        } catch (error) {
-            console.error('Update failed:', error);
-            alert('Update failed. Please try again.');
-        } finally {
-            setIsLoading(false);
+        const data = {
+            Username: username,
+            Email: email,
+            Birthday: birthday
         }
-    }
 
-    // Delete user account
+        fetch(`https://movieapionrender.onrender.com/users/${user.Username}`, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }).then(async (response) => {
+            console.log(response)
+            if (response.ok) {
+                const updatedUser = await response.json();
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                setUser(updatedUser);
+                alert("Update was successful");
+            } else {
+                alert("Update failed")
+            }
+        }).catch(error => {
+            console.error('Error: ', error);
+        });
+    };
+
+
+    // Delete User
     const handleDelete = () => {
-        setIsLoading(true);
-
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+        fetch(`https://movieapionrender.onrender.com/users/${user.Username}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -73,94 +66,89 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         }).then((response) => {
             if (response.ok) {
                 setUser(null);
-                alert("Your account has been deleted");
+                alert("User has been deleted")
+                localStorage.clear();
+                navigate('/'); // go back to home page
             } else {
                 alert("Something went wrong.")
             }
-        }).finally(() => {
-            setIsLoading(false);
-        });
+        })
     }
 
-    // JSX rendering of the component
-    return (
-        <Container>
-            <Row className="justify-content-md-center mx-3 my-4">
-                <h2 className="profile-title">Favorite Movies</h2>
-                {/* Render favorite movies */}
-                {favoriteMovies.map((movie) => {
-                    return (
-                        <Col
-                            key={movie._id}
-                            className="m-3"
-                        >
-                            <MovieCard
-                                movie={movie}
-                                user={user}
-                            />
-                        </Col>
-                    );
-                })}
-            </Row>
 
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h2 className="profile-title">Update info</h2>
-                    {/* User information update form */}
-                    <Form className="my-profile" onSubmit={handleUpdate}>
-                        {/* Form fields for name, password, email, and birthday */}
-                        <Form.Group className="mb-2" controlId="formName">
-                            <Form.Label>Name:</Form.Label>
+    return (
+        <Container className="my-5">
+            <Row>
+                <Col md={4} className="text-center text-md-start ms-3">
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>My Profile</Card.Title>
+                            <PersonSquare variant="top" color="orange" className="my-4" size={180} />
+                            <Card.Text>Username:{user.Username}</Card.Text>
+                            <Card.Text>Email: {user.Email}</Card.Text>
+                            <Card.Text>Birthday: {moment(user.Birthday).utc().format('YYYY-MM-DD')}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={7} className="mt-5">
+                    <Form onSubmit={handleUpdate}>
+                        <Form.Group controlId="formUsername">
+                            <Form.Label>Username:</Form.Label>
                             <Form.Control
+                                className="mb-3"
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </Form.Group >
-                        <Form.Group className="mb-2" controlId="formPassword">
-                            <Form.Label>Password:</Form.Label>
-                            <Form.Control
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
+                                minLength="5"
                             />
                         </Form.Group>
-                        <Form.Group className="mb-2" controlId="formEmail">
+                        <Form.Group controlId="formEmail">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
+                                className="mb-3"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
                             />
                         </Form.Group>
                         <Form.Group controlId="formBirthday">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
+                                className="mb-2"
                                 type="date"
                                 value={birthday}
                                 onChange={(e) => setBirthday(e.target.value)}
-                                required
                             />
                         </Form.Group>
-
-                        {/* Update and delete buttons */}
-                        <Button className="btn btn-primary update" type="submit" onClick={handleUpdate} disabled={isLoading}>
-                            {isLoading ? 'Updating...' : 'Update'}
-                        </Button>
-                        <Button className="btn btn-danger delete" onClick={handleDelete} disabled={isLoading}>
-                            {isLoading ? 'Deleting...' : 'Delete Account'}
-                        </Button>
+                        <Button type="submit" onClick={handleUpdate} className="mt-3 me-2">Update</Button>
+                        <Button onClick={handleDelete} className="mt-3 bg-danger border-danger text-white">Delete User</Button>
                     </Form>
                 </Col>
             </Row>
+            <Row>
+                <h2 className="mt-5 text-center text-md-start">Favorite Movies</h2>
+                <Row className="justify-content-center">
+                    {
+                        favoriteMovieList?.length !== 0 ?
+                            favoriteMovieList?.map((movie) => (
+                                <Col sm={7} md={5} lg={3} xl={2} className="mx-2 mt-2 mb-5 col-6 similar-movies-img" key={movie._id}>
+                                    <MovieCard
+                                        movie={movie}
+                                        removeFav={removeFav}
+                                        addFav={addFav}
+                                        isFavorite={user.FavoriteMovies.includes(movie._id)}
+                                    />
+                                </Col>
+                            ))
+                            : <Col>
+                                <p>There are no favorites Movies</p>
+                            </Col>
+                    }
+                </Row>
+            </Row>
         </Container>
-    )
-}
-
-
+    );
+};
 
 
 
