@@ -1,10 +1,11 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-export const MovieView = ({ movies, onBackClick }) => {
+export const MovieView = ({ movies }) => {
+    const navigate = useNavigate();
     const { movieId } = useParams();
-    const selectedMovie = movies.find(movie => movie._id === movieId);
+    const selectedMovie = movies.find((movie) => movie._id === movieId);
 
     if (!selectedMovie) {
         // Handle the case where the movie with the given movieId is not found
@@ -52,12 +53,11 @@ export const MovieView = ({ movies, onBackClick }) => {
                 <span>Bio: </span>
                 <span>{selectedMovie.director.bio}</span>
             </div>
-            <button onClick={onBackClick}>Back</button>
+            <button onClick={() => navigate("/")}>Back</button>
         </div>
     );
 };
 
 MovieView.propTypes = {
     movies: PropTypes.array.isRequired,
-    onBackClick: PropTypes.func.isRequired,
 };
