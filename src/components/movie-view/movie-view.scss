@@ -1,3 +1,20 @@
 .movie-info {
     padding-top: 80px;
 }
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #4CAF50; // Change to your desired hover color
+        color: #ffffff; // Change to your desired text color on hover
+    }
+}
