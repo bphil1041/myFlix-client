@@ -4,7 +4,7 @@ import { Col, Row, Container } from "react-bootstrap";
 import { Button, Card, Form } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 import { PersonSquare } from "react-bootstrap-icons";
-import moment from 'moment';
+
 
 export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
     const [username, setUsername] = useState(user.Username);
@@ -86,7 +86,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                             <PersonSquare variant="top" color="orange" className="my-4" size={180} />
                             <Card.Text>Username:{user.Username}</Card.Text>
                             <Card.Text>Email: {user.Email}</Card.Text>
-                            <Card.Text>Birthday: {moment(user.Birthday).utc().format('YYYY-MM-DD')}</Card.Text>
+                            <Card.Text>Birthday: {user.Birthday}</Card.Text>
                         </Card.Body>
                     </Card>
                 </Col>
