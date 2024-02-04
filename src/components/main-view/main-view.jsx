@@ -4,11 +4,12 @@ import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar.jsx";
-import { ProfileView } from "../../profile-view/profile-view";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import "./main-view.scss";
+
+
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
@@ -17,9 +18,14 @@ export const MainView = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
+        console.log("Token from localStorage in MainView:", token);
+
         if (!token) {
+            console.log("No token found. Redirect to login or handle accordingly");
             return;
         }
+
+        console.log("Before fetch");
 
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
             headers: {
@@ -28,6 +34,8 @@ export const MainView = () => {
             },
         })
             .then((response) => {
+                console.log("API Response Status:", response.status);
+
                 if (!response.ok) {
                     throw new Error("Unauthorized");
                 }
@@ -35,9 +43,27 @@ export const MainView = () => {
                 return response.json();
             })
             .then((data) => {
+                console.log("Movies data from API:", data);
+
                 const moviesFromApi = data.map((movie) => ({
-                    // Your movie data transformation logic here
+                    genre: {
+                        genreName: movie.genre.genreName,
+                        description: movie.genre.description,
+                    },
+                    director: {
+                        name: movie.director.name,
+                        birth: movie.director.birth,
+                        death: movie.director.death,
+                        bio: movie.director.bio,
+                    },
+                    _id: movie._id,
+                    title: movie.title,
+                    year: movie.year,
+                    description: movie.description,
+                    MovieId: movie.MovieId,
                 }));
+
+                console.log("Movies after mapping:", moviesFromApi);
 
                 setMovies(moviesFromApi);
             })
@@ -48,11 +74,17 @@ export const MainView = () => {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
                 }
             });
+
+        console.log("After fetch");
     }, []);
+
+
+
+
 
     return (
         <BrowserRouter>
-            <NavigationBar
+            <NavigationBar className="navbar"
                 user={user}
                 onLoggedOut={() => {
                     setUser(null);
@@ -94,26 +126,6 @@ export const MainView = () => {
                     <Route
                         path="/movies/:movieId"
                         element={<MovieView movies={movies} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <>
-                                {user ? (
-                                    <Col md={8}>
-                                        <ProfileView
-                                            user={user}
-                                            movies={movies}
-                                            setUser={setUser}
-                                            removeFav={removeFav}
-                                            addFav={addFav}
-                                        />
-                                    </Col>
-                                ) : (
-                                    <Navigate to="/login" replace />
-                                )}
-                            </>
-                        }
                     />
                     <Route
                         path="/"
