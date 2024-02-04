@@ -11,8 +11,6 @@ export const MovieCard = ({ movie, onMovieClick }) => {
                 }} variant="link">
                     Open
                 </Button>
-
-                <Card.Title>{movie.title}</Card.Title>
             </Card.Body>
         </Card>
     );
