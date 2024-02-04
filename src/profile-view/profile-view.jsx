@@ -27,8 +27,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         try {
             // Gather updated user data
             const data = {
-                Username: username,
-                Password: password,
+                username: username,
+                password: password,
                 email: email,
                 birthday: birthday,
             }
