@@ -1,17 +1,25 @@
 // Import statements
-import { useState } from "react";
-import { Col, Row, Container, Button, Card, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
-    // State variables
+    // Initialize state variables with user information
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState(user.password);
     const [email, setEmail] = useState(user.email);
     const [birthday, setBirthday] = useState(user.birthday);
     const [isLoading, setIsLoading] = useState(false);
+
+    // Update state when the user prop changes
+    useEffect(() => {
+        setUsername(user.username);
+        setPassword(user.password);
+        setEmail(user.email);
+        setBirthday(user.birthday);
+    }, [user]);
 
     // Navigation
     const navigate = useNavigate();
@@ -31,7 +39,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 password: password,
                 email: email,
                 birthday: birthday,
-            }
+            };
 
             // Fetch request to update user data
             const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
@@ -39,8 +47,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 body: JSON.stringify(data),
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             if (response.ok) {
@@ -59,7 +67,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     // Delete user account
     const handleDelete = () => {
@@ -68,19 +76,19 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         }).then((response) => {
             if (response.ok) {
                 setUser(null);
                 alert("Your account has been deleted");
             } else {
-                alert("Something went wrong.")
+                alert("Something went wrong.");
             }
         }).finally(() => {
             setIsLoading(false);
         });
-    }
+    };
 
     // JSX rendering of the component
     return (
@@ -117,7 +125,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </Form.Group >
+                        </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
@@ -157,5 +165,5 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 </Col>
             </Row>
         </Container>
-    )
-}
+    );
+};
