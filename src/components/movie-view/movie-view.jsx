@@ -20,39 +20,39 @@ export const MovieView = ({ movies }) => {
             </div>
             <div>
                 <span className="bold">Title: </span>
-                <span>{selectedMovie.title}</span>
+                <span className="content">{selectedMovie.title}</span>
             </div>
             <div>
                 <span className="bold">Description: </span>
-                <span>{selectedMovie.description}</span>
+                <span className="content">{selectedMovie.description}</span>
             </div>
             <div>
                 <span className="bold">Release Year: </span>
-                <span>{selectedMovie.year}</span>
+                <span className="content">{selectedMovie.year}</span>
             </div>
             <div>
                 <span className="bold">Genre: </span>
-                <span>{selectedMovie.genre.genreName}</span>
+                <span className="content">{selectedMovie.genre.genreName}</span>
             </div>
             <div>
                 <span className="bold">Genre Description: </span>
-                <span>{selectedMovie.genre.description}</span>
+                <span className="content">{selectedMovie.genre.description}</span>
             </div>
             <div>
                 <span className="bold">Director: </span>
-                <span>{selectedMovie.director.name}</span>
+                <span className="content">{selectedMovie.director.name}</span>
             </div>
             <div>
                 <span className="bold">Born: </span>
-                <span>{selectedMovie.director.birth}</span>
+                <span className="content">{selectedMovie.director.birth}</span>
             </div>
             <div>
                 <span className="bold">Died: </span>
-                <span>{selectedMovie.director.death}</span>
+                <span className="content">{selectedMovie.director.death}</span>
             </div>
             <div>
                 <span className="bold">Bio: </span>
-                <span>{selectedMovie.director.bio}</span>
+                <span className="content">{selectedMovie.director.bio}</span>
             </div>
             <button className="button" onClick={() => navigate("/")}>Back</button>
         </div>
