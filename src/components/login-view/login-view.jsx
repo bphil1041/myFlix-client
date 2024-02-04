@@ -15,7 +15,6 @@ export const LoginView = ({ onLoggedIn }) => {
 
         console.log("Login data sent to server: ", data);
 
-
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
             headers: {
@@ -26,10 +25,10 @@ export const LoginView = ({ onLoggedIn }) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log("Login response: ", data);
-                if (data.user) {
+                if (data.user && data.token) {
                     onLoggedIn(data.user, data.token);
                 } else {
-                    alert("No such user");
+                    alert("Invalid credentials");
                 }
             })
             .catch((e) => {
