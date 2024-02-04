@@ -9,8 +9,8 @@ export const LoginView = ({ onLoggedIn }) => {
         event.preventDefault();
 
         const data = {
-            username: username,
-            password: password,
+            Username: username,
+            Password: password,
         };
 
         console.log("Login data sent to server: ", data);
