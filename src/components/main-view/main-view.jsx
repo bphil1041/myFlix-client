@@ -149,6 +149,26 @@ export const MainView = () => {
                             </>
                         }
                     />
+                    <Route
+                        path="/profile"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <Col>
+                                        <ProfileView
+                                            user={user}
+                                            movies={movies}
+                                            removeFav={removeFav}
+                                            addFav={addFav}
+                                            setUser={setUser}
+                                        />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
                 </Routes>
             </Row>
         </BrowserRouter>
