@@ -34,7 +34,6 @@ export const MainView = () => {
                 console.log("API Response Status:", response.status);
 
                 if (!response.ok) {
-                    // If the response is not ok, throw an error to be caught in the catch block
                     throw new Error("Unauthorized");
                 }
 
@@ -68,7 +67,6 @@ export const MainView = () => {
             .catch((error) => {
                 console.error("Error fetching movies:", error);
 
-                // Handle unauthorized access
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
                 }
@@ -76,6 +74,7 @@ export const MainView = () => {
 
         console.log("After fetch");
     }, []);
+
 
 
 
