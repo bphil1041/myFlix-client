@@ -62,14 +62,24 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 if (response.ok) {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
-                    // Update state or perform other actions with the fetched user data
-                    setUsername(userData.Username || '');
-                    setPassword(userData.Password || '');
-                    setEmail(userData.Email || '');
-                    setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+
+                    // Assuming user.username contains the current user's username
+                    const loggedInUserData = userData.find((userData) => userData.Username === user.username);
+
+                    // Check if the user data is found
+                    if (loggedInUserData) {
+                        // Update state or perform other actions with the fetched user data
+                        setUsername(loggedInUserData.Username || '');
+                        setPassword(loggedInUserData.Password || '');
+                        setEmail(loggedInUserData.Email || '');
+                        setBirthday(loggedInUserData.Birthday ? new Date(loggedInUserData.Birthday).toISOString().split('T')[0] : '');
+                    } else {
+                        console.error(`User data not found for username: ${user.username}`);
+                        // Handle case when user data is not found
+                    }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
-                    const errorData = await response.json(); // Attempt to parse error response
+                    const errorData = await response.json();
                     console.error("Error response from server:", errorData);
                     // Handle errors, show error messages, etc.
                 }
