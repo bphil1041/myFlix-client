@@ -148,9 +148,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         >
                             <MovieCard
                                 movie={movie}
-                                onMovieClick={() => {
-                                    // Add functionality if needed when clicking on a movie card
-                                }}
+                                onMovieClick={() => handleMovieCardClick(movie)}
                             />
                         </Col>
                     ))
