@@ -18,7 +18,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const navigate = useNavigate();
 
     // Return movies present in the user's favorite movies array
-    const favoriteMovies = user.favoriteMovies ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId)) : [];
+    const favoriteMovies = user.favoriteMovies && movies
+        ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId))
+        : [];
 
     // Update user information
     const handleUpdate = async (event) => {
