@@ -63,10 +63,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
                     // Update state or perform other actions with the fetched user data
-                    setUsername(userData.Username);
-                    setPassword(userData.Password);
-                    setEmail(userData.Email);
-                    setBirthday(userData.Birthday);
+                    setUsername(userData.Username || '');
+                    setPassword(userData.Password || '');
+                    setEmail(userData.Email || '');
+                    setBirthday(userData.Birthday || '');
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json(); // Attempt to parse error response
@@ -81,7 +81,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, token]);
-
 
 
     // Update user information
