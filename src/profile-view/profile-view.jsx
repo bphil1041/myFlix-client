@@ -4,6 +4,7 @@ import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
+
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
     // State variables
@@ -97,7 +98,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Add a movie to the user's favorite movies
     const addFavoriteMovie = () => {
-        if (selectedMovieId) {
+        if (selectedMovieId && user.favoriteMovies) {
             // Check if the movie is not already in the user's favorites
             if (!user.favoriteMovies.includes(selectedMovieId)) {
                 const updatedUser = { ...user, favoriteMovies: [...user.favoriteMovies, selectedMovieId] };
@@ -113,7 +114,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 alert('This movie is already in your favorites!');
             }
         } else {
-            // Handle case when no movie is selected
+            // Handle case when no movie is selected or user.favoriteMovies is undefined
             alert('Please select a movie to add to favorites.');
         }
     };
