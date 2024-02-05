@@ -59,6 +59,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     // Update state or perform other actions with the fetched user data
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
+                    const errorData = await response.json(); // Attempt to parse error response
+                    console.error("Error response from server:", errorData);
                     // Handle errors, show error messages, etc.
                 }
             } catch (error) {
