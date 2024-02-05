@@ -28,6 +28,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
         })
         : [];
 
+    console.log("User:", user);
+    console.log("Movies:", movies);
+    console.log("Favorite Movies:", favoriteMovies);
+
     // Update user information
     const handleUpdate = async (event) => {
         event.preventDefault();
