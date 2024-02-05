@@ -1,9 +1,9 @@
 // Import statements
 import { useState, useEffect } from "react";
-import { Col, Row, Container, Button, Form, } from "react-bootstrap";
+import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
-import "./profile-view.scss"
+import "./profile-view.scss";
 
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
@@ -19,7 +19,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     // Navigation
     const navigate = useNavigate();
 
-    // Token (assuming it's defined in your code)
+    // Token 
     const token = "your_auth_token";
 
     // Return movies present in the user's favorite movies array
@@ -36,6 +36,38 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("User:", user);
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
+
+    // Fetch user data from Heroku
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                // Your Heroku backend API URL
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`;
+
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Assuming token is defined
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    console.log("User Data from Heroku:", userData);
+                    // Update state or perform other actions with the fetched user data
+                } else {
+                    console.error(`Failed to fetch user data. Status: ${response.status}`);
+                    // Handle errors, show error messages, etc.
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                // Handle errors, show error messages, etc.
+            }
+        };
+
+        fetchUserData();
+    }, [user.name, token]);
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -152,6 +184,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
     }, [user.favoriteMovies]);
 
     console.log("User:", user);
+
+
 
     // JSX rendering of the component
     return (
