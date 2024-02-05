@@ -129,9 +129,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Common function to handle movie card click
     const handleMovieCardClick = (movie) => {
-        // Perform any additional logic if needed
-        alert(`Clicked on ${movie.title}`);
-
         // Navigate to the movie details page
         navigate(`/movies/${movie._id}`);
     };
