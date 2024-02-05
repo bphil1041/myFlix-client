@@ -83,6 +83,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     }, [user, token]);
 
 
+
     // Update user information
     const handleUpdate = async (event) => {
         event.preventDefault();
