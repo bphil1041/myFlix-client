@@ -155,7 +155,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     return (
         <Container>
             <Row className="justify-content-center">
-                <Col md={6}>
+                <Col md={8}>
                     <h2 className="profile-title">User Information</h2>
                     <p>Username: {user.username}</p>
                     <p>Email: {user.email}</p>
