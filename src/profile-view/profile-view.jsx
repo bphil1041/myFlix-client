@@ -156,9 +156,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
             <Row className="justify-content-md-center mx-3 my-4">
                 <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
-                    <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Birthday:</strong> {user.birthday}</p>
+                    <p>Username: {user.username}</p>
+                    <p>Email: {user.email}</p>
+                    <p>Birthday: {user.birthday}</p>
                 </Col>
             </Row>
 
