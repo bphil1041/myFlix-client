@@ -42,15 +42,15 @@ export const ProfileView = ({ user, movies, setUser }) => {
         const fetchUserData = async () => {
             try {
                 // Your Heroku backend API URL
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`;
-
-                const response = await fetch(apiUrl, {
-                    method: "GET",
+                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+                    method: "PUT",
+                    body: JSON.stringify(data),
                     headers: {
                         Authorization: `Bearer ${token}`, // Assuming token is defined
                         "Content-Type": "application/json",
                     },
                 });
+
 
                 if (response.ok) {
                     const userData = await response.json();
