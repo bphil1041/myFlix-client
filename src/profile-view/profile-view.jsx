@@ -1,5 +1,5 @@
 // Import statements
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Navigation
     const navigate = useNavigate();
+
+    // Token (assuming it's defined in your code)
+    const token = "your_jwt_secret";
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
