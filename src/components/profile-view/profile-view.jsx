@@ -41,6 +41,11 @@ export const ProfileView = ({ user, movies, setUser }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                if (!user) {
+                    console.error('User object is null or undefined.');
+                    return;
+                }
+
                 // Your Heroku backend API URL
                 const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
@@ -73,7 +78,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user.Username, token]);
+    }, [user, token]);
+
 
     // Update user information
     const handleUpdate = async (event) => {
