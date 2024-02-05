@@ -164,7 +164,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
             </Row>
 
             <Row className="justify-content-center">
-                <h2 className="profile-title justify-content-center">Favorite Movies</h2>
+                <h2 className="profile-title text-center">Favorite Movies</h2>
                 {/* Render favorite movies */}
                 {favoriteMovies.length > 0 ? (
                     favoriteMovies.map((movie) => (
@@ -179,7 +179,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         </Col>
                     ))
                 ) : (
-                    <p className="justify-content-center">No favorite movies yet.</p>
+                    <p className="text-center">No favorite movies yet.</p>
                 )}
             </Row>
 
