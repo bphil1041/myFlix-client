@@ -98,6 +98,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Add a movie to the user's favorite movies
     const addFavoriteMovie = () => {
+        console.log("Selected Movie ID:", selectedMovieId);
+        console.log("User Favorite Movies:", user.favoriteMovies);
+
         if (selectedMovieId && user.favoriteMovies) {
             // Check if the movie is not already in the user's favorites
             if (!user.favoriteMovies.includes(selectedMovieId)) {
@@ -118,6 +121,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
             alert('Please select a movie to add to favorites.');
         }
     };
+
 
     // JSX rendering of the component
     return (
