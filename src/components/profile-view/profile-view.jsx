@@ -42,7 +42,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         const fetchUserData = async () => {
             try {
                 // Your Heroku backend API URL
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -56,6 +56,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
                     // Update state or perform other actions with the fetched user data
+                    setUsername(userData.Username);
+                    setPassword(userData.Password);
+                    setEmail(userData.Email);
+                    setBirthday(userData.Birthday);
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json(); // Attempt to parse error response
@@ -69,7 +73,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user.username, token]);
+    }, [user.Username, token]);
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -79,14 +83,14 @@ export const ProfileView = ({ user, movies, setUser }) => {
         try {
             // Gather updated user data
             const data = {
-                username: username,
-                password: password,
-                email: email,
-                birthday: birthday,
+                Username: username,
+                Password: password,
+                Email: email,
+                Birthday: birthday,
             };
 
             // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
