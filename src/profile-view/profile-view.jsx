@@ -133,6 +133,20 @@ export const ProfileView = ({ user, movies, setUser }) => {
         navigate(`/movies/${movie._id}`);
     };
 
+    // Retrieve favorite movies from local storage on component mount
+    useEffect(() => {
+        const storedFavorites = localStorage.getItem('userFavorites');
+        if (storedFavorites) {
+            const parsedFavorites = JSON.parse(storedFavorites);
+            setUser((prevUser) => ({ ...prevUser, favoriteMovies: parsedFavorites }));
+        }
+    }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    // Save favorite movies to local storage whenever the user's favorites change
+    useEffect(() => {
+        localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
+    }, [user.favoriteMovies]);
+
     // JSX rendering of the component
     return (
         <Container>
