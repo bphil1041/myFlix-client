@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
     // State variables
-    const [username, setUsername] = useState(user.username);
-    const [password, setPassword] = useState(user.password);
-    const [email, setEmail] = useState(user.email);
-    const [birthday, setBirthday] = useState(user.birthday);
+    const [username, setUsername] = useState(user.username || '');
+    const [password, setPassword] = useState(user.password || '');
+    const [email, setEmail] = useState(user.email || '');
+    const [birthday, setBirthday] = useState(user.birthday || '');
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMovieId, setSelectedMovieId] = useState('');
     const [selectedMovie, setSelectedMovie] = useState(null); // New state to store selected movie details
@@ -275,3 +275,4 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
+
