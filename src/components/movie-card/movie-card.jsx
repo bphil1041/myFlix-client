@@ -6,9 +6,7 @@ export const MovieCard = ({ movie, onMovieClick }) => {
         <Card className="h-100">
             <Card.Body>
                 <Card.Title className="card-title">{movie.title}</Card.Title>
-                <Button onClick={() => {
-                    onMovieClick(movie);
-                }} variant="link">
+                <Button onClick={() => onMovieClick(movie)} variant="link">
                     Open
                 </Button>
             </Card.Body>
@@ -36,3 +34,4 @@ MovieCard.propTypes = {
     }).isRequired,
     onMovieClick: PropTypes.func.isRequired,
 };
+
