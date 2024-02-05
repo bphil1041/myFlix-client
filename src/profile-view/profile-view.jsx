@@ -127,11 +127,13 @@ export const ProfileView = ({ user, movies, setUser }) => {
         }
     };
 
-    // Handle click on a MovieCard in the user's favorites list
+    // Common function to handle movie card click
     const handleMovieCardClick = (movie) => {
-        setSelectedMovie(movie);
-        // You can add additional logic or navigation here if needed
+        // Perform any additional logic if needed
         alert(`Clicked on ${movie.title}`);
+
+        // Navigate to the movie details page
+        navigate(`/movies/${movie._id}`);
     };
 
     // JSX rendering of the component
@@ -199,7 +201,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </Form.Group >
+                        </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
@@ -250,4 +252,3 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
-
