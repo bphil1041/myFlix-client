@@ -1,17 +1,18 @@
 // Import statements
-import { useState } from "react";
-import { Col, Row, Container, Button, Card, Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
 // ProfileView component
-export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
+export const ProfileView = ({ user, movies, setUser, removeFav }) => {
     // State variables
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState(user.password);
     const [email, setEmail] = useState(user.email);
     const [birthday, setBirthday] = useState(user.birthday);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedMovieId, setSelectedMovieId] = useState('');
 
     // Navigation
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, // Assuming token is defined
                     "Content-Type": "application/json",
                 }
             });
@@ -68,7 +69,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}` // Assuming token is defined
             }
         }).then((response) => {
             if (response.ok) {
@@ -80,6 +81,29 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
         }).finally(() => {
             setIsLoading(false);
         });
+    }
+
+    // Add a movie to the user's favorite movies
+    const addFavoriteMovie = () => {
+        if (selectedMovieId) {
+            // Check if the movie is not already in the user's favorites
+            if (!user.favoriteMovies.includes(selectedMovieId)) {
+                const updatedUser = { ...user, favoriteMovies: [...user.favoriteMovies, selectedMovieId] };
+                setUser(updatedUser);
+
+                // You can also update the user data on the server if needed
+                // Example: call an API endpoint to update the user's favorite movies list
+
+                // Clear the selectedMovieId for the next selection
+                setSelectedMovieId('');
+            } else {
+                // Handle case when the movie is already in the user's favorites
+                alert('This movie is already in your favorites!');
+            }
+        } else {
+            // Handle case when no movie is selected
+            alert('Please select a movie to add to favorites.');
+        }
     }
 
     // JSX rendering of the component
@@ -101,6 +125,34 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                         </Col>
                     );
                 })}
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <h2 className="profile-title">Add to Favorites</h2>
+                    <Form>
+                        <Form.Group controlId="selectMovie">
+                            <Form.Label>Select a Movie:</Form.Label>
+                            <Form.Control
+                                as="select"
+                                value={selectedMovieId}
+                                onChange={(e) => setSelectedMovieId(e.target.value)}
+                            >
+                                <option value="" disabled>Select a movie</option>
+                                {movies.map((movie) => (
+                                    <option key={movie._id} value={movie._id}>{movie.title}</option>
+                                ))}
+                            </Form.Control>
+                        </Form.Group>
+                        <Button
+                            className="btn btn-primary"
+                            onClick={addFavoriteMovie}
+                            disabled={isLoading}
+                        >
+                            Add to Favorites
+                        </Button>
+                    </Form>
+                </Col>
             </Row>
 
             <Row className="justify-content-center">
@@ -157,9 +209,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav }) => {
                 </Col>
             </Row>
         </Container>
-    )
-}
-
+    );
+};
 
 
 
