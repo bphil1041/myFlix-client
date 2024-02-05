@@ -12,7 +12,10 @@ import "./main-view.scss";
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        favoriteMovies: [],
+    });
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
