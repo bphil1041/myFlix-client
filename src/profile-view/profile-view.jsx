@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
-import "./movie-view.scss"
+import "./profile-view.scss"
 
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
