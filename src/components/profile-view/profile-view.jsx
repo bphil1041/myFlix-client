@@ -48,8 +48,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                 console.log("Attempting to fetch user data. User:", user);
 
-                // Your Heroku backend API URL
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
+                // Use the correct property for the username
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -62,24 +62,14 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 if (response.ok) {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
-
-                    // Assuming user.username contains the current user's username
-                    const loggedInUserData = userData.find((userData) => userData.Username === user.username);
-
-                    // Check if the user data is found
-                    if (loggedInUserData) {
-                        // Update state or perform other actions with the fetched user data
-                        setUsername(loggedInUserData.Username || '');
-                        setPassword(loggedInUserData.Password || '');
-                        setEmail(loggedInUserData.Email || '');
-                        setBirthday(loggedInUserData.Birthday ? new Date(loggedInUserData.Birthday).toISOString().split('T')[0] : '');
-                    } else {
-                        console.error(`User data not found for username: ${user.username}`);
-                        // Handle case when user data is not found
-                    }
+                    // Update state or perform other actions with the fetched user data
+                    setUsername(userData.Username || '');
+                    setPassword(userData.Password || '');
+                    setEmail(userData.Email || '');
+                    setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
-                    const errorData = await response.json();
+                    const errorData = await response.json(); // Attempt to parse error response
                     console.error("Error response from server:", errorData);
                     // Handle errors, show error messages, etc.
                 }
