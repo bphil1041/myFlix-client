@@ -20,7 +20,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const navigate = useNavigate();
 
     // Token 
-    const token = "your_auth_token";
+    const token = localStorage.getItem('token');
+
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
