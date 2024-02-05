@@ -41,8 +41,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                if (!user) {
-                    console.error('User object is null or undefined.');
+                // Check if the user object is available
+                if (!user || !user.username) {
+                    console.error('User object is null, undefined, or missing username.');
                     return;
                 }
 
@@ -79,8 +80,12 @@ export const ProfileView = ({ user, movies, setUser }) => {
             }
         };
 
-        fetchUserData();
+        // Fetch user data only if the user object is available
+        if (user) {
+            fetchUserData();
+        }
     }, [user, token]);
+
 
 
 
