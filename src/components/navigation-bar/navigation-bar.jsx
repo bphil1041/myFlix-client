@@ -5,9 +5,9 @@ import "./navigation-bar.scss";
 
 export const NavigationBar = ({ user, onLoggedOut }) => {
     return (
-        <Navbar className="navbarmain" bg="primary" expand="lg" fixed="top">
+        <Navbar bg="primary" expand="lg" fixed="top">
             <Container>
-                <Navbar.Brand className="nav-title" as={Link} to="/">
+                <Navbar.Brand as={Link} to="/">
                     myFlix
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -15,22 +15,22 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
                     <Nav className="me-auto">
                         {!user ? (
                             <>
-                                <Nav.Link className="navlink" as={Link} to="/login">
+                                <Nav.Link as={Link} to="/login">
                                     Login
                                 </Nav.Link>
-                                <Nav.Link className="navlink" as={Link} to="/signup">
+                                <Nav.Link as={Link} to="/signup">
                                     Signup
                                 </Nav.Link>
                             </>
                         ) : (
                             <>
-                                <Nav.Link className="navlink" as={Link} to="/">
+                                <Nav.Link as={Link} to="/">
                                     Home
                                 </Nav.Link>
-                                <Nav.Link className="navlink" as={Link} to="/profile">
+                                <Nav.Link as={Link} to="/profile">
                                     Profile
                                 </Nav.Link>
-                                <Nav.Link className="navlink" onClick={onLoggedOut}>Logout</Nav.Link>
+                                <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
                             </>
                         )}
                     </Nav>
