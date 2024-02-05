@@ -19,7 +19,13 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
-        ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId))
+        ? user.favoriteMovies.map((movieId) => {
+            const foundMovie = movies.find((m) => m._id === movieId);
+            if (!foundMovie) {
+                console.log(`Movie with ID ${movieId} not found in the movies array.`);
+            }
+            return foundMovie;
+        })
         : [];
 
     // Update user information
@@ -149,7 +155,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                             </Form.Control>
                         </Form.Group>
                         <Button
-                            className="btn btn-primary"
+                            variant="primary"
                             onClick={addFavoriteMovie}
                             disabled={isLoading}
                         >
@@ -173,7 +179,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </Form.Group>
+                        </Form.Group >
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
@@ -203,10 +209,19 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         </Form.Group>
 
                         {/* Update and delete buttons */}
-                        <Button className="btn btn-primary update" type="submit" onClick={handleUpdate} disabled={isLoading}>
+                        <Button
+                            className="btn btn-primary update"
+                            type="submit"
+                            onClick={handleUpdate}
+                            disabled={isLoading}
+                        >
                             {isLoading ? 'Updating...' : 'Update'}
                         </Button>
-                        <Button className="btn btn-danger delete" onClick={handleDelete} disabled={isLoading}>
+                        <Button
+                            className="btn btn-danger delete"
+                            onClick={handleDelete}
+                            disabled={isLoading}
+                        >
                             {isLoading ? 'Deleting...' : 'Delete Account'}
                         </Button>
                     </Form>
@@ -215,9 +230,3 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
-
-
-
-
-
-
