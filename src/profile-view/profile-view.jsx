@@ -1,25 +1,22 @@
 // Import statements
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
 // ProfileView component
-export const ProfileView = ({ user, movies, setUser }) => {
+export const ProfileView = ({ user, movies, setUser, token }) => {
     // State variables
-    const [username, setUsername] = useState(user.username || '');
-    const [password, setPassword] = useState(user.password || '');
-    const [email, setEmail] = useState(user.email || '');
-    const [birthday, setBirthday] = useState(user.birthday || '');
+    const [username, setUsername] = useState(user.username);
+    const [password, setPassword] = useState(user.password);
+    const [email, setEmail] = useState(user.email);
+    const [birthday, setBirthday] = useState(user.birthday);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMovieId, setSelectedMovieId] = useState('');
-    const [selectedMovie, setSelectedMovie] = useState(null); // New state to store selected movie details
+    const [selectedMovie, setSelectedMovie] = useState(null);
 
     // Navigation
     const navigate = useNavigate();
-
-    // Token (assuming it's defined in your code)
-    const token = "your_auth_token";
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
@@ -31,10 +28,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
             return foundMovie;
         })
         : [];
-
-    console.log("User:", user);
-    console.log("Movies:", movies);
-    console.log("Favorite Movies:", favoriteMovies);
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -51,11 +44,11 @@ export const ProfileView = ({ user, movies, setUser }) => {
             };
 
             // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
-                    Authorization: `Bearer ${token}`, // Assuming token is defined
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             });
@@ -87,10 +80,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const handleDelete = () => {
         setIsLoading(true);
 
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`, // Assuming token is defined
+                Authorization: `Bearer ${token}`,
             },
         }).then((response) => {
             if (response.ok) {
@@ -154,15 +147,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
     return (
         <Container>
             <Row className="justify-content-md-center mx-3 my-4">
-                <Col md={6}>
-                    <h2 className="profile-title">User Information</h2>
-                    <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Birthday:</strong> {user.birthday}</p>
-                </Col>
-            </Row>
-
-            <Row className="justify-content-md-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
                 {favoriteMovies.length > 0 ? (
@@ -213,6 +197,11 @@ export const ProfileView = ({ user, movies, setUser }) => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">Update info</h2>
+                    {/* User information display */}
+                    <p>Username: {user.username}</p>
+                    <p>Email: {user.email}</p>
+                    <p>Birthday: {user.birthday}</p>
+
                     {/* User information update form */}
                     <Form className="my-profile" onSubmit={handleUpdate}>
                         {/* Form fields for name, password, email, and birthday */}
@@ -275,4 +264,5 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
+
 
