@@ -151,6 +151,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
         localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
     }, [user.favoriteMovies]);
 
+    console.log("User:", user);
+
     // JSX rendering of the component
     return (
         <Container>
