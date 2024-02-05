@@ -19,7 +19,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     // Navigation
     const navigate = useNavigate();
 
-    // Token (assuming it's defined in your code)
+    // Token 
     const token = "your_auth_token";
 
     // Return movies present in the user's favorite movies array
@@ -37,6 +37,38 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
 
+    // Fetch user data from Heroku
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                // Your Heroku backend API URL
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`;
+
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    console.log("User Data from Heroku:", userData);
+                    // Update state or perform other actions with the fetched user data
+                } else {
+                    console.error(`Failed to fetch user data. Status: ${response.status}`);
+                    // Handle errors, show error messages, etc.
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                // Handle errors, show error messages, etc.
+            }
+        };
+
+        fetchUserData();
+    }, [user.name, token]);
+
     // Update user information
     const handleUpdate = async (event) => {
         event.preventDefault();
@@ -51,6 +83,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 birthday: birthday,
             };
 
+            // Fetch request to update user data
             const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
@@ -97,7 +130,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 setUser(null);
                 alert("Your account has been deleted");
             } else {
-                alert("Something went wrong.");
+                alert("Something went wrong.")
             }
         }).finally(() => {
             setIsLoading(false);
@@ -150,17 +183,23 @@ export const ProfileView = ({ user, movies, setUser }) => {
         localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
     }, [user.favoriteMovies]);
 
+    console.log("User:", user);
+
+
+
     // JSX rendering of the component
     return (
         <Container>
             <Row className="justify-content-center">
-                <Col md={8}>
+                <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
                     <p>Username: {user.username}</p>
                     <p>Email: {user.email}</p>
+                    <p>Password: {user.password}</p>
                     <p>Birthday: {user.birthday}</p>
                 </Col>
             </Row>
+
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2>Favorite Movies</h2>
@@ -182,6 +221,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     )}
                 </Col>
             </Row>
+
+
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">Add to Favorites</h2>
@@ -209,6 +250,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     </Form>
                 </Col>
             </Row>
+
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">Update info</h2>
@@ -251,10 +293,12 @@ export const ProfileView = ({ user, movies, setUser }) => {
                                 required
                             />
                         </Form.Group>
+
                         {/* Update and delete buttons */}
                         <Button
                             className="btn btn-primary update"
                             type="submit"
+                            onClick={handleUpdate}
                             disabled={isLoading}
                         >
                             {isLoading ? 'Updating...' : 'Update'}
@@ -272,3 +316,4 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
+
