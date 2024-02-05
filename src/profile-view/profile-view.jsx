@@ -1,11 +1,11 @@
 // Import statements
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
 // ProfileView component
-export const ProfileView = ({ user, movies, setUser, removeFav }) => {
+export const ProfileView = ({ user, movies, setUser }) => {
     // State variables
     const [username, setUsername] = useState(user.username);
     const [password, setPassword] = useState(user.password);
@@ -18,7 +18,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
     const navigate = useNavigate();
 
     // Return movies present in the user's favorite movies array
-    const favoriteMovies = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
+    const favoriteMovies = user.favoriteMovies ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId)) : [];
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -32,7 +32,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
                 password: password,
                 email: email,
                 birthday: birthday,
-            }
+            };
 
             // Fetch request to update user data
             const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
@@ -41,7 +41,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
                 headers: {
                     Authorization: `Bearer ${token}`, // Assuming token is defined
                     "Content-Type": "application/json",
-                }
+                },
             });
 
             if (response.ok) {
@@ -60,7 +60,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     // Delete user account
     const handleDelete = () => {
@@ -69,8 +69,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
         fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}` // Assuming token is defined
-            }
+                Authorization: `Bearer ${token}`, // Assuming token is defined
+            },
         }).then((response) => {
             if (response.ok) {
                 setUser(null);
@@ -81,7 +81,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
         }).finally(() => {
             setIsLoading(false);
         });
-    }
+    };
 
     // Add a movie to the user's favorite movies
     const addFavoriteMovie = () => {
@@ -104,7 +104,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
             // Handle case when no movie is selected
             alert('Please select a movie to add to favorites.');
         }
-    }
+    };
 
     // JSX rendering of the component
     return (
@@ -112,8 +112,8 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
             <Row className="justify-content-md-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
-                {favoriteMovies.map((movie) => {
-                    return (
+                {favoriteMovies.length > 0 ? (
+                    favoriteMovies.map((movie) => (
                         <Col
                             key={movie._id}
                             className="m-3"
@@ -123,8 +123,10 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
                                 user={user}
                             />
                         </Col>
-                    );
-                })}
+                    ))
+                ) : (
+                    <p>No favorite movies yet.</p>
+                )}
             </Row>
 
             <Row className="justify-content-center">
@@ -169,7 +171,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </Form.Group >
+                        </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
@@ -211,6 +213,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav }) => {
         </Container>
     );
 };
+
 
 
 
