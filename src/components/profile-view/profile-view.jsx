@@ -326,3 +326,4 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
+
