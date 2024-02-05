@@ -46,6 +46,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     return;
                 }
 
+                console.log("Attempting to fetch user data. User:", user);
+
                 // Your Heroku backend API URL
                 const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
@@ -79,6 +81,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, token]);
+
 
 
     // Update user information
