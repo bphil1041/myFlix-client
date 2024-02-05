@@ -1,5 +1,5 @@
 // Import statements
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Token 
     const token = localStorage.getItem('token');
-
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
@@ -70,7 +69,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user.name, token]);
+    }, [user.username, token]);
 
     // Update user information
     const handleUpdate = async (event) => {
@@ -87,7 +86,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
             };
 
             // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
                 method: "PUT",
                 body: JSON.stringify(data),
                 headers: {
@@ -123,7 +122,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const handleDelete = () => {
         setIsLoading(true);
 
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.name}`, {
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`, // Assuming token is defined
@@ -186,10 +185,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
         localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
     }, [user.favoriteMovies]);
 
-    console.log("User:", user);
-
-
-
     // JSX rendering of the component
     return (
         <Container>
@@ -224,7 +219,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     )}
                 </Col>
             </Row>
-
 
             <Row className="justify-content-center">
                 <Col md={6}>
@@ -319,4 +313,3 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
-
