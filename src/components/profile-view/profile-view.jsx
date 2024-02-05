@@ -155,13 +155,15 @@ export const ProfileView = ({ user, movies, setUser }) => {
     return (
         <Container>
             <Row className="justify-content-center">
-                <Col md={8}>
+                <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
                     <p>Username: {user.username}</p>
                     <p>Email: {user.email}</p>
+                    <p>Password: {user.password}</p>
                     <p>Birthday: {user.birthday}</p>
                 </Col>
             </Row>
+
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2>Favorite Movies</h2>
