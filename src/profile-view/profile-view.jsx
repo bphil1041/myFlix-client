@@ -4,7 +4,6 @@ import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { MovieCard } from "../components/movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 
-
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
     // State variables
@@ -122,7 +121,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
         }
     };
 
-
     // JSX rendering of the component
     return (
         <Container>
@@ -137,7 +135,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         >
                             <MovieCard
                                 movie={movie}
-                                user={user}
+                                onMovieClick={() => {
+                                    // Add functionality if needed when clicking on a movie card
+                                }}
                             />
                         </Col>
                     ))
@@ -239,3 +239,4 @@ export const ProfileView = ({ user, movies, setUser }) => {
         </Container>
     );
 };
+
