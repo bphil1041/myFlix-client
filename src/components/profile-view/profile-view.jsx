@@ -66,7 +66,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     setUsername(userData.Username || '');
                     setPassword(userData.Password || '');
                     setEmail(userData.Email || '');
-                    setBirthday(userData.Birthday || '');
+                    setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json(); // Attempt to parse error response
