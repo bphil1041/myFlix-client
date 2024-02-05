@@ -172,12 +172,14 @@ export const ProfileView = ({ user, movies, setUser }) => {
                                 key={movie._id}
                                 className="m-3"
                             >
-                                <Card className="h-100">
-                                    <Card.Body>
-                                        <Card.Title className="card-title">{movie.title}</Card.Title>
-                                        <Button onClick={() => onMovieClick(movie)} variant="link"></Button>
-                                    </Card.Body>
-                                </Card>
+                                <MovieCard>
+                                    <Card className="h-100">
+                                        <Card.Body>
+                                            <Card.Title className="card-title">{movie.title}</Card.Title>
+                                            <Button onClick={() => onMovieClick(movie)} variant="link"></Button>
+                                        </Card.Body>
+                                    </Card>
+                                </MovieCard>
                             </Col>
                         ))
                     ) : (
