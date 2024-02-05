@@ -162,26 +162,28 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     <p>Birthday: {user.birthday}</p>
                 </Col>
             </Row>
-
             <Row className="justify-content-center">
-                <h2 className="profile-title text-center">Favorite Movies</h2>
-                {/* Render favorite movies */}
-                {favoriteMovies.length > 0 ? (
-                    favoriteMovies.map((movie) => (
-                        <Col
-                            key={movie._id}
-                            className="m-3"
-                        >
-                            <MovieCard
-                                movie={movie}
-                                onMovieClick={() => handleMovieCardClick(movie)}
-                            />
-                        </Col>
-                    ))
-                ) : (
-                    <p className="text-center">No favorite movies yet.</p>
-                )}
+                <Col md={6}>
+                    <h2>Favorite Movies</h2>
+                    {/* Render favorite movies */}
+                    {favoriteMovies.length > 0 ? (
+                        favoriteMovies.map((movie) => (
+                            <Col
+                                key={movie._id}
+                                className="m-3"
+                            >
+                                <MovieCard
+                                    movie={movie}
+                                    onMovieClick={() => handleMovieCardClick(movie)}
+                                />
+                            </Col>
+                        ))
+                    ) : (
+                        <p>No favorite movies yet.</p>
+                    )}
+                </Col>
             </Row>
+
 
             <Row className="justify-content-center">
                 <Col md={6}>
