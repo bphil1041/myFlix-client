@@ -153,7 +153,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     // JSX rendering of the component
     return (
         <Container>
-            <Row className="justify-content-md-center mx-3 my-4">
+            <Row className="justify-content-center mx-3 my-4">
                 <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
                     <p>Username: {user.username}</p>
@@ -162,7 +162,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 </Col>
             </Row>
 
-            <Row className="justify-content-md-center mx-3 my-4">
+            <Row className="justify-content-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
                 {favoriteMovies.length > 0 ? (
