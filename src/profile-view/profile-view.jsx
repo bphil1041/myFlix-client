@@ -19,7 +19,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const navigate = useNavigate();
 
     // Token (assuming it's defined in your code)
-    const token = "your_jwt_secret";
+    const token = "your_auth_token";
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user.favoriteMovies && movies
@@ -153,6 +153,15 @@ export const ProfileView = ({ user, movies, setUser }) => {
     // JSX rendering of the component
     return (
         <Container>
+            <Row className="justify-content-md-center mx-3 my-4">
+                <Col md={6}>
+                    <h2 className="profile-title">User Information</h2>
+                    <p><strong>Username:</strong> {user.username}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>Birthday:</strong> {user.birthday}</p>
+                </Col>
+            </Row>
+
             <Row className="justify-content-md-center mx-3 my-4">
                 <h2 className="profile-title">Favorite Movies</h2>
                 {/* Render favorite movies */}
