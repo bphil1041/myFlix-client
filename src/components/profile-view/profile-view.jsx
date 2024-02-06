@@ -60,14 +60,14 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 });
 
                 if (response.ok) {
-                    const responseData = await response.text();
+                    const responseData = await response.json();
 
                     // Log the response for debugging
                     console.log('Response body:', responseData);
 
-                    // Check if the response is not empty and is a valid JSON
-                    if (responseData && responseData.trim() !== '') {
-                        const userData = JSON.parse(responseData);
+                    // Check if responseData is an array and not empty
+                    if (Array.isArray(responseData) && responseData.length > 0) {
+                        const userData = responseData[0]; // Assuming the relevant user data is the first element in the array
 
                         // Ensure userData is an object
                         if (userData && typeof userData === 'object') {
@@ -90,6 +90,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 console.error("Fetch error:", error);
             }
         };
+
 
 
         fetchUserData();
