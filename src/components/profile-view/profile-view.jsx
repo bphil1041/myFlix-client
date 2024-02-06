@@ -52,6 +52,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             Birthday: userData.Birthday
                                 ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
                         console.error(
@@ -138,6 +139,13 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
+    const handleDeleteMovie = (movieId) => {
+        setUpdatedUser(prevUser => ({
+            ...prevUser,
+            FavoriteMovies: prevUser.FavoriteMovies.filter(movie => movie._id !== movieId)
+        }));
+    };
+
     return (
         <Container>
             <Row className="justify-content-center">
@@ -152,7 +160,17 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p>Favorite Movies:</p>
                             <ul>
                                 {updatedUser.FavoriteMovies.map(movie => (
-                                    <li key={movie._id}>{movie.title} ({movie.year})</li>
+                                    <li key={movie._id}>
+                                        {movie.title} ({movie.year})
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            className="ml-2"
+                                            onClick={() => handleDeleteMovie(movie._id)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </li>
                                 ))}
                             </ul>
                             <Dropdown>
