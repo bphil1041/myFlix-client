@@ -31,50 +31,47 @@ export const ProfileView = ({ user, movies, setUser }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                if (!user) {
-                    console.error('User object is null or undefined.');
-                    return;
-                }
+                if (!user || user.Username !== Username) {
+                    console.log("Attempting to fetch user data. User:", user);
 
-                console.log("Attempting to fetch user data. User:", user);
+                    // Correct API URL for user data
+                    const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
 
-                // Correct API URL for user data
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
+                    const response = await fetch(apiUrl, {
+                        method: "GET",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json",
+                        },
+                    });
 
-                const response = await fetch(apiUrl, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+                    const responseData = await response.json();
 
-                const responseData = await response.json();
+                    // Log the response for debugging
+                    console.log('Response body:', responseData);
 
-                // Log the response for debugging
-                console.log('Response body:', responseData);
+                    if (Array.isArray(responseData) && responseData.length > 0) {
+                        // Take the first user from the array
+                        const userData = responseData[0];
 
-                if (Array.isArray(responseData) && responseData.length > 0) {
-                    // Take the first user from the array
-                    const userData = responseData[0];
+                        // Log the parsed user data for debugging
+                        console.log('Parsed user data:', userData);
 
-                    // Log the parsed user data for debugging
-                    console.log('Parsed user data:', userData);
-
-                    // Ensure userData is an object
-                    if (userData && typeof userData === 'object') {
-                        setUser({
-                            Username: userData.Username || '',
-                            Password: userData.Password || '',
-                            Email: userData.Email || '',
-                            Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '',
-                            favoriteMovies: userData.favoriteMovies || []
-                        });
+                        // Ensure userData is an object
+                        if (userData && typeof userData === 'object') {
+                            setUser({
+                                Username: userData.Username || '',
+                                Password: userData.Password || '',
+                                Email: userData.Email || '',
+                                Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '',
+                                favoriteMovies: userData.favoriteMovies || []
+                            });
+                        } else {
+                            console.error('Invalid user data structure received from the server:', userData);
+                        }
                     } else {
-                        console.error('Invalid user data structure received from the server:', userData);
+                        console.error('Empty or invalid response from the server');
                     }
-                } else {
-                    console.error('Empty or invalid response from the server');
                 }
             } catch (error) {
                 console.error("Fetch error:", error);
@@ -82,7 +79,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user, token, setUser]);
+    }, [user, token, setUser, Username]);
 
     // Delete user account
     const handleDelete = () => {
@@ -138,13 +135,13 @@ export const ProfileView = ({ user, movies, setUser }) => {
     };
 
     // Retrieve favorite movies from local storage on component mount
-    //useEffect(() => {
-    // const storedFavorites = localStorage.getItem('userFavorites');
-    // if (storedFavorites) {
-    //    const parsedFavorites = JSON.parse(storedFavorites);
-    // setUser((prevUser) => ({ ...prevUser, favoriteMovies: parsedFavorites }));
-    // }
-    // }, []); // Empty dependency array ensures this effect runs only once on mount
+    useEffect(() => {
+        const storedFavorites = localStorage.getItem('userFavorites');
+        if (storedFavorites) {
+            const parsedFavorites = JSON.parse(storedFavorites);
+            setUser((prevUser) => ({ ...prevUser, favoriteMovies: parsedFavorites }));
+        }
+    }, []); // Empty dependency array ensures this effect runs only once on mount
 
     // Save favorite movies to local storage whenever the user's favorites change
     useEffect(() => {
