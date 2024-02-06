@@ -7,11 +7,10 @@ import "./profile-view.scss";
 
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
+    // Destructure user object
+    const { Username, Password, Email, Birthday } = user || {};
+
     // State variables
-    const [username, setUsername] = useState(user?.Username || '');
-    const [password, setPassword] = useState(user?.Password || '');
-    const [email, setEmail] = useState(user?.Email || '');
-    const [birthday, setBirthday] = useState(user?.Birthday || '');
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMovieId, setSelectedMovieId] = useState('');
     const [selectedMovie, setSelectedMovie] = useState(null); // New state to store selected movie details
@@ -24,15 +23,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // Return movies present in the user's favorite movies array
     const favoriteMovies = user?.favoriteMovies && movies
-        ? user.favoriteMovies.map((movieId) => {
-            const foundMovie = movies.find((m) => m._id === movieId);
-            if (!foundMovie) {
-                console.log(`Movie with ID ${movieId} not found in the movies array.`);
-            }
-            return foundMovie;
-        })
+        ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId))
         : [];
-
 
     console.log("User:", user);
     console.log("Movies:", movies);
@@ -50,7 +42,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 console.log("Attempting to fetch user data. User:", user);
 
                 // Correct API URL for user data
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -74,10 +66,13 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                     // Ensure userData is an object
                     if (userData && typeof userData === 'object') {
-                        setUsername(userData.Username || '');
-                        setPassword(userData.Password || '');
-                        setEmail(userData.Email || '');
-                        setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+                        setUser({
+                            Username: userData.Username || '',
+                            Password: userData.Password || '',
+                            Email: userData.Email || '',
+                            Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '',
+                            favoriteMovies: userData.favoriteMovies || []
+                        });
                     } else {
                         console.error('Invalid user data structure received from the server:', userData);
                     }
@@ -90,7 +85,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user, token]);
+    }, [user, token, setUser]);
 
 
 
