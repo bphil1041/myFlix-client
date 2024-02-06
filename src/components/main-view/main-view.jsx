@@ -135,7 +135,7 @@ export const MainView = () => {
                         element={
                             <>
                                 {user ? (
-                                    <ProfileView user={user} setUser={setUser} />
+                                    <ProfileView user={user} movies={movies} setUser={setUser} />
                                 ) : (
                                     <Navigate to="/login" replace />
                                 )}
