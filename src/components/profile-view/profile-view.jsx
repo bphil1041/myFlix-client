@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 import "./profile-view.scss";
 
-export const ProfileView = ({ user, setUser }) => {
+export const ProfileView = ({ user, setUser, movies }) => {
     const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
@@ -175,7 +175,7 @@ export const ProfileView = ({ user, setUser }) => {
                                                 key={movie._id}
                                                 onClick={() => handleSelectMovie(movie._id)}
                                             >
-                                                {movie.Title}
+                                                {movie.title}
                                             </Dropdown.Item>
                                         ))}
                                     </Dropdown.Menu>
