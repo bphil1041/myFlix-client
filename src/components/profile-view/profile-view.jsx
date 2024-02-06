@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { MovieCard } from "../movie-card/movie-card";
 import "./profile-view.scss";
 
-export const ProfileView = ({ user, setUser }) => {
+export const ProfileView = ({ user, setUser, movies }) => {
     const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
