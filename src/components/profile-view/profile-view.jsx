@@ -10,6 +10,7 @@ export const ProfileView = ({ user, setUser }) => {
     const { Username, Password, Email, Birthday } = user || {};
 
     // State variables
+    const [updatedUser, setUpdatedUser] = useState({ Username, Password, Email, Birthday });
     const [isLoading, setIsLoading] = useState(false);
 
     // Navigation
@@ -74,52 +75,24 @@ export const ProfileView = ({ user, setUser }) => {
         fetchUserData();
     }, [user, token, setUser]);
 
-    // Delete user account
-    const handleDelete = () => {
-        setIsLoading(true);
-
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`, // Assuming token is defined
-            },
-        }).then((response) => {
-            if (response.ok) {
-                setUser(null);
-                alert("Your account has been deleted");
-            } else {
-                alert("Something went wrong.")
-            }
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    };
-
     // Function to handle user information update
     const handleUpdate = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            // Perform the update logic here, for example, by making a PUT request to the server
-            const updatedUserData = {
-                Username: user.Username,
-                Password: user.Password,
-                Email: user.Email,
-                Birthday: user.Birthday
-            };
-
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(updatedUserData),
+                body: JSON.stringify(updatedUser),
             });
 
             if (response.ok) {
                 alert("User information updated successfully");
+                setUser(updatedUser); // Update local state with new user data
             } else {
                 alert("Failed to update user information");
             }
@@ -159,32 +132,32 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={Username}
-                                disabled
+                                value={updatedUser.Username}
+                                onChange={(e) => setUpdatedUser({ ...updatedUser, Username: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
-                                value={Password}
-                                disabled
+                                value={updatedUser.Password}
+                                onChange={(e) => setUpdatedUser({ ...updatedUser, Password: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formEmail">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
-                                value={Email}
-                                disabled
+                                value={updatedUser.Email}
+                                onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
                             />
                         </Form.Group>
                         <Form.Group controlId="formBirthday">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
-                                value={Birthday}
-                                disabled
+                                value={updatedUser.Birthday}
+                                onChange={(e) => setUpdatedUser({ ...updatedUser, Birthday: e.target.value })}
                             />
                         </Form.Group>
 
@@ -198,7 +171,26 @@ export const ProfileView = ({ user, setUser }) => {
                         </Button>
                         <Button
                             className="btn btn-danger delete"
-                            onClick={handleDelete}
+                            onClick={() => {
+                                if (window.confirm("Are you sure you want to delete your account?")) {
+                                    setIsLoading(true);
+                                    fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
+                                        method: "DELETE",
+                                        headers: {
+                                            Authorization: `Bearer ${token}`,
+                                        },
+                                    }).then((response) => {
+                                        if (response.ok) {
+                                            setUser(null);
+                                            alert("Your account has been deleted");
+                                        } else {
+                                            alert("Something went wrong.")
+                                        }
+                                    }).finally(() => {
+                                        setIsLoading(false);
+                                    });
+                                }
+                            }}
                             disabled={isLoading}
                         >
                             {isLoading ? 'Deleting...' : 'Delete Account'}
