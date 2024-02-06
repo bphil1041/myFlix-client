@@ -8,14 +8,13 @@ import "./profile-view.scss";
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
     // State variables
-    const [username, setUsername] = useState(user?.username || '');
-    const [password, setPassword] = useState(user?.password || '');
-    const [email, setEmail] = useState(user?.email || '');
-    const [birthday, setBirthday] = useState(user?.birthday || '');
+    const [username, setUsername] = useState(user?.Username || '');
+    const [password, setPassword] = useState(user?.Password || '');
+    const [email, setEmail] = useState(user?.Email || '');
+    const [birthday, setBirthday] = useState(user?.Birthday || '');
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMovieId, setSelectedMovieId] = useState('');
     const [selectedMovie, setSelectedMovie] = useState(null); // New state to store selected movie details
-
 
     // Navigation
     const navigate = useNavigate();
@@ -87,9 +86,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
         fetchUserData();
     }, [user, setUser]);
 
-
-
-
     // Update user information
     const handleUpdate = async (event) => {
         event.preventDefault();
@@ -118,6 +114,13 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 const updatedUserData = await response.json();
                 localStorage.setItem('user', JSON.stringify(updatedUserData));
                 setUser(updatedUserData);
+
+                // Update the local state with the new user data
+                setUsername(updatedUserData.Username || '');
+                setPassword(updatedUserData.Password || '');
+                setEmail(updatedUserData.Email || '');
+                setBirthday(updatedUserData.Birthday ? new Date(updatedUserData.Birthday).toISOString().split('T')[0] : '');
+
                 alert('Updated!');
             } else {
                 const error = await response.text();
