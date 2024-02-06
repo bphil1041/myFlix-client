@@ -41,16 +41,15 @@ export const ProfileView = ({ user, movies, setUser }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // Check if the user object is available
-                if (!user || !user.username) {
-                    console.error('User object is null, undefined, or missing username.');
+                if (!user) {
+                    console.error('User object is null or undefined.');
                     return;
                 }
 
                 console.log("Attempting to fetch user data. User:", user);
 
-                // Use the correct property for the username
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
+                // Your Heroku backend API URL
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -80,13 +79,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
             }
         };
 
-        // Fetch user data only if the user object is available
-        if (user) {
-            fetchUserData();
-        }
+        fetchUserData();
     }, [user, token]);
-
-
 
 
     // Update user information
