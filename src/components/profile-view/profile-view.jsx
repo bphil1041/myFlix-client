@@ -4,13 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 export const ProfileView = ({ user, setUser, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState({
-        Username: "",
-        Password: "",
-        Email: "",
-        Birthday: "",
-        FavoriteMovies: []
-    });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -83,13 +76,12 @@ export const ProfileView = ({ user, setUser, movies }) => {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(updatedUser),
+                    body: JSON.stringify(user),
                 }
             );
 
             if (response.ok) {
                 alert("User information updated successfully");
-                setUser(updatedUser);
             } else {
                 alert("Failed to update user information");
             }
@@ -143,9 +135,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
-                const updatedUserData = { ...updatedUser, FavoriteMovies: [...updatedUser.FavoriteMovies, movieId] };
-                setUpdatedUser(updatedUserData);
-                setUser(updatedUserData);
                 alert("Movie added to favorites successfully");
             } else {
                 alert("Failed to add movie to favorites");
@@ -172,9 +161,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
-                const updatedUserData = { ...updatedUser, FavoriteMovies: updatedUser.FavoriteMovies.filter(id => id !== movieId) };
-                setUpdatedUser(updatedUserData);
-                setUser(updatedUserData);
                 alert("Movie removed from favorites successfully");
             } else {
                 alert("Failed to remove movie from favorites");
@@ -229,9 +215,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter your updated username"
-                                value={updatedUser.Username}
+                                value={user.Username}
                                 onChange={(e) =>
-                                    setUpdatedUser({ ...updatedUser, Username: e.target.value })
+                                    setUser({ ...user, Username: e.target.value })
                                 }
                             />
                         </Form.Group>
@@ -240,9 +226,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="password"
                                 placeholder="Enter your updated password"
-                                value={updatedUser.Password}
+                                value={user.Password}
                                 onChange={(e) =>
-                                    setUpdatedUser({ ...updatedUser, Password: e.target.value })
+                                    setUser({ ...user, Password: e.target.value })
                                 }
                             />
                         </Form.Group>
@@ -251,9 +237,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="email"
                                 placeholder="Enter your updated email"
-                                value={updatedUser.Email}
+                                value={user.Email}
                                 onChange={(e) =>
-                                    setUpdatedUser({ ...updatedUser, Email: e.target.value })
+                                    setUser({ ...user, Email: e.target.value })
                                 }
                             />
                         </Form.Group>
@@ -262,9 +248,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="date"
                                 placeholder="Select your updated birthday"
-                                value={updatedUser.Birthday}
+                                value={user.Birthday}
                                 onChange={(e) =>
-                                    setUpdatedUser({ ...updatedUser, Birthday: e.target.value })
+                                    setUser({ ...user, Birthday: e.target.value })
                                 }
                             />
                         </Form.Group>
