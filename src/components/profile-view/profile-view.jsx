@@ -43,12 +43,25 @@ export const ProfileView = ({ user, setUser }) => {
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete your account?")) {
             setIsLoading(true);
-            // Simulate delete request
-            setTimeout(() => {
-                setUser(null);
+            try {
+                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.ok) {
+                    setUser(null);
+                    alert("Your account has been deleted");
+                } else {
+                    alert("Failed to delete account");
+                }
+            } catch (error) {
+                console.error("Delete error:", error);
+                alert("Failed to delete account");
+            } finally {
                 setIsLoading(false);
-                alert("Your account has been deleted");
-            }, 1000);
+            }
         }
     };
 
