@@ -40,7 +40,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
     // ...
 
-    // Fetch user data from Heroku
     useEffect(() => {
         const fetchUserData = async () => {
             try {
