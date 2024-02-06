@@ -210,7 +210,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                             <p>Birthday: {user.birthday}</p>
                         </>
                     ) : (
-                        <p>Loading user information...</p>
+                        <p>No user information available.</p>
                     )}
                 </Col>
             </Row>
