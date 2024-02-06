@@ -167,7 +167,7 @@ export const ProfileView = ({ user, setUser }) => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    {movies.map(movie => (
+                                    {movies.length > 0 && movies.map(movie => (
                                         <Dropdown.Item
                                             key={movie._id}
                                             onClick={() => handleSelectMovie(movie._id)}
@@ -175,6 +175,9 @@ export const ProfileView = ({ user, setUser }) => {
                                             {movie.Title}
                                         </Dropdown.Item>
                                     ))}
+                                    {movies.length === 0 && (
+                                        <Dropdown.Item disabled>No movies available</Dropdown.Item>
+                                    )}
                                 </Dropdown.Menu>
                             </Dropdown>
                         </>
