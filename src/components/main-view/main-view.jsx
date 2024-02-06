@@ -13,7 +13,7 @@ import "./main-view.scss";
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState({
-        Username: '',
+        Username: 'Username',
         Password: '',
         Email: '',
         Birthday: '',
