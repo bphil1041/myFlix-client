@@ -44,7 +44,7 @@ export const ProfileView = ({ user, setUser }) => {
         if (window.confirm("Are you sure you want to delete your account?")) {
             setIsLoading(true);
             try {
-                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
+                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
                     method: "DELETE",
                     headers: {
                         Authorization: `Bearer ${token}`,
