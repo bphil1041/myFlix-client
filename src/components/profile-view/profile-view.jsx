@@ -23,6 +23,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
     // Return movies present in the user's favorite movies array
     const favoriteMoviesData = favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId));
 
+    console.log("User:", user);
+    console.log("Movies:", movies);
+    console.log("Favorite Movies:", favoriteMoviesData);
+
     // Fetch user data
     useEffect(() => {
         const fetchUserData = async () => {
@@ -32,6 +36,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     return;
                 }
 
+                console.log("Attempting to fetch user data. User:", user);
+
+                // Correct API URL for user data
                 const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
 
                 const response = await fetch(apiUrl, {
@@ -44,9 +51,17 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                 const responseData = await response.json();
 
+                // Log the response for debugging
+                console.log('Response body:', responseData);
+
                 if (Array.isArray(responseData) && responseData.length > 0) {
+                    // Take the first user from the array
                     const userData = responseData[0];
 
+                    // Log the parsed user data for debugging
+                    console.log('Parsed user data:', userData);
+
+                    // Ensure userData is an object
                     if (userData && typeof userData === 'object') {
                         setUser({
                             Username: userData.Username || '',
@@ -76,7 +91,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, // Assuming token is defined
             },
         }).then((response) => {
             if (response.ok) {
@@ -91,39 +106,84 @@ export const ProfileView = ({ user, movies, setUser }) => {
     };
 
     // Add a movie to the user's favorite movies
-    const addFavoriteMovie = async () => {
-        if (selectedMovieId) {
-            try {
-                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}/movies/${selectedMovieId}`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+    const addFavoriteMovie = () => {
+        console.log("Selected Movie ID:", selectedMovieId);
+        console.log("User Favorite Movies:", user.favoriteMovies);
 
-                if (response.ok) {
-                    const updatedUser = await response.json();
-                    setUser(updatedUser);
+        if (selectedMovieId && user.favoriteMovies) {
+            // Check if the movie is not already in the user's favorites
+            if (!user.favoriteMovies.includes(selectedMovieId)) {
+                const updatedUser = { ...user, favoriteMovies: [...user.favoriteMovies, selectedMovieId] };
+                setUser(updatedUser);
 
-                    // Clear the selectedMovieId for the next selection
-                    setSelectedMovieId('');
+                // You can also update the user data on the server if needed
+                // Example: call an API endpoint to update the user's favorite movies list
 
-                    alert('Movie added to favorites successfully!');
-                } else {
-                    alert('Failed to add movie to favorites. Please try again.');
-                }
-            } catch (error) {
-                console.error('Add favorite movie error:', error);
+                // Clear the selectedMovieId for the next selection
+                setSelectedMovieId('');
+            } else {
+                // Handle case when the movie is already in the user's favorites
+                alert('This movie is already in your favorites!');
             }
         } else {
+            // Handle case when no movie is selected or user.favoriteMovies is undefined
             alert('Please select a movie to add to favorites.');
         }
     };
 
     // Common function to handle movie card click
     const handleMovieCardClick = (movie) => {
+        // Navigate to the movie details page
         navigate(`/movies/${movie._id}`);
+    };
+
+    // Retrieve favorite movies from local storage on component mount
+    //useEffect(() => {
+    // const storedFavorites = localStorage.getItem('userFavorites');
+    // if (storedFavorites) {
+    //    const parsedFavorites = JSON.parse(storedFavorites);
+    // setUser((prevUser) => ({ ...prevUser, favoriteMovies: parsedFavorites }));
+    // }
+    // }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    // Save favorite movies to local storage whenever the user's favorites change
+    useEffect(() => {
+        localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
+    }, [user.favoriteMovies]);
+
+    // Function to handle user information update
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            // Perform the update logic here, for example, by making a PUT request to the server
+            const updatedUserData = {
+                Username: user.Username,
+                Password: user.Password,
+                Email: user.Email,
+                Birthday: user.Birthday
+            };
+
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedUserData),
+            });
+
+            if (response.ok) {
+                alert("User information updated successfully");
+            } else {
+                alert("Failed to update user information");
+            }
+        } catch (error) {
+            console.error("Update error:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // JSX rendering of the component
