@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
+import { Col, Row, Container, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
@@ -199,7 +199,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
                             <h3>Favorite Movies:</h3>
-                            {user.FavoriteMovies.length > 0 ? (
+                            {user.FavoriteMovies && user.FavoriteMovies.length > 0 ? (
                                 <ul>
                                     {user.FavoriteMovies.map(movieId => {
                                         const movie = movies.find(m => m._id === movieId);
