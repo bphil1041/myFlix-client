@@ -23,7 +23,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     const token = localStorage.getItem('token');
 
     // Return movies present in the user's favorite movies array
-    const favoriteMovies = user.favoriteMovies && movies
+    const favoriteMovies = user?.favoriteMovies && movies
         ? user.favoriteMovies.map((movieId) => {
             const foundMovie = movies.find((m) => m._id === movieId);
             if (!foundMovie) {
@@ -32,6 +32,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
             return foundMovie;
         })
         : [];
+
 
     console.log("User:", user);
     console.log("Movies:", movies);
