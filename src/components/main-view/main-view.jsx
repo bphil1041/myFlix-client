@@ -8,6 +8,7 @@ import { ProfileView } from "../profile-view/profile-view";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
 export const MainView = () => {
