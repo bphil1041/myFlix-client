@@ -50,11 +50,12 @@ export const ProfileView = ({ user, setUser }) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+                const data = await response.json();
                 if (response.ok) {
                     setUser(null);
-                    alert("Your account has been deleted");
+                    alert(data);
                 } else {
-                    alert("Failed to delete account");
+                    alert("Failed to delete account: " + data.error);
                 }
             } catch (error) {
                 console.error("Delete error:", error);
@@ -64,6 +65,7 @@ export const ProfileView = ({ user, setUser }) => {
             }
         }
     };
+
 
     return (
         <Container>
