@@ -63,6 +63,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 if (response.ok) {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
+
                     // Update state or perform other actions with the fetched user data
                     setUsername(userData.Username || '');
                     setPassword(userData.Password || '');
@@ -80,6 +81,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, setUser]);
+
 
 
     // Update user information
