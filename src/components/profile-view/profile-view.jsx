@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Container, Button, Form } from "react-bootstrap";
+import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 import "./profile-view.scss";
@@ -144,6 +144,22 @@ export const ProfileView = ({ user, setUser }) => {
                             <p>Email: {user.Email}</p>
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                    Add Favorite Movie
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {movies.map(movie => (
+                                        <Dropdown.Item
+                                            key={movie._id}
+                                            onClick={() => handleSelectMovie(movie._id)}
+                                        >
+                                            {movie.Title}
+                                        </Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </>
                     ) : (
                         <p>Loading user information...</p>
