@@ -61,21 +61,28 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                 if (response.ok) {
                     try {
-                        const userData = await response.json();
+                        const responseData = await response.text();
 
-                        // Ensure userData is an object
-                        if (userData && typeof userData === 'object') {
-                            setUsername(userData.Username || '');
-                            setPassword(userData.Password || '');
-                            setEmail(userData.Email || '');
-                            setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+                        // Check if the response is not empty and is a valid JSON
+                        if (responseData && responseData.trim() !== '') {
+                            const userData = JSON.parse(responseData);
+
+                            // Ensure userData is an object
+                            if (userData && typeof userData === 'object') {
+                                setUsername(userData.Username || '');
+                                setPassword(userData.Password || '');
+                                setEmail(userData.Email || '');
+                                setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+                            } else {
+                                console.error('Invalid user data structure received from the server:', userData);
+                            }
                         } else {
-                            console.error('Invalid user data structure received from the server:', userData);
+                            console.error('Empty or invalid JSON response from the server');
                         }
-                    } catch (jsonParseError) {
-                        console.error('Error parsing JSON response:', jsonParseError);
-                        console.error('Response body:', await response.text());
+                    } catch (error) {
+                        console.error('Error parsing or handling response:', error);
                     }
+
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json();
