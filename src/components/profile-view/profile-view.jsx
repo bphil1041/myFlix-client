@@ -37,7 +37,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
 
-    //Fetch user data
+    // Fetch user data
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -60,8 +60,15 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 });
 
                 if (response.ok) {
+                    const responseBody = await response.text();
+
+                    if (!responseBody) {
+                        console.error('Empty response body');
+                        return;
+                    }
+
                     try {
-                        const userData = await response.json();
+                        const userData = JSON.parse(responseBody);
 
                         // Ensure userData is an object
                         if (userData && typeof userData === 'object') {
@@ -74,7 +81,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         }
                     } catch (jsonParseError) {
                         console.error('Error parsing JSON response:', jsonParseError);
-                        console.error('Response body:', await response.text());
+                        console.error('Response body:', responseBody);
                     }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
