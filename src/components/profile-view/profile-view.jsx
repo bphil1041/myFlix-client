@@ -63,14 +63,17 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                 if (response.ok) {
                     const userData = await response.json();
-                    console.log("User Data from Heroku:", userData);
 
-                    // Assuming you want to display the details of the first user in the array
-                    const firstUser = userData[0];
-                    setUsername(firstUser.Username || '');
-                    setPassword(firstUser.Password || '');
-                    setEmail(firstUser.Email || '');
-                    setBirthday(firstUser.Birthday ? new Date(firstUser.Birthday).toISOString().split('T')[0] : '');
+                    if (Array.isArray(userData) && userData.length > 0) {
+                        // Assuming you want to display the details of the first user in the array
+                        const firstUser = userData[0];
+                        setUsername(firstUser.Username || '');
+                        setPassword(firstUser.Password || '');
+                        setEmail(firstUser.Email || '');
+                        setBirthday(firstUser.Birthday ? new Date(firstUser.Birthday).toISOString().split('T')[0] : '');
+                    } else {
+                        console.error('Invalid user data structure received from the server.');
+                    }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json();
@@ -83,8 +86,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, setUser]);
-
-    // ...
 
 
 
