@@ -59,42 +59,38 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     },
                 });
 
-                if (response.ok) {
-                    const responseData = await response.json();
+                const responseData = await response.text();
 
-                    // Log the response for debugging
-                    console.log('Response body:', responseData);
+                // Log the response for debugging
+                console.log('Response body:', responseData);
 
-                    // Check if responseData is an array and not empty
-                    if (Array.isArray(responseData) && responseData.length > 0) {
-                        const userData = responseData[0]; // Assuming the relevant user data is the first element in the array
+                // Check if the response is not empty and is a valid JSON
+                if (responseData && responseData.trim() !== '') {
+                    const userData = JSON.parse(responseData);
 
-                        // Ensure userData is an object
-                        if (userData && typeof userData === 'object') {
-                            setUsername(userData.Username || '');
-                            setPassword(userData.Password || '');
-                            setEmail(userData.Email || '');
-                            setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
-                        } else {
-                            console.error('Invalid user data structure received from the server:', userData);
-                        }
+                    // Log the parsed user data for debugging
+                    console.log('Parsed user data:', userData);
+
+                    // Ensure userData is an object
+                    if (userData && typeof userData === 'object') {
+                        setUsername(userData.Username || '');
+                        setPassword(userData.Password || '');
+                        setEmail(userData.Email || '');
+                        setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                     } else {
-                        console.error('Empty or invalid JSON response from the server');
+                        console.error('Invalid user data structure received from the server:', userData);
                     }
                 } else {
-                    console.error(`Failed to fetch user data. Status: ${response.status}`);
-                    const errorData = await response.json();
-                    console.error("Error response from server:", errorData);
+                    console.error('Empty or invalid JSON response from the server');
                 }
             } catch (error) {
                 console.error("Fetch error:", error);
             }
         };
 
-
-
         fetchUserData();
     }, [user, token]);
+
 
     // Delete user account
     const handleDelete = () => {
