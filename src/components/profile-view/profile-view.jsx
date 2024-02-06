@@ -8,27 +8,24 @@ import "./profile-view.scss";
 // ProfileView component
 export const ProfileView = ({ user, movies, setUser }) => {
     // Destructure user object
-    const { Username, Password, Email, Birthday } = user || {};
+    const { Username, Password, Email, Birthday, favoriteMovies = [] } = user || {};
 
     // State variables
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMovieId, setSelectedMovieId] = useState('');
-    const [selectedMovie, setSelectedMovie] = useState(null); // New state to store selected movie details
 
     // Navigation
     const navigate = useNavigate();
 
-    // Token 
+    // Token
     const token = localStorage.getItem('token');
 
     // Return movies present in the user's favorite movies array
-    const favoriteMovies = user?.favoriteMovies && movies
-        ? user.favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId))
-        : [];
+    const favoriteMoviesData = favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId));
 
     console.log("User:", user);
     console.log("Movies:", movies);
-    console.log("Favorite Movies:", favoriteMovies);
+    console.log("Favorite Movies:", favoriteMoviesData);
 
     // Fetch user data
     useEffect(() => {
@@ -87,13 +84,11 @@ export const ProfileView = ({ user, movies, setUser }) => {
         fetchUserData();
     }, [user, token, setUser]);
 
-
-
     // Delete user account
     const handleDelete = () => {
         setIsLoading(true);
 
-        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`, // Assuming token is defined
@@ -164,10 +159,10 @@ export const ProfileView = ({ user, movies, setUser }) => {
         try {
             // Perform the update logic here, for example, by making a PUT request to the server
             const updatedUserData = {
-                Username: username,
-                Password: password,
-                Email: email,
-                Birthday: birthday
+                Username: user.Username,
+                Password: user.Password,
+                Email: user.Email,
+                Birthday: user.Birthday
             };
 
             const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
@@ -214,8 +209,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 <Col md={6}>
                     <h2>Favorite Movies</h2>
                     {/* Render favorite movies */}
-                    {favoriteMovies.length > 0 ? (
-                        favoriteMovies.map((movie) => (
+                    {favoriteMoviesData.length > 0 ? (
+                        favoriteMoviesData.map((movie) => (
                             <Col
                                 key={movie._id}
                                 className="m-3"
@@ -270,36 +265,32 @@ export const ProfileView = ({ user, movies, setUser }) => {
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
+                                value={Username}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
+                                value={Password}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formEmail">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
+                                value={Email}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group controlId="formBirthday">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
-                                value={birthday}
-                                onChange={(e) => setBirthday(e.target.value)}
-                                required
+                                value={Birthday}
+                                disabled
                             />
                         </Form.Group>
 
