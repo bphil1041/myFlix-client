@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 export const ProfileView = ({ user, setUser, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState(null);
+    const [updatedUser, setUpdatedUser] = useState({
+        Username: "",
+        Password: "",
+        Email: "",
+        Birthday: "",
+        FavoriteMovies: []
+    });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -142,55 +148,53 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
     return (
         <Container>
-            {updatedUser ? (
-                <>
-                    <Row className="justify-content-center">
-                        <Col md={6}>
-                            <h2 className="profile-title">User Information</h2>
-                            <>
-                                <p>Username: {updatedUser.Username}</p>
-                                <p>Email: {updatedUser.Email}</p>
-                                <p>Password: {updatedUser.Password}</p>
-                                <p>Birthday: {updatedUser.Birthday}</p>
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                        Add Favorite Movie
-                                    </Dropdown.Toggle>
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <h2 className="profile-title">User Information</h2>
+                    {updatedUser ? (
+                        <>
+                            <p>Username: {updatedUser.Username}</p>
+                            <p>Email: {updatedUser.Email}</p>
+                            <p>Password: {updatedUser.Password}</p>
+                            <p>Birthday: {updatedUser.Birthday}</p>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                    Add Favorite Movie
+                                </Dropdown.Toggle>
 
-                                    <Dropdown.Menu>
-                                        {movies.map(movie => (
-                                            <Dropdown.Item
-                                                key={movie._id}
-                                                onClick={() => handleSelectMovie(movie._id)}
-                                            >
-                                                {movie.title} ({movie.year})
-                                            </Dropdown.Item>
-                                        ))}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                                <p>Favorite Movies:</p>
-                                <ul>
-                                    {updatedUser.FavoriteMovies.map(movie => (
-                                        <li key={movie._id}>
+                                <Dropdown.Menu>
+                                    {movies.map(movie => (
+                                        <Dropdown.Item
+                                            key={movie._id}
+                                            onClick={() => handleSelectMovie(movie._id)}
+                                        >
                                             {movie.title} ({movie.year})
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                onClick={() => handleRemoveMovie(movie._id)}
-                                                className="ml-2"
-                                            >
-                                                Remove
-                                            </Button>
-                                        </li>
+                                        </Dropdown.Item>
                                     ))}
-                                </ul>
-                            </>
-                        </Col>
-                    </Row>
-                </>
-            ) : (
-                <p>Loading user information...</p>
-            )}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            <p>Favorite Movies:</p>
+                            <ul>
+                                {updatedUser.FavoriteMovies.map(movie => (
+                                    <li key={movie._id}>
+                                        {movie.title} ({movie.year})
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            onClick={() => handleRemoveMovie(movie._id)}
+                                            className="ml-2"
+                                        >
+                                            Remove
+                                        </Button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    ) : (
+                        <p>Loading user information...</p>
+                    )}
+                </Col>
+            </Row>
 
             <Row className="justify-content-center">
                 <Col md={6}>
@@ -201,7 +205,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter your updated username"
-                                value={updatedUser ? updatedUser.Username : ""}
+                                value={updatedUser.Username}
                                 onChange={(e) =>
                                     setUpdatedUser({ ...updatedUser, Username: e.target.value })
                                 }
@@ -212,7 +216,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="password"
                                 placeholder="Enter your updated password"
-                                value={updatedUser ? updatedUser.Password : ""}
+                                value={updatedUser.Password}
                                 onChange={(e) =>
                                     setUpdatedUser({ ...updatedUser, Password: e.target.value })
                                 }
@@ -223,7 +227,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="email"
                                 placeholder="Enter your updated email"
-                                value={updatedUser ? updatedUser.Email : ""}
+                                value={updatedUser.Email}
                                 onChange={(e) =>
                                     setUpdatedUser({ ...updatedUser, Email: e.target.value })
                                 }
@@ -234,7 +238,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <Form.Control
                                 type="date"
                                 placeholder="Select your updated birthday"
-                                value={updatedUser ? updatedUser.Birthday : ""}
+                                value={updatedUser.Birthday}
                                 onChange={(e) =>
                                     setUpdatedUser({ ...updatedUser, Birthday: e.target.value })
                                 }
