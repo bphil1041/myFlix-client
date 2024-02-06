@@ -12,60 +12,120 @@ export const ProfileView = ({ user, setUser }) => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
-        setUpdatedUser({
-            Username: user?.Username || "",
-            Password: user?.Password || "",
-            Email: user?.Email || "",
-            Birthday: user?.Birthday || "",
-        });
-    }, [user]);
+        const fetchUserData = async () => {
+            try {
+                if (!user) {
+                    console.error("User object is null or undefined.");
+                    return;
+                }
+
+                console.log("Attempting to fetch user data. User:", user);
+
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
+
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const responseData = await response.json();
+
+                console.log("Response body:", responseData);
+
+                if (Array.isArray(responseData) && responseData.length > 0) {
+                    const userData = responseData[0];
+
+                    console.log("Parsed user data:", userData);
+
+                    if (userData && typeof userData === "object") {
+                        setUser({
+                            Username: userData.Username || "",
+                            Password: userData.Password || "",
+                            Email: userData.Email || "",
+                            Birthday: userData.Birthday
+                                ? new Date(userData.Birthday).toISOString().split("T")[0]
+                                : "",
+                        });
+                    } else {
+                        console.error(
+                            "Invalid user data structure received from the server:",
+                            userData
+                        );
+                    }
+                } else {
+                    console.error("Empty or invalid response from the server");
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchUserData();
+    }, [user, token, setUser]);
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            // Simulate update request
-            setTimeout(() => {
-                setUser(updatedUser);
-                setIsLoading(false);
+            const response = await fetch(
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedUser),
+                }
+            );
+
+            if (response.ok) {
                 alert("User information updated successfully");
-            }, 1000);
+                setUser(updatedUser);
+            } else {
+                alert("Failed to update user information");
+            }
         } catch (error) {
             console.error("Update error:", error);
+        } finally {
             setIsLoading(false);
-            alert("Failed to update user information");
         }
     };
 
-    const handleDelete = async () => {
+    const handleDeleteAccount = async () => {
         if (window.confirm("Are you sure you want to delete your account?")) {
             setIsLoading(true);
             try {
-                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                const data = await response.json();
+                const response = await fetch(
+                    `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
                 if (response.ok) {
                     setUser(null);
-                    alert(data);
+                    alert("Your account has been deleted");
                 } else {
-                    alert("Failed to delete account: " + data.error);
+                    alert("Failed to delete account");
                 }
             } catch (error) {
-                console.error("Delete error:", error);
-                alert("Failed to delete account");
+                console.error("Delete account error:", error);
             } finally {
                 setIsLoading(false);
             }
         }
     };
-
 
     return (
         <Container>
@@ -142,11 +202,14 @@ export const ProfileView = ({ user, setUser }) => {
                             {isLoading ? "Updating..." : "Update"}
                         </Button>
                     </Form>
+                </Col>
+            </Row>
 
-                    {/* Delete account button */}
+            <Row className="justify-content-center">
+                <Col md={6}>
                     <Button
                         className="btn btn-danger delete"
-                        onClick={handleDelete}
+                        onClick={handleDeleteAccount}
                         disabled={isLoading}
                     >
                         {isLoading ? "Deleting..." : "Delete Account"}
