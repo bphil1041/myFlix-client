@@ -40,6 +40,18 @@ export const ProfileView = ({ user, setUser }) => {
         }
     };
 
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete your account?")) {
+            setIsLoading(true);
+            // Simulate delete request
+            setTimeout(() => {
+                setUser(null);
+                setIsLoading(false);
+                alert("Your account has been deleted");
+            }, 1000);
+        }
+    };
+
     return (
         <Container>
             <Row className="justify-content-center">
@@ -112,8 +124,18 @@ export const ProfileView = ({ user, setUser }) => {
                             type="submit"
                             disabled={isLoading}
                         >
+                            {isLoading ? "Updating..." : "Update"}
                         </Button>
                     </Form>
+
+                    {/* Delete account button */}
+                    <Button
+                        className="btn btn-danger delete"
+                        onClick={handleDelete}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Deleting..." : "Delete Account"}
+                    </Button>
                 </Col>
             </Row>
         </Container>
