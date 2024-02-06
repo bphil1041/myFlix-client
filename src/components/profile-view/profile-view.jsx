@@ -155,7 +155,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
                         <>
                             <p>Username: {user.Username}</p>
                             <p>Email: {user.Email}</p>
-                            <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
                             <p>Favorite Movies:</p>
                             <ul>
