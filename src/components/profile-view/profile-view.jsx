@@ -215,7 +215,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     <h2 className="profile-title">User Information</h2>
                     {user ? (
                         <>
-                            <p>Username: {user.username}</p>
+                            <p>Username: {user.Username}</p>
                             <p>Email: {user.email}</p>
                             <p>Password: {user.password}</p>
                             <p>Birthday: {user.birthday}</p>
