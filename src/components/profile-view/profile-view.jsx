@@ -18,6 +18,83 @@ export const ProfileView = ({ user, setUser }) => {
     // Token
     const token = localStorage.getItem('token');
 
+    // Fetch user data
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                if (!user) {
+                    console.error('User object is null or undefined.');
+                    return;
+                }
+
+                console.log("Attempting to fetch user data. User:", user);
+
+                // Correct API URL for user data
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
+
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const responseData = await response.json();
+
+                // Log the response for debugging
+                console.log('Response body:', responseData);
+
+                if (Array.isArray(responseData) && responseData.length > 0) {
+                    // Take the first user from the array
+                    const userData = responseData[0];
+
+                    // Log the parsed user data for debugging
+                    console.log('Parsed user data:', userData);
+
+                    // Ensure userData is an object
+                    if (userData && typeof userData === 'object') {
+                        setUser({
+                            Username: userData.Username || '',
+                            Password: userData.Password || '',
+                            Email: userData.Email || '',
+                            Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : ''
+                        });
+                    } else {
+                        console.error('Invalid user data structure received from the server:', userData);
+                    }
+                } else {
+                    console.error('Empty or invalid response from the server');
+                }
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchUserData();
+    }, [user, token, setUser]);
+
+    // Delete user account
+    const handleDelete = () => {
+        setIsLoading(true);
+
+        fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`, // Assuming token is defined
+            },
+        }).then((response) => {
+            if (response.ok) {
+                setUser(null);
+                alert("Your account has been deleted");
+            } else {
+                alert("Something went wrong.")
+            }
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    };
+
     // Function to handle user information update
     const handleUpdate = async (e) => {
         e.preventDefault();
@@ -26,13 +103,13 @@ export const ProfileView = ({ user, setUser }) => {
         try {
             // Perform the update logic here, for example, by making a PUT request to the server
             const updatedUserData = {
-                Username: e.target.Username.value,
-                Password: e.target.Password.value,
-                Email: e.target.Email.value,
-                Birthday: e.target.Birthday.value
+                Username: user.Username,
+                Password: user.Password,
+                Email: user.Email,
+                Birthday: user.Birthday
             };
 
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -43,7 +120,6 @@ export const ProfileView = ({ user, setUser }) => {
 
             if (response.ok) {
                 alert("User information updated successfully");
-                setUser(updatedUserData); // Update local state with new user data
             } else {
                 alert("Failed to update user information");
             }
@@ -83,36 +159,36 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="Username"
-                                defaultValue={Username}
+                                value={Username}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
-                                name="Password"
-                                defaultValue={Password}
+                                value={Password}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formEmail">
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
-                                name="Email"
-                                defaultValue={Email}
+                                value={Email}
+                                disabled
                             />
                         </Form.Group>
                         <Form.Group controlId="formBirthday">
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
-                                name="Birthday"
-                                defaultValue={Birthday}
+                                value={Birthday}
+                                disabled
                             />
                         </Form.Group>
 
-                        {/* Update button */}
+                        {/* Update and delete buttons */}
                         <Button
                             className="btn btn-primary update"
                             type="submit"
@@ -120,39 +196,14 @@ export const ProfileView = ({ user, setUser }) => {
                         >
                             {isLoading ? 'Updating...' : 'Update'}
                         </Button>
+                        <Button
+                            className="btn btn-danger delete"
+                            onClick={handleDelete}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Deleting...' : 'Delete Account'}
+                        </Button>
                     </Form>
-                </Col>
-            </Row>
-
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    {/* Delete account button */}
-                    <Button
-                        className="btn btn-danger delete"
-                        onClick={() => {
-                            if (window.confirm("Are you sure you want to delete your account?")) {
-                                setIsLoading(true);
-                                fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`, {
-                                    method: "DELETE",
-                                    headers: {
-                                        Authorization: `Bearer ${token}`,
-                                    },
-                                }).then((response) => {
-                                    if (response.ok) {
-                                        setUser(null);
-                                        alert("Your account has been deleted");
-                                    } else {
-                                        alert("Something went wrong.")
-                                    }
-                                }).finally(() => {
-                                    setIsLoading(false);
-                                });
-                            }
-                        }}
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Deleting...' : 'Delete Account'}
-                    </Button>
                 </Col>
             </Row>
         </Container>
