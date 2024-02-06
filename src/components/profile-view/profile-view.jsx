@@ -1,31 +1,22 @@
 // Import statements
 import React, { useState, useEffect } from "react";
 import { Col, Row, Container, Button, Form } from "react-bootstrap";
-import { MovieCard } from "../movie-card/movie-card";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 // ProfileView component
-export const ProfileView = ({ user, movies, setUser }) => {
+export const ProfileView = ({ user, setUser }) => {
     // Destructure user object
-    const { Username, Password, Email, Birthday, favoriteMovies = [] } = user || {};
+    const { Username, Password, Email, Birthday } = user || {};
 
     // State variables
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedMovieId, setSelectedMovieId] = useState('');
 
     // Navigation
     const navigate = useNavigate();
 
     // Token
     const token = localStorage.getItem('token');
-
-    // Return movies present in the user's favorite movies array
-    const favoriteMoviesData = favoriteMovies.map((movieId) => movies.find((m) => m._id === movieId));
-
-    console.log("User:", user);
-    console.log("Movies:", movies);
-    console.log("Favorite Movies:", favoriteMoviesData);
 
     // Fetch user data
     useEffect(() => {
@@ -67,8 +58,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                             Username: userData.Username || '',
                             Password: userData.Password || '',
                             Email: userData.Email || '',
-                            Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '',
-                            favoriteMovies: userData.favoriteMovies || []
+                            Birthday: userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : ''
                         });
                     } else {
                         console.error('Invalid user data structure received from the server:', userData);
@@ -104,52 +94,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
             setIsLoading(false);
         });
     };
-
-    // Add a movie to the user's favorite movies
-    const addFavoriteMovie = () => {
-        console.log("Selected Movie ID:", selectedMovieId);
-        console.log("User Favorite Movies:", user.favoriteMovies);
-
-        if (selectedMovieId && user.favoriteMovies) {
-            // Check if the movie is not already in the user's favorites
-            if (!user.favoriteMovies.includes(selectedMovieId)) {
-                const updatedUser = { ...user, favoriteMovies: [...user.favoriteMovies, selectedMovieId] };
-                setUser(updatedUser);
-
-                // You can also update the user data on the server if needed
-                // Example: call an API endpoint to update the user's favorite movies list
-
-                // Clear the selectedMovieId for the next selection
-                setSelectedMovieId('');
-            } else {
-                // Handle case when the movie is already in the user's favorites
-                alert('This movie is already in your favorites!');
-            }
-        } else {
-            // Handle case when no movie is selected or user.favoriteMovies is undefined
-            alert('Please select a movie to add to favorites.');
-        }
-    };
-
-    // Common function to handle movie card click
-    const handleMovieCardClick = (movie) => {
-        // Navigate to the movie details page
-        navigate(`/movies/${movie._id}`);
-    };
-
-    // Retrieve favorite movies from local storage on component mount
-    //useEffect(() => {
-    // const storedFavorites = localStorage.getItem('userFavorites');
-    // if (storedFavorites) {
-    //    const parsedFavorites = JSON.parse(storedFavorites);
-    // setUser((prevUser) => ({ ...prevUser, favoriteMovies: parsedFavorites }));
-    // }
-    // }, []); // Empty dependency array ensures this effect runs only once on mount
-
-    // Save favorite movies to local storage whenever the user's favorites change
-    useEffect(() => {
-        localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
-    }, [user.favoriteMovies]);
 
     // Function to handle user information update
     const handleUpdate = async (e) => {
@@ -202,56 +146,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     ) : (
                         <p>No user information available.</p>
                     )}
-                </Col>
-            </Row>
-
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h2>Favorite Movies</h2>
-                    {/* Render favorite movies */}
-                    {favoriteMoviesData.length > 0 ? (
-                        favoriteMoviesData.map((movie) => (
-                            <Col
-                                key={movie._id}
-                                className="m-3"
-                            >
-                                <MovieCard
-                                    movie={movie}
-                                    onMovieClick={() => handleMovieCardClick(movie)}
-                                />
-                            </Col>
-                        ))
-                    ) : (
-                        <p>No favorite movies yet.</p>
-                    )}
-                </Col>
-            </Row>
-
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h2 className="profile-title">Add to Favorites</h2>
-                    <Form>
-                        <Form.Group controlId="selectMovie">
-                            <Form.Label>Select a Movie:</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={selectedMovieId}
-                                onChange={(e) => setSelectedMovieId(e.target.value)}
-                            >
-                                <option value="" disabled>Select a movie</option>
-                                {movies.map((movie) => (
-                                    <option key={movie._id} value={movie._id}>{movie.title}</option>
-                                ))}
-                            </Form.Control>
-                        </Form.Group>
-                        <Button
-                            variant="primary"
-                            onClick={addFavoriteMovie}
-                            disabled={isLoading}
-                        >
-                            Add to Favorites
-                        </Button>
-                    </Form>
                 </Col>
             </Row>
 
