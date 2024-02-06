@@ -70,18 +70,16 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
-                    const errorData = await response.json(); // Attempt to parse error response
+                    const errorData = await response.json();
                     console.error("Error response from server:", errorData);
-                    // Handle errors, show error messages, etc.
                 }
             } catch (error) {
                 console.error("Fetch error:", error);
-                // Handle errors, show error messages, etc.
             }
         };
 
         fetchUserData();
-    }, [user, token]);
+    }, [user, setUser]);
 
 
     // Update user information
