@@ -128,28 +128,11 @@ export const ProfileView = ({ user, setUser }) => {
             }
         }
     };
-    useEffect(() => {
-        // Fetch the list of movies from the API
-        const fetchMovies = async () => {
-            try {
-                const apiUrl = "https://myflixbp-ee7590ef397f.herokuapp.com/movies";
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                setMovies(data);
-            } catch (error) {
-                console.error("Error fetching movies:", error);
-            }
-        };
-
-        fetchMovies();
-    }, []);
 
     const handleSelectMovie = (movieId) => {
         // Placeholder function to handle movie selection
         console.log("Selected movie ID:", movieId);
     };
-
-
 
 
 
