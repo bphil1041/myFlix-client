@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 import "./profile-view.scss";
 
-export const ProfileView = ({ user, setUser, movies }) => {
+export const ProfileView = ({ user, setUser }) => {
     const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
@@ -137,7 +137,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
                 const apiUrl = "https://myflixbp-ee7590ef397f.herokuapp.com/movies";
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                console.log("Movie data:", data);
                 setMovies(data);
             } catch (error) {
                 console.error("Error fetching movies:", error);
@@ -163,24 +162,22 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p>Email: {user.Email}</p>
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
-                            {movies.length > 0 && (
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                        Add Favorite Movie
-                                    </Dropdown.Toggle>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                    Add Favorite Movie
+                                </Dropdown.Toggle>
 
-                                    <Dropdown.Menu>
-                                        {movies.map(movie => (
-                                            <Dropdown.Item
-                                                key={movie._id}
-                                                onClick={() => handleSelectMovie(movie._id)}
-                                            >
-                                                {movie.title}
-                                            </Dropdown.Item>
-                                        ))}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            )}
+                                <Dropdown.Menu>
+                                    {movies.map(movie => (
+                                        <Dropdown.Item
+                                            key={movie._id}
+                                            onClick={() => handleSelectMovie(movie._id)}
+                                        >
+                                            {movie.Title}
+                                        </Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
                         </>
                     ) : (
                         <p>Loading user information...</p>
