@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row, Container, Button, Form } from "react-bootstrap";
+import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
@@ -12,6 +12,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
         FavoriteMovies: []
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -187,6 +188,10 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
+    const handleDropdownSelect = (movieId) => {
+        setSelectedMovie(movieId);
+    };
+
     return (
         <Container>
             <Row className="justify-content-center">
@@ -199,7 +204,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
                             <h3>Favorite Movies:</h3>
-                            {user.FavoriteMovies && user.FavoriteMovies.length > 0 ? (
+                            {user.FavoriteMovies.length > 0 ? (
                                 <ul>
                                     {user.FavoriteMovies.map(movieId => {
                                         const movie = movies.find(m => m._id === movieId);
@@ -218,6 +223,32 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     ) : (
                         <p>Loading user information...</p>
                     )}
+                </Col>
+            </Row>
+
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <h2 className="profile-title">Add Favorite Movie</h2>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            Select Movie
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {movies.map(movie => (
+                                <Dropdown.Item key={movie._id} onSelect={() => handleDropdownSelect(movie._id)}>
+                                    {movie.title}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Button
+                        className="btn btn-primary add-movie"
+                        onClick={() => handleSelectMovie(selectedMovie)}
+                        disabled={!selectedMovie || isLoading}
+                    >
+                        {isLoading ? "Adding..." : "Add Movie"}
+                    </Button>
                 </Col>
             </Row>
 
