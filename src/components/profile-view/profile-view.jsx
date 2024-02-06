@@ -216,9 +216,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     {user ? (
                         <>
                             <p>Username: {user.Username}</p>
-                            <p>Email: {user.email}</p>
-                            <p>Password: {user.password}</p>
-                            <p>Birthday: {user.birthday}</p>
+                            <p>Email: {user.Email}</p>
+                            <p>Password: {user.Password}</p>
+                            <p>Birthday: {user.Birthday}</p>
                         </>
                     ) : (
                         <p>No user information available.</p>
