@@ -261,7 +261,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Button
-                        className="btn btn-danger delete"
+                        className="btn btn-danger delete border-white"
                         onClick={handleDeleteAccount}
                         disabled={isLoading}
                     >
