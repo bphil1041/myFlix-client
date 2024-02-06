@@ -63,11 +63,16 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 if (response.ok) {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
-                    // Update state or perform other actions with the fetched user data
-                    setUsername(userData.Username || '');
-                    setPassword(userData.Password || '');
-                    setEmail(userData.Email || '');
-                    setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+
+                    // Check if userData is not null before updating state
+                    if (userData) {
+                        setUsername(userData.Username || '');
+                        setPassword(userData.Password || '');
+                        setEmail(userData.Email || '');
+                        setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+                    } else {
+                        console.error('Fetched user data is null.');
+                    }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json();
@@ -83,6 +88,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
             fetchUserData();
         }
     }, [user, token]);
+
 
 
 
