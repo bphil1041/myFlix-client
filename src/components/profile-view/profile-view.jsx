@@ -50,7 +50,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 console.log("Attempting to fetch user data. User:", user);
 
                 // Your Heroku backend API URL
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -78,12 +78,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
             }
         };
 
-        // Only fetch user data when the component mounts and user is available
-        if (user) {
-            fetchUserData();
-        }
-    }, [user, token]);
-
+        fetchUserData();
+    }, [user, setUser]);
 
 
     // Update user information
@@ -214,7 +210,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                             <p>Birthday: {user.birthday}</p>
                         </>
                     ) : (
-                        <p>Loading user information...</p>
+                        <p>No user information available.</p>
                     )}
                 </Col>
             </Row>
