@@ -52,6 +52,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             Birthday: userData.Birthday
                                 ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
                         console.error(
@@ -89,7 +90,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
             if (response.ok) {
                 alert("User information updated successfully");
-                setUser(updatedUser);
+                setUser(updatedUser); // Update user with updatedUser
             } else {
                 alert("Failed to update user information");
             }
