@@ -132,6 +132,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
+                                placeholder="Enter your name"
                                 value={updatedUser.Username}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Username: e.target.value })}
                             />
@@ -140,6 +141,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
+                                placeholder="Enter your password"
                                 value={updatedUser.Password}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Password: e.target.value })}
                             />
@@ -148,6 +150,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
+                                placeholder="Enter your email"
                                 value={updatedUser.Email}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
                             />
@@ -156,10 +159,12 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
+                                placeholder="Select your birthday"
                                 value={updatedUser.Birthday}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Birthday: e.target.value })}
                             />
                         </Form.Group>
+
 
                         {/* Update and delete buttons */}
                         <Button
