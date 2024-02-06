@@ -128,7 +128,6 @@ export const ProfileView = ({ user, setUser }) => {
             }
         }
     };
-
     useEffect(() => {
         // Fetch the list of movies from the API
         const fetchMovies = async () => {
@@ -144,6 +143,11 @@ export const ProfileView = ({ user, setUser }) => {
 
         fetchMovies();
     }, []);
+
+    const handleSelectMovie = (movieId) => {
+        // Placeholder function to handle movie selection
+        console.log("Selected movie ID:", movieId);
+    };
 
 
 
