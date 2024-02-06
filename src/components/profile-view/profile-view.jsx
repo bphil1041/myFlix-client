@@ -10,7 +10,6 @@ export const ProfileView = ({ user, setUser }) => {
         Password: "",
         Email: "",
         Birthday: "",
-        FavoriteMovies: [],
     });
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -53,7 +52,6 @@ export const ProfileView = ({ user, setUser }) => {
                             Birthday: userData.Birthday
                                 ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
-                            FavoriteMovies: userData.FavoriteMovies || [],
                         });
                     } else {
                         console.error(
@@ -130,58 +128,6 @@ export const ProfileView = ({ user, setUser }) => {
         }
     };
 
-    const handleAddFavorite = async (movieId) => {
-        try {
-            const response = await fetch(
-                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (response.ok) {
-                alert("Movie added to favorites successfully");
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    FavoriteMovies: [...prevUser.FavoriteMovies, movieId],
-                }));
-            } else {
-                alert("Failed to add movie to favorites");
-            }
-        } catch (error) {
-            console.error("Add favorite movie error:", error);
-        }
-    };
-
-    const handleRemoveFavorite = async (movieId) => {
-        try {
-            const response = await fetch(
-                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (response.ok) {
-                alert("Movie removed from favorites successfully");
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    FavoriteMovies: prevUser.FavoriteMovies.filter((id) => id !== movieId),
-                }));
-            } else {
-                alert("Failed to remove movie from favorites");
-            }
-        } catch (error) {
-            console.error("Remove favorite movie error:", error);
-        }
-    };
-
 
 
 
@@ -205,27 +151,7 @@ export const ProfileView = ({ user, setUser }) => {
                 </Col>
             </Row>
 
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h2 className="profile-title">Favorite Movies</h2>
-                    <Row>
-                        {user && user.FavoriteMovies.length > 0 ? (
-                            user.FavoriteMovies.map((movieId) => (
-                                <Col key={movieId} xs={6} sm={4} lg={3} className="mb-3">
-                                    <MovieCard
-                                        movie={{ _id: movieId }}
-                                        onRemoveFavorite={handleRemoveFavorite}
-                                    />
-                                </Col>
-                            ))
-                        ) : (
-                            <Col>
-                                <p>No favorite movies found.</p>
-                            </Col>
-                        )}
-                    </Row>
-                </Col>
-            </Row>
+
 
             <Row className="justify-content-center">
                 <Col md={6}>
