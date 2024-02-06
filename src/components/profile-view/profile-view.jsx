@@ -60,29 +60,27 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 });
 
                 if (response.ok) {
-                    try {
-                        const responseData = await response.text();
+                    const responseData = await response.text();
 
-                        // Check if the response is not empty and is a valid JSON
-                        if (responseData && responseData.trim() !== '') {
-                            const userData = JSON.parse(responseData);
+                    // Log the response for debugging
+                    console.log('Response body:', responseData);
 
-                            // Ensure userData is an object
-                            if (userData && typeof userData === 'object') {
-                                setUsername(userData.Username || '');
-                                setPassword(userData.Password || '');
-                                setEmail(userData.Email || '');
-                                setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
-                            } else {
-                                console.error('Invalid user data structure received from the server:', userData);
-                            }
+                    // Check if the response is not empty and is a valid JSON
+                    if (responseData && responseData.trim() !== '') {
+                        const userData = JSON.parse(responseData);
+
+                        // Ensure userData is an object
+                        if (userData && typeof userData === 'object') {
+                            setUsername(userData.Username || '');
+                            setPassword(userData.Password || '');
+                            setEmail(userData.Email || '');
+                            setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                         } else {
-                            console.error('Empty or invalid JSON response from the server');
+                            console.error('Invalid user data structure received from the server:', userData);
                         }
-                    } catch (error) {
-                        console.error('Error parsing or handling response:', error);
+                    } else {
+                        console.error('Empty or invalid JSON response from the server');
                     }
-
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json();
@@ -92,6 +90,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 console.error("Fetch error:", error);
             }
         };
+
 
         fetchUserData();
     }, [user, token]);
