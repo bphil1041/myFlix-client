@@ -129,8 +129,13 @@ export const ProfileView = ({ user, setUser, movies }) => {
     };
 
     const handleSelectMovie = (movieId) => {
-        // Placeholder function to handle movie selection
-        console.log("Selected movie ID:", movieId);
+        const selectedMovie = movies.find(movie => movie._id === movieId);
+        if (selectedMovie) {
+            setUpdatedUser(prevUser => ({
+                ...prevUser,
+                FavoriteMovies: [...prevUser.FavoriteMovies, selectedMovie]
+            }));
+        }
     };
 
     return (
@@ -144,6 +149,12 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p>Email: {user.Email}</p>
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
+                            <p>Favorite Movies:</p>
+                            <ul>
+                                {updatedUser.FavoriteMovies.map(movie => (
+                                    <li key={movie._id}>{movie.title} ({movie.year})</li>
+                                ))}
+                            </ul>
                             <Dropdown>
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
                                     Add Favorite Movie
