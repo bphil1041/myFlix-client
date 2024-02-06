@@ -137,6 +137,7 @@ export const ProfileView = ({ user, setUser }) => {
                 const apiUrl = "https://myflixbp-ee7590ef397f.herokuapp.com/movies";
                 const response = await fetch(apiUrl);
                 const data = await response.json();
+                console.log("Movie data:", data);
                 setMovies(data);
             } catch (error) {
                 console.error("Error fetching movies:", error);
