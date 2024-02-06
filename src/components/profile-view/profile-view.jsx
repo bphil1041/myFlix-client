@@ -150,6 +150,41 @@ export const ProfileView = ({ user, movies, setUser }) => {
         localStorage.setItem('userFavorites', JSON.stringify(user.favoriteMovies));
     }, [user.favoriteMovies]);
 
+    // Function to handle user information update
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            // Perform the update logic here, for example, by making a PUT request to the server
+            const updatedUserData = {
+                Username: username,
+                Password: password,
+                Email: email,
+                Birthday: birthday
+            };
+
+            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedUserData),
+            });
+
+            if (response.ok) {
+                alert("User information updated successfully");
+            } else {
+                alert("Failed to update user information");
+            }
+        } catch (error) {
+            console.error("Update error:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     // JSX rendering of the component
     return (
         <Container>
