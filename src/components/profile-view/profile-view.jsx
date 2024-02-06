@@ -124,15 +124,15 @@ export const ProfileView = ({ user, setUser }) => {
 
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h2 className="profile-title">Update info</h2>
+                    <h2 className="profile-title">Update User Information</h2>
                     {/* User information update form */}
                     <Form className="my-profile" onSubmit={handleUpdate}>
                         {/* Form fields for name, password, email, and birthday */}
                         <Form.Group className="mb-2" controlId="formName">
-                            <Form.Label>Name:</Form.Label>
+                            <Form.Label>Username:</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter your name"
+                                placeholder="Enter your updated username"
                                 value={updatedUser.Username}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Username: e.target.value })}
                             />
@@ -141,7 +141,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Password:</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Enter your password"
+                                placeholder="Enter your updated password"
                                 value={updatedUser.Password}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Password: e.target.value })}
                             />
@@ -150,7 +150,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Email:</Form.Label>
                             <Form.Control
                                 type="email"
-                                placeholder="Enter your email"
+                                placeholder="Enter your updated email"
                                 value={updatedUser.Email}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Email: e.target.value })}
                             />
@@ -159,7 +159,7 @@ export const ProfileView = ({ user, setUser }) => {
                             <Form.Label>Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
-                                placeholder="Select your birthday"
+                                placeholder="Select your updated birthday"
                                 value={updatedUser.Birthday}
                                 onChange={(e) => setUpdatedUser({ ...updatedUser, Birthday: e.target.value })}
                             />
