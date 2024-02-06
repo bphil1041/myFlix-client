@@ -60,18 +60,18 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 });
 
                 if (response.ok) {
-                    const responseBody = await response.text();
-
-                    if (!responseBody) {
-                        console.error('Empty response body');
-                        return;
-                    }
-
                     try {
+                        const responseBody = await response.text();
+
+                        if (!responseBody) {
+                            console.error('Empty response body');
+                            return;
+                        }
+
                         const userData = JSON.parse(responseBody);
 
                         // Ensure userData is an object
-                        if (userData && typeof userData === 'object') {
+                        if (userData !== undefined && typeof userData === 'object') {
                             setUsername(userData.Username || '');
                             setPassword(userData.Password || '');
                             setEmail(userData.Email || '');
@@ -88,6 +88,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     const errorData = await response.json();
                     console.error("Error response from server:", errorData);
                 }
+
             } catch (error) {
                 console.error("Fetch error:", error);
             }
