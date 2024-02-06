@@ -52,6 +52,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             Birthday: userData.Birthday
                                 ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
                         console.error(
