@@ -3,7 +3,7 @@ import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
-export const ProfileView = ({ user, setUser }) => {
+export const ProfileView = ({ user, setUser, movies }) => {
     const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
@@ -11,7 +11,6 @@ export const ProfileView = ({ user, setUser }) => {
         Birthday: "",
         FavoriteMovies: []
     });
-    const [movies, setMovies] = useState([]); // State to hold the list of movies
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -134,9 +133,6 @@ export const ProfileView = ({ user, setUser }) => {
         console.log("Selected movie ID:", movieId);
     };
 
-
-
-
     return (
         <Container>
             <Row className="justify-content-center">
@@ -159,7 +155,7 @@ export const ProfileView = ({ user, setUser }) => {
                                             key={movie._id}
                                             onClick={() => handleSelectMovie(movie._id)}
                                         >
-                                            {movie.Title}
+                                            {movie.title} ({movie.year})
                                         </Dropdown.Item>
                                     ))}
                                     {movies.length === 0 && (
@@ -173,8 +169,6 @@ export const ProfileView = ({ user, setUser }) => {
                     )}
                 </Col>
             </Row>
-
-
 
             <Row className="justify-content-center">
                 <Col md={6}>
