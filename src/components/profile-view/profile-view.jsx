@@ -128,21 +128,62 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
-    const handleSelectMovie = (movieId) => {
-        const selectedMovie = movies.find(movie => movie._id === movieId);
-        if (selectedMovie) {
-            setUpdatedUser(prevUser => ({
-                ...prevUser,
-                FavoriteMovies: [...prevUser.FavoriteMovies, selectedMovie]
-            }));
+    const handleSelectMovie = async (movieId) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (response.ok) {
+                const updatedUserData = { ...updatedUser, FavoriteMovies: [...updatedUser.FavoriteMovies, movieId] };
+                setUpdatedUser(updatedUserData);
+                setUser(updatedUserData);
+                alert("Movie added to favorites successfully");
+            } else {
+                alert("Failed to add movie to favorites");
+            }
+        } catch (error) {
+            console.error("Add favorite movie error:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleRemoveMovie = (movieId) => {
-        setUpdatedUser(prevUser => ({
-            ...prevUser,
-            FavoriteMovies: prevUser.FavoriteMovies.filter(movie => movie._id !== movieId)
-        }));
+    const handleRemoveMovie = async (movieId) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (response.ok) {
+                const updatedUserData = { ...updatedUser, FavoriteMovies: updatedUser.FavoriteMovies.filter(id => id !== movieId) };
+                setUpdatedUser(updatedUserData);
+                setUser(updatedUserData);
+                alert("Movie removed from favorites successfully");
+            } else {
+                alert("Failed to remove movie from favorites");
+            }
+        } catch (error) {
+            console.error("Remove favorite movie error:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -150,44 +191,28 @@ export const ProfileView = ({ user, setUser, movies }) => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
-                    {updatedUser ? (
+                    {user ? (
                         <>
-                            <p>Username: {updatedUser.Username}</p>
-                            <p>Email: {updatedUser.Email}</p>
-                            <p>Password: {updatedUser.Password}</p>
-                            <p>Birthday: {updatedUser.Birthday}</p>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                    Add Favorite Movie
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    {movies.map(movie => (
-                                        <Dropdown.Item
-                                            key={movie._id}
-                                            onClick={() => handleSelectMovie(movie._id)}
-                                        >
-                                            {movie.title} ({movie.year})
-                                        </Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            <p>Favorite Movies:</p>
-                            <ul>
-                                {updatedUser.FavoriteMovies.map(movie => (
-                                    <li key={movie._id}>
-                                        {movie.title} ({movie.year})
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            onClick={() => handleRemoveMovie(movie._id)}
-                                            className="ml-2"
-                                        >
-                                            Remove
-                                        </Button>
-                                    </li>
-                                ))}
-                            </ul>
+                            <p>Username: {user.Username}</p>
+                            <p>Email: {user.Email}</p>
+                            <p>Password: {user.Password}</p>
+                            <p>Birthday: {user.Birthday}</p>
+                            <h3>Favorite Movies:</h3>
+                            {user.FavoriteMovies.length > 0 ? (
+                                <ul>
+                                    {user.FavoriteMovies.map(movieId => {
+                                        const movie = movies.find(m => m._id === movieId);
+                                        return (
+                                            <li key={movieId}>
+                                                {movie ? movie.title : "Unknown Movie"}
+                                                <Button variant="danger" onClick={() => handleRemoveMovie(movieId)}>Remove</Button>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            ) : (
+                                <p>No favorite movies added</p>
+                            )}
                         </>
                     ) : (
                         <p>Loading user information...</p>
