@@ -248,7 +248,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                         </Form.Group>
 
                         <Button
-                            className="btn btn-primary update"
+                            className="update-button"
                             type="submit"
                             disabled={isLoading}
                         >
@@ -261,7 +261,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Button
-                        className="btn btn-danger delete"
+                        className="delete-button"
                         onClick={handleDeleteAccount}
                         disabled={isLoading}
                     >
