@@ -68,7 +68,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         setEmail(userData.Email || '');
                         setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                     } else {
-                        console.error('Invalid user data structure received from the server.');
+                        console.error('Invalid user data structure received from the server:', userData);
                     }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
