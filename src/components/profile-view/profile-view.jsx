@@ -38,51 +38,51 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
 
-    const fetchUserData = async () => {
-        try {
-            if (!user) {
-                console.error('User object is null or undefined.');
-                return;
-            }
+    // Fetch user data from Heroku
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                if (!user) {
+                    console.error('User object is null or undefined.');
+                    return;
+                }
 
-            console.log("Attempting to fetch user data. User:", user);
+                console.log("Attempting to fetch user data. User:", user);
 
-            // Your Heroku backend API URL
-            const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
+                // Your Heroku backend API URL
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.username}`;
 
-            const response = await fetch(apiUrl, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
 
-            if (response.ok) {
-                const userData = await response.json();
-                console.log("User Data from Heroku:", userData);
-
-                // Check if userData is not null before updating state
-                if (userData) {
-                    console.log("Updating state with user data:", userData);
+                if (response.ok) {
+                    const userData = await response.json();
+                    console.log("User Data from Heroku:", userData);
+                    // Update state or perform other actions with the fetched user data
                     setUsername(userData.Username || '');
                     setPassword(userData.Password || '');
                     setEmail(userData.Email || '');
                     setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                 } else {
-                    console.error('Fetched user data is null.');
+                    console.error(`Failed to fetch user data. Status: ${response.status}`);
+                    const errorData = await response.json();
+                    console.error("Error response from server:", errorData);
                 }
-            } else {
-                console.error(`Failed to fetch user data. Status: ${response.status}`);
-                const errorData = await response.json();
-                console.error("Error response from server:", errorData);
+            } catch (error) {
+                console.error("Fetch error:", error);
             }
-        } catch (error) {
-            console.error("Fetch error:", error);
+        };
+
+        // Only fetch user data when the component mounts and user is available
+        if (user) {
+            fetchUserData();
         }
-    };
-
-
+    }, [user, token]);
 
 
 
