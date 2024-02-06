@@ -162,22 +162,24 @@ export const ProfileView = ({ user, setUser }) => {
                             <p>Email: {user.Email}</p>
                             <p>Password: {user.Password}</p>
                             <p>Birthday: {user.Birthday}</p>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                    Add Favorite Movie
-                                </Dropdown.Toggle>
+                            {movies.length > 0 && (
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                        Add Favorite Movie
+                                    </Dropdown.Toggle>
 
-                                <Dropdown.Menu>
-                                    {movies.map(movie => (
-                                        <Dropdown.Item
-                                            key={movie._id}
-                                            onClick={() => handleSelectMovie(movie._id)}
-                                        >
-                                            {movie.Title}
-                                        </Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
+                                    <Dropdown.Menu>
+                                        {movies.map(movie => (
+                                            <Dropdown.Item
+                                                key={movie._id}
+                                                onClick={() => handleSelectMovie(movie._id)}
+                                            >
+                                                {movie.Title}
+                                            </Dropdown.Item>
+                                        ))}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            )}
                         </>
                     ) : (
                         <p>Loading user information...</p>
