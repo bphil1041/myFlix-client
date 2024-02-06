@@ -37,8 +37,6 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
 
-    // ...
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -49,7 +47,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
                 console.log("Attempting to fetch user data. User:", user);
 
-                // Your Heroku backend API URL
+                // Correct API URL for user data
                 const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
                 const response = await fetch(apiUrl, {
@@ -63,13 +61,12 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 if (response.ok) {
                     const userData = await response.json();
 
-                    if (Array.isArray(userData) && userData.length > 0) {
-                        // Assuming you want to display the details of the first user in the array
-                        const firstUser = userData[0];
-                        setUsername(firstUser.Username || '');
-                        setPassword(firstUser.Password || '');
-                        setEmail(firstUser.Email || '');
-                        setBirthday(firstUser.Birthday ? new Date(firstUser.Birthday).toISOString().split('T')[0] : '');
+                    // Ensure userData is an object
+                    if (userData && typeof userData === 'object') {
+                        setUsername(userData.Username || '');
+                        setPassword(userData.Password || '');
+                        setEmail(userData.Email || '');
+                        setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
                     } else {
                         console.error('Invalid user data structure received from the server.');
                     }
@@ -84,61 +81,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
         };
 
         fetchUserData();
-    }, [user, setUser]);
-
-    // Update user information
-    const handleUpdate = async (event) => {
-        event.preventDefault();
-        setIsLoading(true);
-
-        try {
-            // Gather updated user data
-            const data = {
-                Username: username,
-                Password: password,
-                Email: email,
-                Birthday: birthday,
-            };
-
-            // Fetch request to update user data
-            const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
-                method: "PUT",
-                body: JSON.stringify(data),
-                headers: {
-                    Authorization: `Bearer ${token}`, // Assuming token is defined
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.ok) {
-                const updatedUserData = await response.json();
-                localStorage.setItem('user', JSON.stringify(updatedUserData));
-                setUser(updatedUserData);
-
-                // Update the local state with the new user data
-                setUsername(updatedUserData.Username || '');
-                setPassword(updatedUserData.Password || '');
-                setEmail(updatedUserData.Email || '');
-                setBirthday(updatedUserData.Birthday ? new Date(updatedUserData.Birthday).toISOString().split('T')[0] : '');
-
-                alert('Updated!');
-            } else {
-                const error = await response.text();
-                console.error('Update failed:', error);
-                alert('Update failed. Please try again.');
-            }
-        } catch (error) {
-            console.error('Update failed:', error);
-            alert('Update failed. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
-
-        // Navigate to the selected movie's details page
-        if (selectedMovieId) {
-            navigate(`/movies/${selectedMovieId}`);
-        }
-    };
+    }, [user, setUser, token]);
 
     // Delete user account
     const handleDelete = () => {
