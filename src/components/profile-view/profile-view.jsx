@@ -3,7 +3,7 @@ import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
-export const ProfileView = ({ user, setUser, movies }) => {
+export const ProfileView = ({ user, setUser }) => {
     const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
