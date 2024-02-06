@@ -52,7 +52,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             Birthday: userData.Birthday
                                 ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
-                            FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
                         console.error(
@@ -139,31 +138,30 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
-    const handleRemoveMovie = (movieId) => {
-        setUpdatedUser(prevUser => ({
-            ...prevUser,
-            FavoriteMovies: prevUser.FavoriteMovies.filter(movie => movie._id !== movieId)
-        }));
-    };
-
     return (
         <Container>
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
-                    {updatedUser ? (
+                    {user ? (
                         <>
-                            <p>Username: {updatedUser.Username}</p>
-                            <p>Email: {updatedUser.Email}</p>
-                            <p>Password: {updatedUser.Password}</p>
-                            <p>Birthday: {updatedUser.Birthday}</p>
+                            <p>Username: {user.Username}</p>
+                            <p>Email: {user.Email}</p>
+                            <p>Password: {user.Password}</p>
+                            <p>Birthday: {user.Birthday}</p>
+                            <p>Favorite Movies:</p>
+                            <ul>
+                                {updatedUser.FavoriteMovies.map(movie => (
+                                    <li key={movie._id}>{movie.title} ({movie.year})</li>
+                                ))}
+                            </ul>
                             <Dropdown>
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
                                     Add Favorite Movie
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    {movies.map(movie => (
+                                    {movies.length > 0 && movies.map(movie => (
                                         <Dropdown.Item
                                             key={movie._id}
                                             onClick={() => handleSelectMovie(movie._id)}
@@ -171,24 +169,11 @@ export const ProfileView = ({ user, setUser, movies }) => {
                                             {movie.title} ({movie.year})
                                         </Dropdown.Item>
                                     ))}
+                                    {movies.length === 0 && (
+                                        <Dropdown.Item disabled>No movies available</Dropdown.Item>
+                                    )}
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <p>Favorite Movies:</p>
-                            <ul>
-                                {updatedUser.FavoriteMovies.map(movie => (
-                                    <li key={movie._id}>
-                                        {movie.title} ({movie.year})
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            onClick={() => handleRemoveMovie(movie._id)}
-                                            className="ml-2"
-                                        >
-                                            Remove
-                                        </Button>
-                                    </li>
-                                ))}
-                            </ul>
                         </>
                     ) : (
                         <p>Loading user information...</p>
