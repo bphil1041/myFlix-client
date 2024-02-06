@@ -38,6 +38,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
     console.log("Movies:", movies);
     console.log("Favorite Movies:", favoriteMovies);
 
+    // ...
+
     // Fetch user data from Heroku
     useEffect(() => {
         const fetchUserData = async () => {
@@ -64,11 +66,12 @@ export const ProfileView = ({ user, movies, setUser }) => {
                     const userData = await response.json();
                     console.log("User Data from Heroku:", userData);
 
-                    // Update state or perform other actions with the fetched user data
-                    setUsername(userData.Username || '');
-                    setPassword(userData.Password || '');
-                    setEmail(userData.Email || '');
-                    setBirthday(userData.Birthday ? new Date(userData.Birthday).toISOString().split('T')[0] : '');
+                    // Assuming you want to display the details of the first user in the array
+                    const firstUser = userData[0];
+                    setUsername(firstUser.Username || '');
+                    setPassword(firstUser.Password || '');
+                    setEmail(firstUser.Email || '');
+                    setBirthday(firstUser.Birthday ? new Date(firstUser.Birthday).toISOString().split('T')[0] : '');
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
                     const errorData = await response.json();
@@ -81,6 +84,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, setUser]);
+
+    // ...
+
 
 
 
