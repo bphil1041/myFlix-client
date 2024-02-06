@@ -204,10 +204,16 @@ export const ProfileView = ({ user, movies, setUser }) => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <h2 className="profile-title">User Information</h2>
-                    <p>Username: {user.username}</p>
-                    <p>Email: {user.email}</p>
-                    <p>Password: {user.password}</p>
-                    <p>Birthday: {user.birthday}</p>
+                    {user ? (
+                        <>
+                            <p>Username: {user.username}</p>
+                            <p>Email: {user.email}</p>
+                            <p>Password: {user.password}</p>
+                            <p>Birthday: {user.birthday}</p>
+                        </>
+                    ) : (
+                        <p>Loading user information...</p>
+                    )}
                 </Col>
             </Row>
 
