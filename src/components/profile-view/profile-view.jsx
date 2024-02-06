@@ -4,13 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 export const ProfileView = ({ user, setUser, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState({
-        Username: "",
-        Password: "",
-        Email: "",
-        Birthday: "",
-        FavoriteMovies: []
-    });
+    const [updatedUser, setUpdatedUser] = useState(null);
+
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
