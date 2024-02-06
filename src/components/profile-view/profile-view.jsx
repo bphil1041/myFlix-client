@@ -164,7 +164,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                                         <Button
                                             variant="danger"
                                             size="sm"
-                                            className="ml-2"
+                                            className="ml-2 border-white"
                                             onClick={() => handleDeleteMovie(movie._id)}
                                         >
                                             Delete
