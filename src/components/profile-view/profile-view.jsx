@@ -59,16 +59,8 @@ export const ProfileView = ({ user, movies, setUser }) => {
                 });
 
                 if (response.ok) {
-                    const responseBody = await response.text();
-
-                    // Check for undefined or empty response body
-                    if (!responseBody) {
-                        console.error('Empty or undefined response body received.');
-                        return;
-                    }
-
                     try {
-                        const userData = JSON.parse(responseBody);
+                        const userData = await response.json();
 
                         // Ensure userData is an object
                         if (userData && typeof userData === 'object') {
@@ -79,9 +71,9 @@ export const ProfileView = ({ user, movies, setUser }) => {
                         } else {
                             console.error('Invalid user data structure received from the server:', userData);
                         }
-                    } catch (parseError) {
-                        console.error('Error parsing JSON response:', parseError);
-                        console.error('Response body:', responseBody);
+                    } catch (jsonParseError) {
+                        console.error('Error parsing JSON response:', jsonParseError);
+                        console.error('Response body:', await response.text());
                     }
                 } else {
                     console.error(`Failed to fetch user data. Status: ${response.status}`);
@@ -95,6 +87,7 @@ export const ProfileView = ({ user, movies, setUser }) => {
 
         fetchUserData();
     }, [user, setUser, token]);
+
 
 
     // Delete user account
