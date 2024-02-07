@@ -19,8 +19,6 @@ export const MainView = () => {
         Birthday: "",
         favoriteMovies: [],
     });
-    const [searchQuery, setSearchQuery] = useState(""); // State for search query
-
 
 
     useEffect(() => {
@@ -87,18 +85,6 @@ export const MainView = () => {
         console.log("After fetch");
     }, []);
 
-    // Function to handle search query change
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
-
-    // Filtering logic for movies based on search query
-    const filteredMovies = movies.filter(movie => {
-        return (
-            movie.genre.genreName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            movie.director.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    });
 
     return (
         <BrowserRouter>
@@ -111,34 +97,6 @@ export const MainView = () => {
                     localStorage.removeItem("user");
                 }}
             />
-
-            {/* Search input field */}
-            <input
-                type="text"
-                placeholder="Search by genre or director..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-            />
-
-            <Row className="justify-content-md-center">
-                <Routes>
-                    {/* Routes for signup, login, movie details, profile, and default view */}
-                </Routes>
-            </Row>
-
-            {/* Display filtered movies */}
-            <Row className="justify-content-md-center">
-                {filteredMovies.map((movie) => (
-                    <Col className="mb-5" key={movie._id} md={3}>
-                        <Link to={`/movies/${movie._id}`}>
-                            <MovieCard
-                                movie={movie}
-                                image={movie.image}
-                            />
-                        </Link>
-                    </Col>
-                ))}
-            </Row>
 
             <Row className="justify-content-md-center">
                 <Routes>
