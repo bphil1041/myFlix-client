@@ -106,7 +106,7 @@ export const MainView = () => {
                 }}
             />
 
-            <Row className="justify-content-md-center">
+            <Row className="justify-content-md-center genre-filter">
                 <Col md={3}>
                     <select className="form-control" onChange={handleGenreChange}>
                         <option value="">All Genres</option>
