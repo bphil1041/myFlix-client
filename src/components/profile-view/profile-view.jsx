@@ -143,9 +143,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
-                // Update the user state with the new list of favorite movies
-                const updatedUserResponse = await response.json();
-                setUser(updatedUserResponse);
+                const updatedUserData = await response.json();
+                console.log("Updated user data:", updatedUserData);
+                setUser(updatedUserData);
                 alert("Movie added to favorites successfully");
             } else {
                 alert("Failed to add movie to favorites");
@@ -154,6 +154,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Add movie to favorites error:", error);
         }
     };
+
 
 
 
