@@ -1,3 +1,7 @@
+body {
+    font-family: monospace;
+}
+
 .profile-title {
     font-weight: bold;
     padding-top: 100px;
@@ -11,8 +15,4 @@
 
 .btn {
     margin: 15px 10px 10px 10px;
-}
-
-.btn:hover {
-    background-color: turquoise;
 }
