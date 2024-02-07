@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./movie-view.scss";
+import { Button } from "react-bootstrap";
 
 export const MovieView = ({ movies }) => {
     const navigate = useNavigate();
