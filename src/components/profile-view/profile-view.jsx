@@ -145,7 +145,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             if (response.ok) {
                 const updatedUserData = await response.json();
                 console.log("Updated user data:", updatedUserData);
-                setUser(updatedUserData);
+                setUpdatedUser(updatedUserData); // Update updatedUser state
                 alert("Movie added to favorites successfully");
             } else {
                 alert("Failed to add movie to favorites");
@@ -154,6 +154,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Add movie to favorites error:", error);
         }
     };
+
 
 
 
@@ -175,7 +176,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p className="user-content">Username: {user.Username}</p>
                             <p className="user-content">Email: {user.Email}</p>
                             <p className="user-content">Birthday: {user.Birthday}</p>
-                            <p className="user-content">Favorite Movies: {user.FavoriteMovies}</p>
+                            <p className="user-content">Favorite Movies: </p>
                             <ul>
                                 {updatedUser.FavoriteMovies.map(movie => (
                                     <li className="user-content" key={movie._id}>
