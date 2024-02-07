@@ -175,7 +175,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p className="user-content">Username: {user.Username}</p>
                             <p className="user-content">Email: {user.Email}</p>
                             <p className="user-content">Birthday: {user.Birthday}</p>
-                            <p className="user-content">Favorite Movies: {user.FavoriteMovies} </p>
+                            <p className="user-content">Favorite Movies: </p>
                             <ul>
                                 {updatedUser.FavoriteMovies.map(movie => (
                                     <li className="user-content" key={movie._id}>
