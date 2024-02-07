@@ -153,16 +153,6 @@ export const MainView = () => {
                             </>
                         }
                     />
-
-                    <Col md={3}>
-                        <select className="form-control" onChange={handleGenreChange}>
-                            <option value="">All Genres</option>
-                            {movies.map(movie => (
-                                <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
-                            ))}
-                        </select>
-                    </Col>
-
                     <Route
                         path="/"
                         element={
@@ -189,7 +179,16 @@ export const MainView = () => {
                 </Routes>
             </Row>
 
-
+            <Row className="justify-content-md-center genre-filter">
+                <Col md={3}>
+                    <select className="form-control" onChange={handleGenreChange}>
+                        <option value="">All Genres</option>
+                        {movies.map(movie => (
+                            <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
+                        ))}
+                    </select>
+                </Col>
+            </Row>
 
         </BrowserRouter>
     );
