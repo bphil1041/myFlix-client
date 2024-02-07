@@ -191,19 +191,6 @@ export const MainView = () => {
                     </select>
                 </Col>
             </Row>
-            <Row className="justify-content-md-center">
-                {movies.length > 0 ? (
-                    movies.map(movie => (
-                        <Col className="mb-5" key={movie._id} md={3}>
-                            <Link to={`/movies/${movie._id}`}>
-                                <MovieCard movie={movie} image={movie.image} />
-                            </Link>
-                        </Col>
-                    ))
-                ) : (
-                    <Col>The list is empty!</Col>
-                )}
-            </Row>
 
 
 
