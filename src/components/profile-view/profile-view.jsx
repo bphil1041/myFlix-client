@@ -54,6 +54,15 @@ export const ProfileView = ({ user, setUser, movies }) => {
                                 : "",
                             FavoriteMovies: userData.FavoriteMovies || []
                         });
+                        setUpdatedUser({
+                            Username: userData.Username || "",
+                            Password: userData.Password || "",
+                            Email: userData.Email || "",
+                            Birthday: userData.Birthday
+                                ? new Date(userData.Birthday).toISOString().split("T")[0]
+                                : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
+                        });
                     } else {
                         console.error(
                             "Invalid user data structure received from the server:",
