@@ -105,79 +105,6 @@ export const MainView = () => {
                     localStorage.removeItem("user");
                 }}
             />
-            <Row className="justify-content-md-center">
-                <Routes>
-                    <Route
-                        path="/signup"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <SignupView />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/login"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <LoginView onLoggedIn={(user) => setUser(user)} />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/movies/:movieId"
-                        element={<MovieView movies={movies} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <>
-                                {user ? (
-                                    <ProfileView user={user} movies={movies} setUser={setUser} />
-                                ) : (
-                                    <Navigate to="/login" replace />
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                {!user ? (
-                                    <Navigate to="/login" replace />
-                                ) : movies.length === 0 ? (
-                                    <Col>The list is empty!</Col>
-                                ) : (
-                                    <>
-                                        {movies.map((movie) => (
-                                            <Col className="mb-5" key={movie._id} md={3}>
-                                                <Link to={`/movies/${movie._id}`}>
-                                                    <MovieCard
-                                                        movie={movie}
-                                                        image={movie.image} // Pass image prop to MovieCard
-                                                    />
-                                                </Link>
-                                            </Col>
-                                        ))}
-                                    </>
-                                )}
-                            </>
-                        }
-                    />
-                </Routes>
-            </Row>
 
             <Row className="justify-content-md-center">
                 <Col md={3}>
@@ -189,9 +116,10 @@ export const MainView = () => {
                     </select>
                 </Col>
             </Row>
+
             <Row className="justify-content-md-center">
-                {filteredMovies.length > 0 ? (
-                    filteredMovies.map(movie => (
+                {(selectedGenre ? filteredMovies : movies).length > 0 ? (
+                    (selectedGenre ? filteredMovies : movies).map(movie => (
                         <Col className="mb-5" key={movie._id} md={3}>
                             <Link to={`/movies/${movie._id}`}>
                                 <MovieCard movie={movie} image={movie.image} />
@@ -202,9 +130,6 @@ export const MainView = () => {
                     <Col>The list is empty!</Col>
                 )}
             </Row>
-
-
-
         </BrowserRouter>
     );
 };
