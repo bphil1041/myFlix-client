@@ -129,15 +129,34 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
-    const handleSelectMovie = (movieId) => {
-        const selectedMovie = movies.find(movie => movie._id === movieId);
-        if (selectedMovie) {
-            setUpdatedUser(prevUser => ({
-                ...prevUser,
-                FavoriteMovies: [...prevUser.FavoriteMovies, selectedMovie]
-            }));
+    const handleSelectMovie = async (movieId) => {
+        try {
+            const response = await fetch(
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            );
+
+            if (response.ok) {
+                alert("Movie added to favorites successfully");
+                // Optionally, you can update the user's favorite movies locally
+                // setUpdatedUser(prevUser => ({
+                //     ...prevUser,
+                //     FavoriteMovies: [...prevUser.FavoriteMovies, selectedMovie]
+                // }));
+            } else {
+                alert("Failed to add movie to favorites");
+            }
+        } catch (error) {
+            console.error("Add movie to favorites error:", error);
         }
     };
+
 
     const handleDeleteMovie = (movieId) => {
         setUpdatedUser(prevUser => ({
