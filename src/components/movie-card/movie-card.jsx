@@ -3,10 +3,10 @@ import { Button, Card } from "react-bootstrap";
 
 export const MovieCard = ({ movie, onMovieClick, image }) => {
     return (
-        <Card className="h-100">
+        <Card className="h-100 custom-shadow">
             <Card.Img variant="top" src={image} alt={movie.title} />
             <Card.Body>
-                <Card.Title className="card-title justify-content-center">{movie.title}</Card.Title>
+                <Card.Title className="card-title text-center">{movie.title}</Card.Title>
                 <Button onClick={() => onMovieClick(movie)} variant="link"></Button>
             </Card.Body>
         </Card>
