@@ -182,35 +182,38 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p className="user-content">Birthday: {user.Birthday}</p>
                             <p className="user-content">Favorite Movies: </p>
                             <ul>
-                                {updatedUser.FavoriteMovies.map(movie => (
-                                    <li className="user-content" key={movie._id}>
-                                        {movie.title} ({movie.year})
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            className="ml-2 border-white"
-                                            onClick={() => handleDeleteMovie(movie._id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </li>
-                                ))}
+                                {updatedUser.FavoriteMovies.map(movieId => {
+                                    const movie = movies.find(movie => movie._id === movieId);
+                                    return (
+                                        <li className="user-content" key={movieId}>
+                                            {movie ? `${movie.title} (${movie.year})` : 'Movie not found'}
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
+                                                className="ml-2 border-white"
+                                                onClick={() => handleDeleteMovie(movieId)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                             <Dropdown>
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
                                     Add Favorite Movie
                                 </Dropdown.Toggle>
-
                                 <Dropdown.Menu>
-                                    {movies.length > 0 && movies.map(movie => (
-                                        <Dropdown.Item
-                                            key={movie._id}
-                                            onClick={() => handleSelectMovie(movie._id)}
-                                        >
-                                            {movie.title} ({movie.year})
-                                        </Dropdown.Item>
-                                    ))}
-                                    {movies.length === 0 && (
+                                    {movies.length > 0 ? (
+                                        movies.map(movie => (
+                                            <Dropdown.Item
+                                                key={movie._id}
+                                                onClick={() => handleSelectMovie(movie._id)}
+                                            >
+                                                {movie.title} ({movie.year})
+                                            </Dropdown.Item>
+                                        ))
+                                    ) : (
                                         <Dropdown.Item disabled>No movies available</Dropdown.Item>
                                     )}
                                 </Dropdown.Menu>
