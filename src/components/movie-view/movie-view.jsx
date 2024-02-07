@@ -54,7 +54,7 @@ export const MovieView = ({ movies }) => {
                 <span className="bold">Bio: </span>
                 <span className="content">{selectedMovie.director.bio}</span>
             </div>
-            <button className="button" onClick={() => navigate("/")}>Back</button>
+            <Button className="button" onClick={() => navigate("/")}>Back</Button>
         </div>
     );
 };
