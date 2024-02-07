@@ -153,13 +153,13 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     <h2 className="profile-title">User Information</h2>
                     {user ? (
                         <>
-                            <p>Username: {user.Username}</p>
-                            <p>Email: {user.Email}</p>
-                            <p>Birthday: {user.Birthday}</p>
-                            <p>Favorite Movies:</p>
+                            <p className="user-content">Username: {user.Username}</p>
+                            <p className="user-content">Email: {user.Email}</p>
+                            <p className="user-content">Birthday: {user.Birthday}</p>
+                            <p className="user-content">Favorite Movies:</p>
                             <ul>
                                 {updatedUser.FavoriteMovies.map(movie => (
-                                    <li key={movie._id}>
+                                    <li className="user-content" key={movie._id}>
                                         {movie.title} ({movie.year})
                                         <Button
                                             variant="danger"
@@ -203,7 +203,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     <h2 className="profile-title">Update User Information</h2>
                     <Form className="my-profile" onSubmit={handleUpdate}>
                         <Form.Group className="mb-2" controlId="formName">
-                            <Form.Label>Username:</Form.Label>
+                            <Form.Label className="user-content">Username:</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Enter your updated username"
@@ -214,7 +214,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formPassword">
-                            <Form.Label>Password:</Form.Label>
+                            <Form.Label className="user-content">Password:</Form.Label>
                             <Form.Control
                                 type="password"
                                 placeholder="Enter your updated password"
@@ -225,7 +225,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-2" controlId="formEmail">
-                            <Form.Label>Email:</Form.Label>
+                            <Form.Label className="user-content">Email:</Form.Label>
                             <Form.Control
                                 type="email"
                                 placeholder="Enter your updated email"
@@ -236,7 +236,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             />
                         </Form.Group>
                         <Form.Group controlId="formBirthday">
-                            <Form.Label>Birthday:</Form.Label>
+                            <Form.Label className="user-content">Birthday:</Form.Label>
                             <Form.Control
                                 type="date"
                                 placeholder="Select your updated birthday"
