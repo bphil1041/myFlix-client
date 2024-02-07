@@ -144,7 +144,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
             if (response.ok) {
                 const updatedMovie = await response.json();
-                console.log("Updated movie:", updatedMovie);
+                console.log("Updated movie:", updatedMovie); // Log the updated movie object
 
                 // Update the user state with the updated movie data
                 setUpdatedUser(prevUser => ({
@@ -160,6 +160,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Add movie to favorites error:", error);
         }
     };
+
 
 
 
