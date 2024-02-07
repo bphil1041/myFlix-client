@@ -17,7 +17,7 @@ export const MovieView = ({ movies }) => {
     return (
         <div className="movie-info">
             <div>
-                <img src={selectedMovie.image} alt={selectedMovie.title} />
+                <img className="movie-image" src={selectedMovie.image} alt={selectedMovie.title} />
             </div>
             <div>
                 <span className="bold">Title: </span>
