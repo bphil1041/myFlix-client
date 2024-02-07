@@ -143,17 +143,23 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
-                const updatedMovieId = await response.json(); // Assuming the response contains only the ID of the newly added movie
-                const updatedMovie = movies.find(movie => movie._id === updatedMovieId); // Find the movie object with the updated ID
+                const responseData = await response.json();
+                const addedMovieId = responseData._id;
 
-                if (updatedMovie) {
-                    setUpdatedUser(prevUser => ({
-                        ...prevUser,
-                        FavoriteMovies: [...prevUser.FavoriteMovies, updatedMovie]
-                    }));
-                    alert("Movie added to favorites successfully");
+                if (addedMovieId) {
+                    const addedMovie = movies.find(movie => movie._id === addedMovieId);
+
+                    if (addedMovie) {
+                        setUpdatedUser(prevUser => ({
+                            ...prevUser,
+                            FavoriteMovies: [...prevUser.FavoriteMovies, addedMovie]
+                        }));
+                        alert("Movie added to favorites successfully");
+                    } else {
+                        console.error("Added movie not found in the movies array");
+                    }
                 } else {
-                    console.error("Newly added movie not found in the movies array");
+                    console.error("No movie ID found in the response");
                 }
             } else {
                 alert("Failed to add movie to favorites");
@@ -162,6 +168,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Add movie to favorites error:", error);
         }
     };
+
 
 
 
