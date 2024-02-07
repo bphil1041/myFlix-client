@@ -161,16 +161,7 @@ export const MainView = () => {
                                     <Col>The list is empty!</Col>
                                 ) : (
                                     <>
-                                        {movies.map((movie) => (
-                                            <Col className="mb-5" key={movie._id} md={3}>
-                                                <Link to={`/movies/${movie._id}`}>
-                                                    <MovieCard
-                                                        movie={movie}
-                                                        image={movie.image} // Pass image prop to MovieCard
-                                                    />
-                                                </Link>
-                                            </Col>
-                                        ))}
+
                                     </>
                                 )}
                             </>
