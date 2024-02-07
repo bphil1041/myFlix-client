@@ -143,13 +143,11 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
-                // Get a copy of the current favorite movies array and add the new movie ID
-                const updatedFavoriteMovies = [...updatedUser.FavoriteMovies, movieId];
-                // Update the updatedUser state with the new favorite movies array
-                setUpdatedUser(prevUser => ({
-                    ...prevUser,
-                    FavoriteMovies: updatedFavoriteMovies
-                }));
+                // Fetch user data again to get the updated favorite movies list
+                const updatedUserData = await response.json();
+                console.log("Updated user data:", updatedUserData);
+                // Update the updatedUser state with the updated user data
+                setUpdatedUser(updatedUserData);
                 alert("Movie added to favorites successfully");
             } else {
                 alert("Failed to add movie to favorites");
@@ -158,6 +156,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Add movie to favorites error:", error);
         }
     };
+
 
 
 
