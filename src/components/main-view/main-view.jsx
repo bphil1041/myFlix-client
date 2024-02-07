@@ -19,6 +19,8 @@ export const MainView = () => {
         Birthday: "",
         favoriteMovies: [],
     });
+    const [searchQuery, setSearchQuery] = useState(""); // State for search query
+
 
 
     useEffect(() => {
