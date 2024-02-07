@@ -4,8 +4,8 @@ import { Button, Card } from "react-bootstrap";
 export const MovieCard = ({ movie, onMovieClick, image }) => {
     return (
         <Card className="h-100">
+            <Card.Img variant="top" src={image} alt={movie.title} />
             <Card.Body>
-                <Card.Img variant="top" src={image} alt={movie.title} />
                 <Card.Title className="card-title">{movie.title}</Card.Title>
                 <Button onClick={() => onMovieClick(movie)} variant="link">Open</Button>
             </Card.Body>
@@ -32,5 +32,5 @@ MovieCard.propTypes = {
         MovieId: PropTypes.string,
     }).isRequired,
     onMovieClick: PropTypes.func.isRequired,
+    image: PropTypes.string.isRequired, // Add image propType
 };
-
