@@ -6,5 +6,8 @@ body {
     background-size: cover;
 }
 
+.button:hover {
+    background-color: turquoise;
+}
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss'
