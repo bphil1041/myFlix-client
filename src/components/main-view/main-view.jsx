@@ -67,6 +67,7 @@ export const MainView = () => {
                     year: movie.year,
                     description: movie.description,
                     MovieId: movie.MovieId,
+                    image: movie.image,
                 }));
 
                 console.log("Movies after mapping:", moviesFromApi);
