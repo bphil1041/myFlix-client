@@ -106,7 +106,7 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
-    const isMainView = true;
+    const isMainView = false;
 
 
     return (
