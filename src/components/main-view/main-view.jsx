@@ -6,6 +6,7 @@ import { SignupView } from "../signup-view/signup-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { Dropdown } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
@@ -108,12 +109,17 @@ export const MainView = () => {
 
             <Row className="justify-content-md-center">
                 <Col md={3}>
-                    <select className="form-control genre-filter" onChange={handleGenreChange}>
-                        <option value="">All Genres</option>
-                        {movies.map(movie => (
-                            <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
-                        ))}
-                    </select>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
+                            {selectedGenre ? selectedGenre : "All Genres"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
+                            {movies.map(movie => (
+                                <Dropdown.Item key={movie._id} onClick={() => handleGenreChange(movie.genre.genreName)}>{movie.genre.genreName}</Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Col>
             </Row>
 
