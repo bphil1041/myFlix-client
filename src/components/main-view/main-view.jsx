@@ -10,37 +10,8 @@ import { Dropdown } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
+import { useLocation } from "react-router-dom";
 
-const DropdownFilters = ({ selectedGenre, selectedDirector, handleGenreChange, handleDirectorChange, uniqueGenres, uniqueDirectors }) => (
-    <Row className="justify-content-md-center">
-        <Col md={3}>
-            <Dropdown className="genre-filter">
-                <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
-                    {selectedGenre ? selectedGenre : "All Genres"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
-                    {uniqueGenres.map(genre => (
-                        <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
-        </Col>
-        <Col md={3}>
-            <Dropdown className="director-filter">
-                <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
-                    {selectedDirector ? selectedDirector : "All Directors"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
-                    {uniqueDirectors.map(director => (
-                        <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
-        </Col>
-    </Row>
-);
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
@@ -137,7 +108,7 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
-
+    const isMainView = true;
 
 
     return (
@@ -151,14 +122,37 @@ export const MainView = () => {
                     localStorage.removeItem("user");
                 }}
             />
-            <DropdownFilters
-                selectedGenre={selectedGenre}
-                selectedDirector={selectedDirector}
-                handleGenreChange={handleGenreChange}
-                handleDirectorChange={handleDirectorChange}
-                uniqueGenres={uniqueGenres}
-                uniqueDirectors={uniqueDirectors}
-            />
+            {isMainView && (
+                <Row className="justify-content-md-center">
+                    <Col md={3}>
+                        <Dropdown className="genre-filter">
+                            <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
+                                {selectedGenre ? selectedGenre : "All Genres"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
+                                {uniqueGenres.map(genre => (
+                                    <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col md={3}>
+                        <Dropdown className="director-filter">
+                            <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
+                                {selectedDirector ? selectedDirector : "All Directors"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
+                                {uniqueDirectors.map(director => (
+                                    <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                </Row>
+            )}
+
             <Row className="justify-content-md-center">
                 <Routes>
                     <Route
@@ -230,6 +224,9 @@ export const MainView = () => {
 
                 </Routes>
             </Row>
+
+
+
         </BrowserRouter>
     );
 };
