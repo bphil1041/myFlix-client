@@ -89,6 +89,8 @@ export const MainView = () => {
 
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedDirectors, setSelectedDirectors] = useState([]);
 
 
     const handleGenreChange = (genreName) => {
