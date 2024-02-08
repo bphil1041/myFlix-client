@@ -88,9 +88,10 @@ export const MainView = () => {
 
     const [selectedGenre, setSelectedGenre] = useState(null);
 
-    const handleGenreChange = (event) => {
-        setSelectedGenre(event.target.value);
+    const handleGenreChange = (genreName) => {
+        setSelectedGenre(genreName);
     };
+
 
     const uniqueGenres = [...new Set(movies.map(movie => movie.genre.genreName))];
 
