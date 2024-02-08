@@ -136,7 +136,7 @@ export const MainView = () => {
             />
 
             <Route
-                path="/"
+                path="/movies"
                 element={
                     <>
 
