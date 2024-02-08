@@ -106,6 +106,8 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
+    const isMainView = true;
+
 
     return (
         <BrowserRouter>
