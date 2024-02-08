@@ -108,7 +108,7 @@ export const MainView = () => {
 
             <Row className="justify-content-md-center">
                 <Col md={3}>
-                    <select className="form-control" onChange={handleGenreChange}>
+                    <select className="form-control genre-filter" onChange={handleGenreChange}>
                         <option value="">All Genres</option>
                         {movies.map(movie => (
                             <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
