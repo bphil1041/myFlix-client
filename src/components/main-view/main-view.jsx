@@ -92,11 +92,17 @@ export const MainView = () => {
         setSelectedGenre(genreName);
     };
 
+    const handleDirectorChange = (directorName) => {
+        setSelectedDirector(directorName);
+    };
 
     const uniqueGenres = [...new Set(movies.map(movie => movie.genre.genreName))];
+    const uniqueDirectors = [...new Set(movies.map(movie => movie.director.name))];
 
-
-    const filteredMovies = selectedGenre ? movies.filter(movie => movie.genre.genreName === selectedGenre) : movies;
+    const filteredMovies = movies.filter(movie => (
+        (!selectedGenre || movie.genre.genreName === selectedGenre) &&
+        (!selectedDirector || movie.director.name === selectedDirector)
+    ));
 
 
     return (
@@ -121,6 +127,19 @@ export const MainView = () => {
                             <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
                             {uniqueGenres.map(genre => (
                                 <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col md={3}>
+                    <Dropdown className="filter-dropdown">
+                        <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
+                            {selectedDirector ? selectedDirector : "All Directors"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
+                            {uniqueDirectors.map(director => (
+                                <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
                     </Dropdown>
