@@ -92,6 +92,9 @@ export const MainView = () => {
         setSelectedGenre(event.target.value);
     };
 
+    const uniqueGenres = [...new Set(movies.map(movie => movie.genre.genreName))];
+
+
     const filteredMovies = selectedGenre ? movies.filter(movie => movie.genre.genreName === selectedGenre) : movies;
 
 
@@ -115,8 +118,8 @@ export const MainView = () => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
-                            {movies.map(movie => (
-                                <Dropdown.Item key={movie._id} onClick={() => handleGenreChange(movie.genre.genreName)}>{movie.genre.genreName}</Dropdown.Item>
+                            {uniqueGenres.map(genre => (
+                                <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
                     </Dropdown>
