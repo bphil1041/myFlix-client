@@ -109,7 +109,7 @@ export const MainView = () => {
 
             <Row className="justify-content-md-center">
                 <Col md={3}>
-                    <Dropdown>
+                    <Dropdown className="genre-filter">
                         <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
                             {selectedGenre ? selectedGenre : "All Genres"}
                         </Dropdown.Toggle>
