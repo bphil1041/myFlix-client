@@ -4,11 +4,10 @@ import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
-import { Dropdown } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
-import { ProfileView, select } from "../profile-view/profile-view";
+import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
 export const MainView = () => {
@@ -107,21 +106,16 @@ export const MainView = () => {
                 }}
             />
 
-            <Dropdown as={Row} className="justify-content-md-center">
+            <Row className="justify-content-md-center">
                 <Col md={3}>
-                    <Dropdown.Toggle as={select} className="form-control genre-filter" onChange={handleGenreChange}>
-
+                    <select className="form-control genre-filter" onChange={handleGenreChange}>
                         <option value="">All Genres</option>
-                        {movies.length > 0 ? (
-                            movies.map(movie => (
-                                <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
-                            ))
-                        ) : (
-                            <option disabled>No genres available</option>
-                        )}
-                    </Dropdown.Toggle>
+                        {movies.map(movie => (
+                            <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
+                        ))}
+                    </select>
                 </Col>
-            </Dropdown>
+            </Row>
 
 
             <Row className="justify-content-md-center">
