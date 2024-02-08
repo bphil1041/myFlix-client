@@ -135,7 +135,7 @@ export const MainView = () => {
                 }}
             />
 
-            {user && (
+            {MainView && (
                 <Row className="justify-content-md-center">
                     <Col md={3}>
                         <Dropdown className="genre-filter">
