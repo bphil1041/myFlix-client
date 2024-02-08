@@ -92,6 +92,13 @@ export const MainView = () => {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedDirectors, setSelectedDirectors] = useState([]);
 
+    useEffect(() => {
+        // Initialize selectedGenres with full list of genres
+        setSelectedGenres([...new Set(movies.map(movie => movie.genre.genreName))]);
+        // Initialize selectedDirectors with full list of directors
+        setSelectedDirectors([...new Set(movies.map(movie => movie.director.name))]);
+    }, [movies]);
+
 
     const handleGenreChange = (genreName) => {
         setSelectedGenre(genreName);
