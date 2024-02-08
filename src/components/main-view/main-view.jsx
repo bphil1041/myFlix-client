@@ -106,16 +106,20 @@ export const MainView = () => {
                 }}
             />
 
-            <Row className="justify-content-md-center">
+            <Dropdown as={Row} className="justify-content-md-center">
                 <Col md={3}>
-                    <select className="form-control genre-filter" onChange={handleGenreChange}>
+                    <Dropdown.Toggle as={select} className="form-control genre-filter" onChange={handleGenreChange}>
                         <option value="">All Genres</option>
-                        {movies.map(movie => (
-                            <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
-                        ))}
-                    </select>
+                        {movies.length > 0 ? (
+                            movies.map(movie => (
+                                <option key={movie._id} value={movie.genre.genreName}>{movie.genre.genreName}</option>
+                            ))
+                        ) : (
+                            <option disabled>No genres available</option>
+                        )}
+                    </Dropdown.Toggle>
                 </Col>
-            </Row>
+            </Dropdown>
 
 
             <Row className="justify-content-md-center">
