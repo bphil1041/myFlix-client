@@ -22,6 +22,7 @@ export const MainView = () => {
     });
 
 
+
     useEffect(() => {
         const token = localStorage.getItem("token");
 
@@ -98,7 +99,6 @@ export const MainView = () => {
             .map(movie => movie.director.name);
         setSelectedDirectors([...new Set(filteredDirectors)]);
     };
-
     const handleDirectorChange = (directorName) => {
         setSelectedDirector(directorName);
         // Filter unique genres based on selected director
