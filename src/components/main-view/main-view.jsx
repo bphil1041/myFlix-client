@@ -8,7 +8,7 @@ import { Dropdown } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
-import { ProfileView } from "../profile-view/profile-view";
+import { ProfileView, select } from "../profile-view/profile-view";
 import "./main-view.scss";
 
 export const MainView = () => {
@@ -110,6 +110,7 @@ export const MainView = () => {
             <Dropdown as={Row} className="justify-content-md-center">
                 <Col md={3}>
                     <Dropdown.Toggle as={select} className="form-control genre-filter" onChange={handleGenreChange}>
+
                         <option value="">All Genres</option>
                         {movies.length > 0 ? (
                             movies.map(movie => (
