@@ -10,8 +10,6 @@ import { Dropdown } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
-import { useLocation } from "react-router-dom";
-
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
