@@ -117,9 +117,6 @@ export const MainView = () => {
         setSelectedGenres([...new Set(filteredGenres)]);
     };
 
-    const uniqueGenres = [...new Set(movies.map(movie => movie.genre.genreName))];
-    const uniqueDirectors = [...new Set(movies.map(movie => movie.director.name))];
-
     const filteredMovies = movies.filter(movie => (
         (!selectedGenre || movie.genre.genreName === selectedGenre) &&
         (!selectedDirector || movie.director.name === selectedDirector)
