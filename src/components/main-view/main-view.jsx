@@ -92,10 +92,20 @@ export const MainView = () => {
 
     const handleGenreChange = (genreName) => {
         setSelectedGenre(genreName);
+        // Filter unique directors based on selected genre
+        const filteredDirectors = movies
+            .filter(movie => !genreName || movie.genre.genreName === genreName)
+            .map(movie => movie.director.name);
+        setSelectedDirectors([...new Set(filteredDirectors)]);
     };
 
     const handleDirectorChange = (directorName) => {
         setSelectedDirector(directorName);
+        // Filter unique genres based on selected director
+        const filteredGenres = movies
+            .filter(movie => !directorName || movie.director.name === directorName)
+            .map(movie => movie.genre.genreName);
+        setSelectedGenres([...new Set(filteredGenres)]);
     };
 
     const uniqueGenres = [...new Set(movies.map(movie => movie.genre.genreName))];
@@ -127,7 +137,7 @@ export const MainView = () => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
-                            {uniqueGenres.map(genre => (
+                            {selectedGenres.map(genre => (
                                 <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
@@ -140,10 +150,11 @@ export const MainView = () => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
-                            {uniqueDirectors.map(director => (
+                            {selectedDirectors.map(director => (
                                 <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
+
                     </Dropdown>
                 </Col>
             </Row>
