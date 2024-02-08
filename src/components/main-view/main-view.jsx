@@ -134,7 +134,7 @@ export const MainView = () => {
                     </Dropdown>
                 </Col>
                 <Col md={3}>
-                    <Dropdown className="filter-dropdown">
+                    <Dropdown className="director-filter">
                         <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
                             {selectedDirector ? selectedDirector : "All Directors"}
                         </Dropdown.Toggle>
