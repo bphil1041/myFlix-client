@@ -108,8 +108,7 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
-    const location = useLocation();
-    const isMainView = location.pathname === "/";
+    const isMainView = true;
 
 
     return (
