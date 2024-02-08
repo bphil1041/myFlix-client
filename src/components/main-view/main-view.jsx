@@ -85,6 +85,12 @@ export const MainView = () => {
             });
 
         console.log("After fetch");
+
+        // Conditionally set selectedGenres and selectedDirectors if movies are available
+        if (movies.length > 0) {
+            setSelectedGenres([...new Set(movies.map(movie => movie.genre.genreName))]);
+            setSelectedDirectors([...new Set(movies.map(movie => movie.director.name))]);
+        }
     }, []);
 
     const [selectedGenre, setSelectedGenre] = useState(null);
