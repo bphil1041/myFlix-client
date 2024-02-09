@@ -14,7 +14,6 @@ import { useLocation } from "react-router-dom";
 
 
 export const MainView = () => {
-    const location = useLocation();
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState({
         Username: "",
@@ -124,6 +123,9 @@ export const MainView = () => {
         (!selectedGenre || movie.genre.genreName === selectedGenre) &&
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
+
+    const location = useLocation();
+
 
 
 
