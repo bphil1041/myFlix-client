@@ -10,8 +10,11 @@ import { Dropdown } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
+import { useLocation } from "react-router-dom";
+
 
 export const MainView = () => {
+    const location = useLocation();
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState({
         Username: "",
@@ -123,6 +126,7 @@ export const MainView = () => {
     ));
 
 
+
     return (
         <BrowserRouter>
             <NavigationBar
@@ -137,7 +141,7 @@ export const MainView = () => {
 
 
             <Row className="justify-content-md-center">
-                {user && movies.length > 0 && (
+                {location.pathname === "/" && user && movies.length > 0 && (
                     <>
                         <Col md={3}>
                             <Dropdown className="genre-filter">
