@@ -135,39 +135,44 @@ export const MainView = () => {
                 }}
             />
 
+            <Route
+                path="/"
+                element={
 
-            <Row className="justify-content-md-center">
-                {user && movies.length > 0 && (
-                    <>
-                        <Col md={3}>
-                            <Dropdown className="genre-filter">
-                                <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
-                                    {selectedGenre ? selectedGenre : "All Genres"}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
-                                    {selectedGenres.map(genre => (
-                                        <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Col>
-                        <Col md={3}>
-                            <Dropdown className="director-filter">
-                                <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
-                                    {selectedDirector ? selectedDirector : "All Directors"}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
-                                    {selectedDirectors.map(director => (
-                                        <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Col>
-                    </>
-                )}
-            </Row>
+                    <Row className="justify-content-md-center">
+                        {user && movies.length > 0 && (
+                            <>
+                                <Col md={3}>
+                                    <Dropdown className="genre-filter">
+                                        <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
+                                            {selectedGenre ? selectedGenre : "All Genres"}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
+                                            {selectedGenres.map(genre => (
+                                                <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
+                                            ))}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Col>
+                                <Col md={3}>
+                                    <Dropdown className="director-filter">
+                                        <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
+                                            {selectedDirector ? selectedDirector : "All Directors"}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
+                                            {selectedDirectors.map(director => (
+                                                <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
+                                            ))}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Col>
+                            </>
+                        )}
+                    </Row>
+                }
+            />
 
 
 
