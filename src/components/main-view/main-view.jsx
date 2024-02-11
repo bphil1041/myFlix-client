@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import React, { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
@@ -7,11 +8,11 @@ import { NavigationBar } from "../navigation-bar/navigation-bar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Dropdown } from "react-bootstrap";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
-
+// Define MainView component
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState({
@@ -22,20 +23,13 @@ export const MainView = () => {
         favoriteMovies: [],
     });
 
-
-
     useEffect(() => {
+        // Fetch movies data when component mounts
         const token = localStorage.getItem("token");
-
-        console.log("Token from localStorage in MainView:", token);
-
         if (!token) {
             console.log("No token found. Redirect to login or handle accordingly");
             return;
         }
-
-        console.log("Before fetch");
-
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -43,17 +37,13 @@ export const MainView = () => {
             },
         })
             .then((response) => {
-                console.log("API Response Status:", response.status);
-
                 if (!response.ok) {
                     throw new Error("Unauthorized");
                 }
-
                 return response.json();
             })
             .then((data) => {
-                console.log("Movies data from API:", data);
-
+                // Process movies data and set state
                 const moviesFromApi = data.map((movie) => ({
                     genre: {
                         genreName: movie.genre.genreName,
@@ -72,60 +62,58 @@ export const MainView = () => {
                     MovieId: movie.MovieId,
                     image: movie.image,
                 }));
-
-                console.log("Movies after mapping:", moviesFromApi);
-
                 setMovies(moviesFromApi);
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
-
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
                 }
             });
-
-        console.log("After fetch");
     }, []);
 
+    // Define state variables for genre and director selection
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedDirectors, setSelectedDirectors] = useState([]);
 
     useEffect(() => {
-        // Initialize selectedGenres with full list of genres
+        // Update genre and director options when movies state changes
         setSelectedGenres([...new Set(movies.map(movie => movie.genre.genreName))]);
-        // Initialize selectedDirectors with full list of directors
         setSelectedDirectors([...new Set(movies.map(movie => movie.director.name))]);
     }, [movies]);
 
-
+    // Define functions to handle genre and director selection changes
     const handleGenreChange = (genreName) => {
         setSelectedGenre(genreName);
-        // Filter unique directors based on selected genre
         const filteredDirectors = movies
             .filter(movie => !genreName || movie.genre.genreName === genreName)
             .map(movie => movie.director.name);
         setSelectedDirectors([...new Set(filteredDirectors)]);
     };
+
     const handleDirectorChange = (directorName) => {
         setSelectedDirector(directorName);
-        // Filter unique genres based on selected director
         const filteredGenres = movies
             .filter(movie => !directorName || movie.director.name === directorName)
             .map(movie => movie.genre.genreName);
         setSelectedGenres([...new Set(filteredGenres)]);
     };
 
+    // Define filtered movies based on selected genre and director
     const filteredMovies = movies.filter(movie => (
         (!selectedGenre || movie.genre.genreName === selectedGenre) &&
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
+    // Get current location using useLocation hook
+    const location = useLocation();
 
+    // Render MainView component
     return (
         <BrowserRouter>
+            {/* Render navigation bar */}
             <NavigationBar
                 className="navbar"
                 user={user}
@@ -136,10 +124,11 @@ export const MainView = () => {
                 }}
             />
 
-
+            {/* Render genre and director dropdowns if user is logged in and movies data is available */}
             <Row className="justify-content-md-center">
-                {user && movies.length > 0 && (
+                {!location.pathname.startsWith("/profile") && user && movies.length > 0 && (
                     <>
+                        {/* Render genre dropdown */}
                         <Col md={3}>
                             <Dropdown className="genre-filter">
                                 <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
@@ -153,6 +142,7 @@ export const MainView = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Col>
+                        {/* Render director dropdown */}
                         <Col md={3}>
                             <Dropdown className="director-filter">
                                 <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
@@ -170,11 +160,10 @@ export const MainView = () => {
                 )}
             </Row>
 
-
-
-
+            {/* Render routes */}
             <Row className="justify-content-md-center">
                 <Routes>
+                    {/* Render signup route */}
                     <Route
                         path="/signup"
                         element={
@@ -189,6 +178,7 @@ export const MainView = () => {
                             </>
                         }
                     />
+                    {/* Render login route */}
                     <Route
                         path="/login"
                         element={
@@ -203,10 +193,12 @@ export const MainView = () => {
                             </>
                         }
                     />
+                    {/* Render movie details route */}
                     <Route
                         path="/movies/:movieId"
                         element={<MovieView movies={movies} />}
                     />
+                    {/* Render profile route */}
                     <Route
                         path="/profile"
                         element={
@@ -219,6 +211,7 @@ export const MainView = () => {
                             </>
                         }
                     />
+                    {/* Render home route */}
                     <Route
                         path="/"
                         element={
@@ -241,12 +234,8 @@ export const MainView = () => {
                             </>
                         }
                     />
-
                 </Routes>
             </Row>
-
-
-
         </BrowserRouter>
     );
 };
