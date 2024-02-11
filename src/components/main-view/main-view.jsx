@@ -123,6 +123,9 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
+    const location = useLocation();
+
+
 
     return (
         <BrowserRouter>
@@ -138,7 +141,7 @@ export const MainView = () => {
 
 
             <Row className="justify-content-md-center">
-                {user && movies.length > 0 && (
+                {!location.pathname.startsWith("/profile") && user && movies.length > 0 && (
                     <>
                         <Col md={3}>
                             <Dropdown className="genre-filter">
