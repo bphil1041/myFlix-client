@@ -27,3 +27,7 @@ myFlix was built using the MERN stack (MongoDB, Express, React, and Node.js), an
 * Add and remove movies to a list of favorites (inside ProfileView)
 * View user information
 * Update user information
+* Navigation bar
+
+![Screenshot 2024-02-11 at 3 44 07 PM 2](https://github.com/bphil1041/myFlix-client/assets/140545982/78186be4-f1aa-41b6-9955-27fca4ce2900)
+
