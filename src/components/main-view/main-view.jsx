@@ -138,7 +138,7 @@ export const MainView = () => {
 
 
             <Row className="justify-content-md-center">
-                {user && movies.length > 0 && (
+                {user && movies.length > 2 && (
                     <>
                         <Col md={3}>
                             <Dropdown className="genre-filter">
