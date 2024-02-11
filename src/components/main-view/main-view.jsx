@@ -7,7 +7,7 @@ import { NavigationBar } from "../navigation-bar/navigation-bar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Dropdown } from "react-bootstrap";
-import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
@@ -123,9 +123,6 @@ export const MainView = () => {
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
 
-    const location = useLocation();
-
-
 
     return (
         <BrowserRouter>
@@ -141,7 +138,7 @@ export const MainView = () => {
 
 
             <Row className="justify-content-md-center">
-                {!location.pathname.startsWith("/profile") && user && movies.length > 0 && (
+                {user && movies.length > 0 && (
                     <>
                         <Col md={3}>
                             <Dropdown className="genre-filter">
