@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 export const ProfileView = ({ user, setUser, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState(user || {
+    const [updatedUser, setUpdatedUser] = useState({
         Username: "",
         Password: "",
         Email: "",
@@ -18,16 +18,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                if (!user) {
-                    console.error("User object is null or undefined.");
-                    return;
-                }
-
                 console.log("Attempting to fetch user data. User:", user);
 
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
-
-                const response = await fetch(apiUrl, {
+                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -35,39 +28,25 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     },
                 });
 
-                const responseData = await response.json();
+                const userData = await response.json();
 
-                console.log("API URL:", apiUrl);
+                console.log("API URL:", response.url);
+                console.log("Response body:", userData);
 
-                console.log("Response body:", responseData);
-
-                if (Array.isArray(responseData) && responseData.length > 0) {
-                    const userData = responseData[0];
-
-                    console.log("Parsed user data:", userData);
-
-                    // Check if the fetched user data matches the logged-in user
-                    if (userData.Username === user.Username) {
-                        setUser({
-                            Username: userData.Username || "",
-                            Password: userData.Password || "",
-                            Email: userData.Email || "",
-                            Birthday: userData.Birthday
-                                ? new Date(userData.Birthday).toISOString().split("T")[0]
-                                : "",
-                            FavoriteMovies: userData.FavoriteMovies || []
-                        });
+                if (Array.isArray(userData) && userData.length > 0) {
+                    const fetchedUser = userData[0];
+                    if (fetchedUser.Username === user.Username) {
                         setUpdatedUser({
-                            Username: userData.Username || "",
-                            Password: userData.Password || "",
-                            Email: userData.Email || "",
-                            Birthday: userData.Birthday
-                                ? new Date(userData.Birthday).toISOString().split("T")[0]
+                            Username: fetchedUser.Username || "",
+                            Password: fetchedUser.Password || "",
+                            Email: fetchedUser.Email || "",
+                            Birthday: fetchedUser.Birthday
+                                ? new Date(fetchedUser.Birthday).toISOString().split("T")[0]
                                 : "",
-                            FavoriteMovies: userData.FavoriteMovies || []
+                            FavoriteMovies: fetchedUser.FavoriteMovies || []
                         });
                     } else {
-                        console.error("Fetched user data does not match the logged-in user:", userData);
+                        console.error("Fetched user data does not match the logged-in user:", fetchedUser);
                     }
                 } else {
                     console.error("Empty or invalid response from the server");
@@ -78,7 +57,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
         };
 
         fetchUserData();
-    }, [user, token, setUser]);
+    }, [user, token]);
 
 
 
