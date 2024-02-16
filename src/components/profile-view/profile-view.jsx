@@ -28,7 +28,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
                 console.log("Attempting to fetch user data. User:", user);
 
-                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`;
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -92,7 +92,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
         try {
             const response = await fetch(
-                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`,
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`,
                 {
                     method: "PUT",
                     headers: {
@@ -121,7 +121,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             setIsLoading(true);
             try {
                 const response = await fetch(
-                    `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}`,
+                    `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`,
                     {
                         method: "DELETE",
                         headers: {
@@ -147,7 +147,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
     const handleSelectMovie = async (movieId) => {
         try {
             const response = await fetch(
-                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}/movies/${movieId}`,
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
                 {
                     method: "POST",
                     headers: {
@@ -182,7 +182,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
         try {
             // Send DELETE request to remove movie from backend
             const response = await fetch(
-                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${Username}/movies/${movieId}`,
+                `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}/movies/${movieId}`,
                 {
                     method: "DELETE",
                     headers: {
