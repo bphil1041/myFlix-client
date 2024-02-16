@@ -36,15 +36,14 @@ export const MainView = () => {
 
         console.log("Before fetch");
 
-        // Fetch user data
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/users", {
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         })
             .then((response) => {
-                console.log("API Response Status for users:", response.status);
+                console.log("API Response Status:", response.status);
 
                 if (!response.ok) {
                     throw new Error("Unauthorized");
@@ -52,65 +51,34 @@ export const MainView = () => {
 
                 return response.json();
             })
-            .then((userData) => {
-                console.log("User data from API:", userData);
+            .then((data) => {
+                console.log("Movies data from API:", data);
 
-                // Update user state
-                setUser(userData);
-
-                // Fetch movies data
-                fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
+                const moviesFromApi = data.map((movie) => ({
+                    genre: {
+                        genreName: movie.genre.genreName,
+                        description: movie.genre.description,
                     },
-                })
-                    .then((response) => {
-                        console.log("API Response Status for movies:", response.status);
+                    director: {
+                        name: movie.director.name,
+                        birth: movie.director.birth,
+                        death: movie.director.death,
+                        bio: movie.director.bio,
+                    },
+                    _id: movie._id,
+                    title: movie.title,
+                    year: movie.year,
+                    description: movie.description,
+                    MovieId: movie.MovieId,
+                    image: movie.image,
+                }));
 
-                        if (!response.ok) {
-                            throw new Error("Unauthorized");
-                        }
+                console.log("Movies after mapping:", moviesFromApi);
 
-                        return response.json();
-                    })
-                    .then((movieData) => {
-                        console.log("Movies data from API:", movieData);
-
-                        const moviesFromApi = movieData.map((movie) => ({
-                            genre: {
-                                genreName: movie.genre.genreName,
-                                description: movie.genre.description,
-                            },
-                            director: {
-                                name: movie.director.name,
-                                birth: movie.director.birth,
-                                death: movie.director.death,
-                                bio: movie.director.bio,
-                            },
-                            _id: movie._id,
-                            title: movie.title,
-                            year: movie.year,
-                            description: movie.description,
-                            MovieId: movie.MovieId,
-                            image: movie.image,
-                        }));
-
-                        console.log("Movies after mapping:", moviesFromApi);
-
-                        // Update movies state
-                        setMovies(moviesFromApi);
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching movies:", error);
-
-                        if (error.message === "Unauthorized") {
-                            console.log("Unauthorized access. Redirect to login or handle accordingly");
-                        }
-                    });
+                setMovies(moviesFromApi);
             })
             .catch((error) => {
-                console.error("Error fetching user data:", error);
+                console.error("Error fetching movies:", error);
 
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
