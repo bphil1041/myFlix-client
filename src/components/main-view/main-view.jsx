@@ -136,7 +136,6 @@ export const MainView = () => {
                 }}
             />
 
-
             <Row className="justify-content-md-center">
                 {user && movies.length > 0 && (
                     <>
@@ -170,83 +169,25 @@ export const MainView = () => {
                 )}
             </Row>
 
-
-
-
             <Row className="justify-content-md-center">
                 <Routes>
-                    <Route
-                        path="/signup"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <SignupView />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/login"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <LoginView onLoggedIn={(user) => setUser(user)} />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/movies/:movieId"
-                        element={<MovieView movies={movies} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <>
-                                {user ? (
-                                    <ProfileView user={user} movies={movies} setUser={setUser} />
-                                ) : (
-                                    <Navigate to="/login" replace />
-                                )}
-                            </>
-                        }
-                    />
+                    <Route path="/signup" element={<SignupView />} />
+                    <Route path="/login" element={<LoginView />} />
+                    <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
+                    <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
                     <Route
                         path="/"
                         element={
-                            <>
-                                {!user ? (
-                                    <Navigate to="/login" replace />
-                                ) : movies.length === 0 ? (
-                                    <Col>The list is empty!</Col>
-                                ) : (
-                                    <>
-                                        {filteredMovies.map(movie => (
-                                            <Col className="mb-5" key={movie._id} md={3}>
-                                                <Link to={`/movies/${movie._id}`}>
-                                                    <MovieCard movie={movie} image={movie.image} />
-                                                </Link>
-                                            </Col>
-                                        ))}
-                                    </>
-                                )}
-                            </>
+                            <Navigate
+                                to="/login"
+                                replace
+                            />
                         }
                     />
-
                 </Routes>
             </Row>
 
-
-
         </BrowserRouter>
     );
+
 };
