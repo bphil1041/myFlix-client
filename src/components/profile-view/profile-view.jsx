@@ -83,21 +83,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
         fetchUserData();
     }, [user, token]);
 
-    // Save user to localStorage
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-        }
-    }, [user]);
-
-    // Retrieve user from localStorage on page load
-    useEffect(() => {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
-        }
-    }, []);
-
 
 
 
