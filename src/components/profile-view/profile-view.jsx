@@ -18,9 +18,16 @@ export const ProfileView = ({ user, setUser, movies }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                if (!user) {
+                    console.error("User object is null or undefined.");
+                    return;
+                }
+
                 console.log("Attempting to fetch user data. User:", user);
 
-                const response = await fetch(`https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`, {
+                const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
+
+                const response = await fetch(apiUrl, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -28,25 +35,39 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     },
                 });
 
-                const userData = await response.json();
+                const responseData = await response.json();
 
-                console.log("API URL:", response.url);
-                console.log("Response body:", userData);
+                console.log("API URL:", apiUrl);
 
-                if (Array.isArray(userData) && userData.length > 0) {
-                    const fetchedUser = userData[0];
-                    if (fetchedUser.Username === user.Username) {
-                        setUpdatedUser({
-                            Username: fetchedUser.Username || "",
-                            Password: fetchedUser.Password || "",
-                            Email: fetchedUser.Email || "",
-                            Birthday: fetchedUser.Birthday
-                                ? new Date(fetchedUser.Birthday).toISOString().split("T")[0]
+                console.log("Response body:", responseData);
+
+                if (Array.isArray(responseData) && responseData.length > 0) {
+                    const userData = responseData[0];
+
+                    console.log("Parsed user data:", userData);
+
+                    // Check if the fetched user data matches the logged-in user
+                    if (userData.Username === user.Username) {
+                        setUser({
+                            Username: userData.Username || "",
+                            Password: userData.Password || "",
+                            Email: userData.Email || "",
+                            Birthday: userData.Birthday
+                                ? new Date(userData.Birthday).toISOString().split("T")[0]
                                 : "",
-                            FavoriteMovies: fetchedUser.FavoriteMovies || []
+                            FavoriteMovies: userData.FavoriteMovies || []
+                        });
+                        setUpdatedUser({
+                            Username: userData.Username || "",
+                            Password: userData.Password || "",
+                            Email: userData.Email || "",
+                            Birthday: userData.Birthday
+                                ? new Date(userData.Birthday).toISOString().split("T")[0]
+                                : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
-                        console.error("Fetched user data does not match the logged-in user:", fetchedUser);
+                        console.error("Fetched user data does not match the logged-in user:", userData);
                     }
                 } else {
                     console.error("Empty or invalid response from the server");
