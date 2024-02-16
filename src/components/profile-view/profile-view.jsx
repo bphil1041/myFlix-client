@@ -37,6 +37,8 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
                 const responseData = await response.json();
 
+                console.log("API URL:", apiUrl);
+
                 console.log("Response body:", responseData);
 
                 if (Array.isArray(responseData) && responseData.length > 0) {
