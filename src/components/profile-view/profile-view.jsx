@@ -82,6 +82,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
 
 
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         setIsLoading(true);
