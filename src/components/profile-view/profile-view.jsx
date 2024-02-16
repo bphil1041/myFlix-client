@@ -210,8 +210,8 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p className="user-content">Birthday: {user.Birthday}</p>
                             <p className="user-content">Favorite Movies: </p>
                             <ul>
-                                {Array.isArray(updatedUser.FavoriteMovies) ? (
-                                    updatedUser.FavoriteMovies.map(movieId => {
+                                {user.FavoriteMovies && user.FavoriteMovies.length > 0 ? (
+                                    user.FavoriteMovies.map(movieId => {
                                         const movie = movies.find(movie => movie._id === movieId);
                                         return (
                                             <li className="user-content" key={movieId}>
@@ -330,4 +330,5 @@ export const ProfileView = ({ user, setUser, movies }) => {
             </Row>
         </Container>
     );
+
 };
