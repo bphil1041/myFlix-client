@@ -14,8 +14,6 @@ export const LoginView = ({ onLoggedIn }) => {
             Password: password,
         };
 
-        console.log("Login data sent to server: ", data);
-
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/login", {
             method: "POST",
             headers: {
@@ -31,11 +29,13 @@ export const LoginView = ({ onLoggedIn }) => {
                     // Store the token in localStorage
                     localStorage.setItem("token", data.token);
                     console.log("Token stored in localStorage:", data.token);
+                    // Store the user object in localStorage
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    console.log("User object stored in localStorage:", data.user);
                 } else {
                     alert("Invalid credentials");
                 }
             })
-
             .catch((e) => {
                 alert("Something went wrong");
             });
