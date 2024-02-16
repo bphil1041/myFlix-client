@@ -168,17 +168,11 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
-
-
-
-
-
-
     const handleDeleteMovie = async (movieId) => {
         // Remove movie from frontend UI list
         setUpdatedUser(prevUser => ({
             ...prevUser,
-            FavoriteMovies: Array.isArray(prevUser.FavoriteMovies) ? prevUser.FavoriteMovies.filter(id => id !== movieId) : []
+            FavoriteMovies: prevUser.FavoriteMovies.filter(id => id !== movieId)
         }));
 
         try {
@@ -203,7 +197,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
         }
     };
 
-
     return (
         <Container>
             <Row className="justify-content-center">
@@ -216,22 +209,26 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             <p className="user-content">Birthday: {user.Birthday}</p>
                             <p className="user-content">Favorite Movies: </p>
                             <ul>
-                                {updatedUser.FavoriteMovies.map(movieId => {
-                                    const movie = movies.find(movie => movie._id === movieId);
-                                    return (
-                                        <li className="user-content" key={movieId}>
-                                            {movie ? `${movie.title} (${movie.year})` : 'Movie not found'}
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                className="ml-2 border-white"
-                                                onClick={() => handleDeleteMovie(movieId)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </li>
-                                    );
-                                })}
+                                {Array.isArray(updatedUser.FavoriteMovies) ? (
+                                    updatedUser.FavoriteMovies.map(movieId => {
+                                        const movie = movies.find(movie => movie._id === movieId);
+                                        return (
+                                            <li className="user-content" key={movieId}>
+                                                {movie ? `${movie.title} (${movie.year})` : 'Movie not found'}
+                                                <Button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    className="ml-2 border-white"
+                                                    onClick={() => handleDeleteMovie(movieId)}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </li>
+                                        );
+                                    })
+                                ) : (
+                                    <li className="user-content">No favorite movies found</li>
+                                )}
                             </ul>
                             <Dropdown>
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
