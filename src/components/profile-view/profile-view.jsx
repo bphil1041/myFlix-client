@@ -46,7 +46,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
                     console.log("Parsed user data:", userData);
 
-                    // Check if the fetched user data is for the logged-in user
+                    // Check if the fetched user data matches the logged-in user
                     if (userData.Username === user.Username) {
                         setUser({
                             Username: userData.Username || "",
@@ -79,6 +79,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
         fetchUserData();
     }, [user, token, setUser]);
+
 
 
     const handleUpdate = async (e) => {
