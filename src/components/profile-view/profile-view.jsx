@@ -155,6 +155,11 @@ export const ProfileView = ({ user, setUser, movies }) => {
                 console.log("Updated user data:", updatedUserData);
                 // Update the updatedUser state with the updated user data
                 setUpdatedUser(updatedUserData);
+                // Update the user state with the updated favorite movies list
+                setUser(prevUser => ({
+                    ...prevUser,
+                    FavoriteMovies: updatedUserData.FavoriteMovies
+                }));
                 alert("Movie added to favorites successfully");
             } else {
                 alert("Failed to add movie to favorites");
@@ -184,6 +189,11 @@ export const ProfileView = ({ user, setUser, movies }) => {
             );
 
             if (response.ok) {
+                // Update the user state with the updated favorite movies list
+                setUser(prevUser => ({
+                    ...prevUser,
+                    FavoriteMovies: prevUser.FavoriteMovies.filter(id => id !== movieId)
+                }));
                 alert("Movie removed from favorites successfully");
             } else {
                 alert("Failed to remove movie from favorites");
