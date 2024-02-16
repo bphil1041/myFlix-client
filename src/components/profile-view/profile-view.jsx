@@ -101,7 +101,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
             if (response.ok) {
                 alert("User information updated successfully");
-                setUser(updatedUser); // Update this line
+                setUser(updatedUser);
             } else {
                 alert("Failed to update user information");
             }
