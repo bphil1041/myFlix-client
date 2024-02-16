@@ -178,7 +178,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
         // Remove movie from frontend UI list
         setUpdatedUser(prevUser => ({
             ...prevUser,
-            FavoriteMovies: prevUser.FavoriteMovies.filter(id => id !== movieId)
+            FavoriteMovies: Array.isArray(prevUser.FavoriteMovies) ? prevUser.FavoriteMovies.filter(id => id !== movieId) : []
         }));
 
         try {
@@ -202,6 +202,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
             console.error("Delete movie from favorites error:", error);
         }
     };
+
 
     return (
         <Container>
