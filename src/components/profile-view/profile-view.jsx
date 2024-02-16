@@ -3,10 +3,9 @@ import { Col, Row, Container, Button, Form, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
-export const ProfileView = ({ setUser, movies }) => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+export const ProfileView = ({ user, setUser, movies }) => {
     const [updatedUser, setUpdatedUser] = useState({
-        Username: user?.Username || "",
+        Username: "",
         Password: "",
         Email: "",
         Birthday: "",
@@ -15,6 +14,9 @@ export const ProfileView = ({ setUser, movies }) => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+
+    // Log the user state
+    console.log("User State:", user);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -49,7 +51,15 @@ export const ProfileView = ({ setUser, movies }) => {
 
                     // Check if the fetched user data matches the logged-in user
                     if (userData.Username === user.Username) {
-                        setUser(userData);
+                        setUser({
+                            Username: userData.Username || "",
+                            Password: userData.Password || "",
+                            Email: userData.Email || "",
+                            Birthday: userData.Birthday
+                                ? new Date(userData.Birthday).toISOString().split("T")[0]
+                                : "",
+                            FavoriteMovies: userData.FavoriteMovies || []
+                        });
                         setUpdatedUser({
                             Username: userData.Username || "",
                             Password: userData.Password || "",
