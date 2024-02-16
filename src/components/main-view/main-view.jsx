@@ -36,7 +36,6 @@ export const MainView = () => {
 
         console.log("Before fetch");
 
-        // Fetch movies
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -80,45 +79,6 @@ export const MainView = () => {
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
-
-                if (error.message === "Unauthorized") {
-                    console.log("Unauthorized access. Redirect to login or handle accordingly");
-                }
-            });
-
-        // Fetch user data
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/users/", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                console.log("API Response Status:", response.status);
-
-                if (!response.ok) {
-                    throw new Error("Unauthorized");
-                }
-
-                return response.json();
-            })
-            .then((data) => {
-                console.log("User data from API:", data);
-
-                const userData = {
-                    Username: data.Username,
-                    Password: data.Password,
-                    Email: data.Email,
-                    Birthday: data.Birthday,
-                    favoriteMovies: data.FavoriteMovies
-                };
-
-                console.log("User data after mapping:", userData);
-
-                setUser(userData);
-            })
-            .catch((error) => {
-                console.error("Error fetching user data:", error);
 
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
