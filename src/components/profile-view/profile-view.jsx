@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./profile-view.scss";
 
 export const ProfileView = ({ user, setUser, movies }) => {
-    const [updatedUser, setUpdatedUser] = useState({
+    const [updatedUser, setUpdatedUser] = useState(user || {
         Username: "",
         Password: "",
         Email: "",
@@ -101,7 +101,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
             if (response.ok) {
                 alert("User information updated successfully");
-                setUser(updatedUser);
+                setUser(updatedUser); // Update this line
             } else {
                 alert("Failed to update user information");
             }
