@@ -46,7 +46,8 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
                     console.log("Parsed user data:", userData);
 
-                    if (userData && typeof userData === "object") {
+                    // Check if the fetched user data is for the logged-in user
+                    if (userData.Username === user.Username) {
                         setUser({
                             Username: userData.Username || "",
                             Password: userData.Password || "",
@@ -66,10 +67,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
                             FavoriteMovies: userData.FavoriteMovies || []
                         });
                     } else {
-                        console.error(
-                            "Invalid user data structure received from the server:",
-                            userData
-                        );
+                        console.error("Fetched user data does not match the logged-in user:", userData);
                     }
                 } else {
                     console.error("Empty or invalid response from the server");
@@ -81,6 +79,7 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
         fetchUserData();
     }, [user, token, setUser]);
+
 
     const handleUpdate = async (e) => {
         e.preventDefault();
