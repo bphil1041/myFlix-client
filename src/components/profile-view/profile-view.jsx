@@ -15,9 +15,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
-    // Log the user state
-    console.log("User State:", user);
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -25,8 +22,6 @@ export const ProfileView = ({ user, setUser, movies }) => {
                     console.error("User object is null or undefined.");
                     return;
                 }
-
-                console.log("Attempting to fetch user data. User:", user);
 
                 const apiUrl = `https://myflixbp-ee7590ef397f.herokuapp.com/users/${user.Username}`;
 
@@ -40,16 +35,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
 
                 const responseData = await response.json();
 
-                console.log("API URL:", apiUrl);
-
-                console.log("Response body:", responseData);
-
                 if (Array.isArray(responseData) && responseData.length > 0) {
                     const userData = responseData[0];
 
-                    console.log("Parsed user data:", userData);
-
-                    // Check if the fetched user data matches the logged-in user
                     if (userData.Username === user.Username) {
                         setUser({
                             Username: userData.Username || "",
@@ -83,8 +71,12 @@ export const ProfileView = ({ user, setUser, movies }) => {
         fetchUserData();
     }, [user, token]);
 
-
-
+    useEffect(() => {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
+    }, []);
 
     const handleUpdate = async (e) => {
         e.preventDefault();
