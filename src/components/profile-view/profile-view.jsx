@@ -15,6 +15,9 @@ export const ProfileView = ({ user, setUser, movies }) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
+    // Log the user state
+    console.log("User State:", user);
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
