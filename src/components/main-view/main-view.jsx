@@ -14,7 +14,16 @@ import "./main-view.scss";
 
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+    const [user, setUser] = useState({
+        Username: "",
+        Password: "",
+        Email: "",
+        Birthday: "",
+        favoriteMovies: [],
+    });
+
+
+
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -117,28 +126,58 @@ export const MainView = () => {
             />
 
             <Row className="justify-content-md-center">
-                {!user ? (
-                    <Col md={5}>
-                        <LoginView onLoggedIn={(user) => setUser(user)} />
-                    </Col>
-                ) : (
-                    <Routes>
-                        <Route
-                            path="/signup"
-                            element={<SignupView />}
-                        />
-                        <Route
-                            path="/movies/:movieId"
-                            element={<MovieView movies={movies} />}
-                        />
-                        <Route
-                            path="/profile"
-                            element={<ProfileView user={user} movies={movies} setUser={setUser} />}
-                        />
-                        <Route
-                            path="/"
-                            element={
-                                movies.length === 0 ? (
+                <Routes>
+                    <Route
+                        path="/login"
+                        element={
+                            <>
+                                {user ? (
+                                    <Navigate to="/" />
+                                ) : (
+                                    <Col md={5}>
+                                        <LoginView onLoggedIn={(user) => setUser(user)} />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/signup"
+                        element={
+                            <>
+                                {user ? (
+                                    <Navigate to="/" />
+                                ) : (
+                                    <Col md={5}>
+                                        <SignupView />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/movies/:movieId"
+                        element={<MovieView movies={movies} />}
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <>
+                                {user ? (
+                                    <ProfileView user={user} movies={movies} setUser={setUser} />
+                                ) : (
+                                    <Navigate to="/login" replace />
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : movies.length === 0 ? (
                                     <Col>The list is empty!</Col>
                                 ) : (
                                     <>
@@ -181,11 +220,12 @@ export const MainView = () => {
                                             ))}
                                         </Row>
                                     </>
-                                )
-                            }
-                        />
-                    </Routes>
-                )}
+                                )}
+                            </>
+                        }
+                    />
+
+                </Routes>
             </Row>
         </BrowserRouter>
     );
