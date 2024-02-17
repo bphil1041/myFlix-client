@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./login-view.scss";
 
-export const LoginView = ({ onLoggedIn }) => {
+export const LoginView = ({ onLoggedIn, setMovies }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -32,6 +32,7 @@ export const LoginView = ({ onLoggedIn }) => {
                     // Store the user object in localStorage
                     localStorage.setItem("user", JSON.stringify(data.user));
                     console.log("User object stored in localStorage:", data.user);
+                    fetchMovies(data.token);
                 } else {
                     alert("Invalid credentials");
                 }
