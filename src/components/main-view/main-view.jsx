@@ -118,10 +118,47 @@ export const MainView = () => {
 
             <Row className="justify-content-md-center">
                 <Routes>
-                    <Route path="/login" element={<LoginView onLoggedIn={(user) => setUser(user)} />} />
-                    <Route path="/signup" element={<SignupView />} />
-                    <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
-                    <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
+                    <Route
+                        path="/signup"
+                        element={
+                            <>
+                                {user ? (
+                                    <Navigate to="/" />
+                                ) : (
+                                    <Col md={5}>
+                                        <SignupView />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            <>
+                                {user ? (
+                                    <Navigate to="/" />
+                                ) : (
+                                    <Col md={5}>
+                                        <LoginView
+                                            onLoggedIn={(user, token) => {
+                                                setUser(user);
+                                                setToken(token);
+                                            }}
+                                        />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/movies/:movieId"
+                        element={<MovieView movies={movies} />}
+                    />
+                    <Route
+                        path="/profile"
+                        element={<ProfileView user={user} movies={movies} setUser={setUser} />}
+                    />
                     <Route
                         path="/"
                         element={
