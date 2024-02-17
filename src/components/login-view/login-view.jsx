@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./login-view.scss";
 
-export const LoginView = ({ onLoggedIn, setMovies }) => {
+export const LoginView = ({ onLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -32,7 +32,6 @@ export const LoginView = ({ onLoggedIn, setMovies }) => {
                     // Store the user object in localStorage
                     localStorage.setItem("user", JSON.stringify(data.user));
                     console.log("User object stored in localStorage:", data.user);
-                    fetchMovies(data.token);
                 } else {
                     alert("Invalid credentials");
                 }
@@ -42,30 +41,6 @@ export const LoginView = ({ onLoggedIn, setMovies }) => {
             });
     };
 
-    const fetchMovies = (token) => {
-        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Unauthorized");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setMovies(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching movies:", error);
-                if (error.message === "Unauthorized") {
-                    console.log("Unauthorized access. Redirect to login or handle accordingly");
-                    setUser(null); // Reset user state
-                }
-            });
-    };
 
     return (
         <Form onSubmit={handleSubmit} className="login-form" style={{ marginTop: "80px" }}>
