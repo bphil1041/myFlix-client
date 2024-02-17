@@ -1,14 +1,31 @@
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 
 export const SignupView = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [birthday, setBirthday] = useState("");
+    const [error, setError] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // Add password and username requirements here
+        if (password.length < 8) {
+            setError("Password must be at least 8 characters long");
+            return;
+        }
+
+        if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+            setError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+            return;
+        }
+
+        if (username.length < 3) {
+            setError("Username must be at least 3 characters long");
+            return;
+        }
 
         const data = {
             Username: username,
@@ -42,7 +59,6 @@ export const SignupView = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
-                    minLength="3"
                 />
             </Form.Group>
 
@@ -75,6 +91,8 @@ export const SignupView = () => {
                     required
                 />
             </Form.Group>
+
+            {error && <Alert variant="danger">{error}</Alert>}
 
             <Button variant="primary" type="submit">
                 Submit
