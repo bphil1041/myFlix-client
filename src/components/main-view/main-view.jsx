@@ -123,18 +123,9 @@ export const MainView = () => {
                     </Col>
                 ) : (
                     <Routes>
-                        <Route
-                            path="/signup"
-                            element={<SignupView />}
-                        />
-                        <Route
-                            path="/movies/:movieId"
-                            element={<MovieView movies={movies} />}
-                        />
-                        <Route
-                            path="/profile"
-                            element={<ProfileView user={user} movies={movies} setUser={setUser} />}
-                        />
+                        <Route path="/signup" element={<SignupView />} />
+                        <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
+                        <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
                         <Route
                             path="/"
                             element={
