@@ -11,14 +11,29 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
+
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState({
+        Username: "",
+        Password: "",
+        Email: "",
+        Birthday: "",
+        favoriteMovies: [],
+    });
+
+
+
 
     useEffect(() => {
         const fetchMovies = async () => {
             const token = localStorage.getItem("token");
+
+            if (!token || !user) {
+                setLoading(false);
+                setMovies([]);
+                return;
+            }
 
             try {
                 const response = await fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
@@ -63,7 +78,7 @@ export const MainView = () => {
         };
 
         fetchMovies();
-    }, []);
+    }, [user]);
 
     if (loading) return <Col>Loading...</Col>;
 
