@@ -185,7 +185,11 @@ export const MainView = () => {
                     path="/"
                     element={
                         <>
-                            {user && movies.length > 0 && (
+                            {!user ? (
+                                <Navigate to="/login" replace />
+                            ) : movies.length === 0 ? (
+                                <Col>The list is empty!</Col>
+                            ) : (
                                 <>
                                     <Row className="justify-content-md-center">
                                         <Col md={3}>
@@ -215,22 +219,16 @@ export const MainView = () => {
                                             </Dropdown>
                                         </Col>
                                     </Row>
-                                </>
-                            )}
 
-                            {!user ? (
-                                <Navigate to="/login" replace />
-                            ) : movies.length === 0 ? (
-                                <Col>The list is empty!</Col>
-                            ) : (
-                                <>
-                                    {filteredMovies.map(movie => (
-                                        <Col className="mb-5" key={movie._id} md={3}>
-                                            <Link to={`/movies/${movie._id}`}>
-                                                <MovieCard movie={movie} image={movie.image} />
-                                            </Link>
-                                        </Col>
-                                    ))}
+                                    <Row className="justify-content-md-center">
+                                        {filteredMovies.map(movie => (
+                                            <Col className="mb-5" key={movie._id} md={3}>
+                                                <Link to={`/movies/${movie._id}`}>
+                                                    <MovieCard movie={movie} image={movie.image} />
+                                                </Link>
+                                            </Col>
+                                        ))}
+                                    </Row>
                                 </>
                             )}
                         </>
