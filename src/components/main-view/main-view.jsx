@@ -11,19 +11,10 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
-
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState({
-        Username: "",
-        Password: "",
-        Email: "",
-        Birthday: "",
-        favoriteMovies: [],
-    });
-
-
-
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchMovies = async () => {
