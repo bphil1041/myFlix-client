@@ -125,7 +125,17 @@ export const MainView = () => {
                     <Routes>
                         <Route
                             path="/signup"
-                            element={<SignupView />}
+                            element={
+                                <>
+                                    {user ? (
+                                        <Navigate to="/" />
+                                    ) : (
+                                        <Col md={5}>
+                                            <SignupView />
+                                        </Col>
+                                    )}
+                                </>
+                            }
                         />
                         <Route
                             path="/movies/:movieId"
