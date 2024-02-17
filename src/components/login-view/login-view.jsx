@@ -41,6 +41,31 @@ export const LoginView = ({ onLoggedIn }) => {
             });
     };
 
+    const fetchMovies = (token) => {
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Unauthorized");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setMovies(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching movies:", error);
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized access. Redirect to login or handle accordingly");
+                    setUser(null); // Reset user state
+                }
+            });
+    };
+
     return (
         <Form onSubmit={handleSubmit} className="login-form" style={{ marginTop: "80px" }}>
             <Form.Group controlId="formUsername">
