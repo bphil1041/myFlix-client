@@ -30,6 +30,7 @@ export const MainView = () => {
             const token = localStorage.getItem("token");
 
             if (!token || !user) {
+                setLoading(false);
                 setMovies([]);
                 return;
             }
@@ -71,11 +72,15 @@ export const MainView = () => {
                 if (error.message === "Unauthorized") {
                     setUser(null);
                 }
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchMovies();
     }, [user]);
+
+    if (loading) return <Col>Loading...</Col>;
 
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
