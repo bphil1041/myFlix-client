@@ -137,36 +137,34 @@ export const MainView = () => {
             />
 
             <Routes>
-                <Row className="justify-content-center">
-                    <Route
-                        path="/signup"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <SignupView />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/login"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <LoginView onLoggedIn={(user) => setUser(user)} />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                </Row>
+                <Route
+                    path="/signup"
+                    element={
+                        <>
+                            {user ? (
+                                <Navigate to="/" />
+                            ) : (
+                                <Col md={5}>
+                                    <SignupView />
+                                </Col>
+                            )}
+                        </>
+                    }
+                />
+                <Route
+                    path="/login"
+                    element={
+                        <>
+                            {user ? (
+                                <Navigate to="/" />
+                            ) : (
+                                <Col md={5}>
+                                    <LoginView onLoggedIn={(user) => setUser(user)} />
+                                </Col>
+                            )}
+                        </>
+                    }
+                />
                 <Route
                     path="/movies/:movieId"
                     element={<MovieView movies={movies} />}
