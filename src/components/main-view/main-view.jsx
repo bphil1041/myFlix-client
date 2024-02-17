@@ -116,18 +116,17 @@ export const MainView = () => {
                 }}
             />
 
-            <Routes>
-                <Route path="/signup" element={<SignupView />} />
-                <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
-                <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
-                <Route
-                    path="/"
-                    element={
-                        <Row className="justify-content-md-center">
-                            {!user ? (
-                                <Col md={5}>
-                                    <LoginView onLoggedIn={(user) => setUser(user)} />
-                                </Col>
+            <Row className="justify-content-md-center">
+                <Routes>
+                    <Route path="/login" element={<LoginView onLoggedIn={(user) => setUser(user)} />} />
+                    <Route path="/signup" element={<SignupView />} />
+                    <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
+                    <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
+                    <Route
+                        path="/"
+                        element={
+                            movies.length === 0 ? (
+                                <Col>The list is empty!</Col>
                             ) : (
                                 <>
                                     <Row className="justify-content-md-center">
@@ -169,11 +168,11 @@ export const MainView = () => {
                                         ))}
                                     </Row>
                                 </>
-                            )}
-                        </Row>
-                    }
-                />
-            </Routes>
+                            )
+                        }
+                    />
+                </Routes>
+            </Row>
         </BrowserRouter>
     );
 };
