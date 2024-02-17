@@ -31,6 +31,7 @@ export const MainView = () => {
 
         if (!token) {
             console.log("No token found. Redirect to login or handle accordingly");
+            setUser(null); // Reset user state
             return;
         }
 
@@ -82,6 +83,7 @@ export const MainView = () => {
 
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
+                    setUser(null); // Reset user state
                 }
             });
 
