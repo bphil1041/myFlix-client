@@ -142,37 +142,7 @@ export const MainView = () => {
                         }
                     />
                     <Route
-                        path="/signup"
-                        element={
-                            <>
-                                {user ? (
-                                    <Navigate to="/" />
-                                ) : (
-                                    <Col md={5}>
-                                        <SignupView />
-                                    </Col>
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/movies/:movieId"
-                        element={<MovieView movies={movies} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <>
-                                {user ? (
-                                    <ProfileView user={user} movies={movies} setUser={setUser} />
-                                ) : (
-                                    <Navigate to="/login" replace />
-                                )}
-                            </>
-                        }
-                    />
-                    <Route
-                        path="/"
+                        path="/*"
                         element={
                             <>
                                 {!user ? (
@@ -224,10 +194,10 @@ export const MainView = () => {
                             </>
                         }
                     />
-
                 </Routes>
             </Row>
         </BrowserRouter>
     );
+
 
 };
