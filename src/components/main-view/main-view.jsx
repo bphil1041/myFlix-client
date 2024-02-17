@@ -11,31 +11,20 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ProfileView } from "../profile-view/profile-view";
 import "./main-view.scss";
 
-
 export const MainView = () => {
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState({
-        Username: "",
-        Password: "",
-        Email: "",
-        Birthday: "",
-        favoriteMovies: [],
-    });
-
-
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        console.log("Token from localStorage in MainView:", token);
-
         if (!token) {
-            console.log("No token found. Redirect to login or handle accordingly");
-            setUser(null); // Reset user state
+            setUser(null);
             return;
         }
 
-        console.log("Before fetch");
+        setLoading(true);
 
         fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
             headers: {
@@ -44,50 +33,23 @@ export const MainView = () => {
             },
         })
             .then((response) => {
-                console.log("API Response Status:", response.status);
-
                 if (!response.ok) {
                     throw new Error("Unauthorized");
                 }
-
                 return response.json();
             })
             .then((data) => {
-                console.log("Movies data from API:", data);
-
-                const moviesFromApi = data.map((movie) => ({
-                    genre: {
-                        genreName: movie.genre.genreName,
-                        description: movie.genre.description,
-                    },
-                    director: {
-                        name: movie.director.name,
-                        birth: movie.director.birth,
-                        death: movie.director.death,
-                        bio: movie.director.bio,
-                    },
-                    _id: movie._id,
-                    title: movie.title,
-                    year: movie.year,
-                    description: movie.description,
-                    MovieId: movie.MovieId,
-                    image: movie.image,
-                }));
-
-                console.log("Movies after mapping:", moviesFromApi);
-
-                setMovies(moviesFromApi);
+                setMovies(data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching movies:", error);
-
+                setLoading(false);
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized access. Redirect to login or handle accordingly");
                     setUser(null); // Reset user state
                 }
             });
-
-        console.log("After fetch");
     }, []);
 
     const [selectedGenre, setSelectedGenre] = useState(null);
@@ -101,7 +63,6 @@ export const MainView = () => {
         // Initialize selectedDirectors with full list of directors
         setSelectedDirectors([...new Set(movies.map(movie => movie.director.name))]);
     }, [movies]);
-
 
     const handleGenreChange = (genreName) => {
         setSelectedGenre(genreName);
@@ -124,7 +85,6 @@ export const MainView = () => {
         (!selectedGenre || movie.genre.genreName === selectedGenre) &&
         (!selectedDirector || movie.director.name === selectedDirector)
     ));
-
 
     return (
         <BrowserRouter>
@@ -237,10 +197,9 @@ export const MainView = () => {
                             </>
                         }
                     />
-
                 </Routes>
             </Row>
         </BrowserRouter>
     );
-
 };
+
