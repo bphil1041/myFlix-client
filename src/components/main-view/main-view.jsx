@@ -105,67 +105,81 @@ export const MainView = () => {
 
 
     return (
-        <Row className="justify-content-md-center">
-            {!user ? (
-                <Col md={5}>
-                    <LoginView onLoggedIn={(user) => setUser(user)} />
-                </Col>
-            ) : (
-                <Routes>
-                    <Route path="/signup" element={<SignupView />} />
-                    <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
-                    <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
-                    <Route
-                        path="/"
-                        element={
-                            movies.length === 0 ? (
-                                <Col>The list is empty!</Col>
-                            ) : (
-                                <>
-                                    <Row className="justify-content-md-center">
-                                        <Col md={3}>
-                                            <Dropdown className="genre-filter">
-                                                <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
-                                                    {selectedGenre ? selectedGenre : "All Genres"}
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                    <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
-                                                    {selectedGenres.map(genre => (
-                                                        <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
-                                                    ))}
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Col>
-                                        <Col md={3}>
-                                            <Dropdown className="director-filter">
-                                                <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
-                                                    {selectedDirector ? selectedDirector : "All Directors"}
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                    <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
-                                                    {selectedDirectors.map(director => (
-                                                        <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
-                                                    ))}
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Col>
-                                    </Row>
+        <BrowserRouter>
+            <NavigationBar
+                className="navbar"
+                user={user}
+                onLoggedOut={() => {
+                    setUser(null);
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                }}
+            />
 
-                                    <Row className="justify-content-md-center">
-                                        {filteredMovies.map(movie => (
-                                            <Col className="mb-5" key={movie._id} md={3}>
-                                                <Link to={`/movies/${movie._id}`}>
-                                                    <MovieCard movie={movie} image={movie.image} />
-                                                </Link>
+            <Row className="justify-content-md-center">
+                {!user ? (
+                    <Col md={5}>
+                        <LoginView onLoggedIn={(user) => setUser(user)} />
+                    </Col>
+                ) : (
+                    <Routes>
+                        <Route path="/signup" element={<SignupView />} />
+                        <Route path="/movies/:movieId" element={<MovieView movies={movies} />} />
+                        <Route path="/profile" element={<ProfileView user={user} movies={movies} setUser={setUser} />} />
+                        <Route
+                            path="/"
+                            element={
+                                movies.length === 0 ? (
+                                    <Col>The list is empty!</Col>
+                                ) : (
+                                    <>
+                                        <Row className="justify-content-md-center">
+                                            <Col md={3}>
+                                                <Dropdown className="genre-filter">
+                                                    <Dropdown.Toggle variant="primary" id="genre-filter-dropdown">
+                                                        {selectedGenre ? selectedGenre : "All Genres"}
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item onClick={() => handleGenreChange("")}>All Genres</Dropdown.Item>
+                                                        {selectedGenres.map(genre => (
+                                                            <Dropdown.Item key={genre} onClick={() => handleGenreChange(genre)}>{genre}</Dropdown.Item>
+                                                        ))}
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
                                             </Col>
-                                        ))}
-                                    </Row>
-                                </>
-                            )
-                        }
-                    />
-                </Routes>
-            )}
-        </Row>
+                                            <Col md={3}>
+                                                <Dropdown className="director-filter">
+                                                    <Dropdown.Toggle variant="primary" id="director-filter-dropdown">
+                                                        {selectedDirector ? selectedDirector : "All Directors"}
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item onClick={() => handleDirectorChange("")}>All Directors</Dropdown.Item>
+                                                        {selectedDirectors.map(director => (
+                                                            <Dropdown.Item key={director} onClick={() => handleDirectorChange(director)}>{director}</Dropdown.Item>
+                                                        ))}
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </Col>
+                                        </Row>
+
+                                        <Row className="justify-content-md-center">
+                                            {filteredMovies.map(movie => (
+                                                <Col className="mb-5" key={movie._id} md={3}>
+                                                    <Link to={`/movies/${movie._id}`}>
+                                                        <MovieCard movie={movie} image={movie.image} />
+                                                    </Link>
+                                                </Col>
+                                            ))}
+                                        </Row>
+                                    </>
+                                )
+                            }
+                        />
+                    </Routes>
+                )}
+            </Row>
+        </BrowserRouter>
     );
+
+
 };
