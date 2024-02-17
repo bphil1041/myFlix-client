@@ -41,7 +41,6 @@ export const LoginView = ({ onLoggedIn }) => {
             });
     };
 
-
     return (
         <Form onSubmit={handleSubmit} className="login-form" style={{ marginTop: "80px" }}>
             <Form.Group controlId="formUsername">
