@@ -20,12 +20,6 @@ export const MainView = () => {
         const fetchMovies = async () => {
             const token = localStorage.getItem("token");
 
-            if (!token || !user) {
-                setLoading(false);
-                setMovies([]);
-                return;
-            }
-
             try {
                 const response = await fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
                     headers: {
@@ -69,7 +63,7 @@ export const MainView = () => {
         };
 
         fetchMovies();
-    }, [user]);
+    }, []);
 
     if (loading) return <Col>Loading...</Col>;
 
