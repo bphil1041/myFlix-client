@@ -26,28 +26,36 @@ export const MainView = () => {
 
 
     useEffect(() => {
-        const fetchMovies = async () => {
-            const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-            if (!token || !user) {
-                setLoading(false);
-                setMovies([]);
-                return;
-            }
+        console.log("Token from localStorage in MainView:", token);
 
-            try {
-                const response = await fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
+        if (!token) {
+            console.log("No token found. Redirect to login or handle accordingly");
+            setUser(null); // Reset user state
+            return;
+        }
+
+        console.log("Before fetch");
+
+        fetch("https://myflixbp-ee7590ef397f.herokuapp.com/movies", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => {
+                console.log("API Response Status:", response.status);
 
                 if (!response.ok) {
                     throw new Error("Unauthorized");
                 }
 
-                const data = await response.json();
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Movies data from API:", data);
+
                 const moviesFromApi = data.map((movie) => ({
                     genre: {
                         genreName: movie.genre.genreName,
@@ -66,21 +74,22 @@ export const MainView = () => {
                     MovieId: movie.MovieId,
                     image: movie.image,
                 }));
+
+                console.log("Movies after mapping:", moviesFromApi);
+
                 setMovies(moviesFromApi);
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error("Error fetching movies:", error);
+
                 if (error.message === "Unauthorized") {
-                    setUser(null);
+                    console.log("Unauthorized access. Redirect to login or handle accordingly");
+                    setUser(null); // Reset user state
                 }
-            } finally {
-                setLoading(false);
-            }
-        };
+            });
 
-        fetchMovies();
-    }, [user]);
-
-    if (loading) return <Col>Loading...</Col>;
+        console.log("After fetch");
+    }, []);
 
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
